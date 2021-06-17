@@ -1,1 +1,15 @@
 // Here you can add other styles
+
+a {
+  color: #3d5afe;
+}
+.c-sidebar .c-sidebar-nav-link:hover,
+.c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
+  background: #3d5afe;
+}
+.bg-logo {
+  background: #ececec;
+}
+.form-control {
+  height: calc(2.2em + 0.75rem + 2px) !important
+}

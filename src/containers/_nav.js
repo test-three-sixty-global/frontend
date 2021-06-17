@@ -12,6 +12,36 @@ const _nav =  [
       // text: 'NEW',
     }
   },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Tests',
+    to: '/roles',
+    icon: 'cil-file',
+    badge: {
+      color: 'info',
+      // text: 'NEW',
+    }
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Settings',
+    to: '/settings',
+    icon: 'cil-settings',
+    badge: {
+      color: 'info',
+      // text: 'NEW',
+    }
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'User',
+    to: '/user',
+    icon: 'cil-user',
+    badge: {
+      color: 'info',
+      // text: 'NEW',
+    }
+  },
   // {
   //   _tag: 'CSidebarNavTitle',
   //   _children: ['Theme']

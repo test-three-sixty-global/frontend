@@ -22,13 +22,13 @@ const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 const Dashboard = () => {
   return (
     <>
-      {/* <WidgetsDropdown /> */}
-      {/* <CCard>
+      <WidgetsDropdown />
+      <CCard>
         <CCardBody>
           <CRow>
             <CCol sm="5">
-              <h4 id="traffic" className="card-title mb-0">Traffic</h4>
-              <div className="small text-muted">November 2017</div>
+              <h4 id="traffic" className="card-title mb-0">Runs</h4>
+              <div className="small text-muted">May 2021</div>
             </CCol>
             <CCol sm="7" className="d-none d-md-block">
               <CButton color="primary" className="float-right">
@@ -52,7 +52,7 @@ const Dashboard = () => {
           </CRow>
           <MainChartExample style={{height: '300px', marginTop: '40px'}}/>
         </CCardBody>
-        <CCardFooter>
+        {/* <CCardFooter>
           <CRow className="text-center">
             <CCol md sm="12" className="mb-sm-2 mb-0">
               <div className="text-muted">Visits</div>
@@ -104,14 +104,14 @@ const Dashboard = () => {
               />
             </CCol>
           </CRow>
-        </CCardFooter>
+        </CCardFooter> */}
       </CCard>
 
-      <WidgetsBrand withCharts/>
+      {/* <WidgetsBrand withCharts/> */}
 
-      <CRow>
+     {/* <CRow>
         <CCol>
-          <CCard>
+           <CCard>
             <CCardHeader>
               Traffic {' & '} Sales
             </CCardHeader>
@@ -547,7 +547,7 @@ const Dashboard = () => {
               </table>
 
             </CCardBody>
-          </CCard>
+          </CCard> 
         </CCol> 
       </CRow>*/}
     </>

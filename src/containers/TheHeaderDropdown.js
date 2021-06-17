@@ -19,7 +19,7 @@ const TheHeaderDropdown = () => {
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
           <CImg
-            src={'avatars/6.jpg'}
+            src={'avatars/8.jpg'}
             className="c-avatar-img"
             alt="admin@bootstrapmaster.com"
           />
@@ -32,7 +32,7 @@ const TheHeaderDropdown = () => {
           color="light"
           className="text-center"
         >
-          <strong>Account</strong>
+          {/* <strong>Account</strong>
         </CDropdownItem>
         <CDropdownItem>
           <CIcon name="cil-bell" className="mfe-2" />
@@ -59,8 +59,8 @@ const TheHeaderDropdown = () => {
           tag="div"
           color="light"
           className="text-center"
-        >
-          <strong>Settings</strong>
+        > */}
+          {/* <strong>Settings</strong> */}
         </CDropdownItem>
         <CDropdownItem>
           <CIcon name="cil-user" className="mfe-2" />Profile
@@ -69,11 +69,11 @@ const TheHeaderDropdown = () => {
           <CIcon name="cil-settings" className="mfe-2" />
           Settings
         </CDropdownItem>
-        <CDropdownItem>
+        {/* <CDropdownItem>
           <CIcon name="cil-credit-card" className="mfe-2" />
           Payments
           <CBadge color="secondary" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownItem>
           <CIcon name="cil-file" className="mfe-2" />
           Projects

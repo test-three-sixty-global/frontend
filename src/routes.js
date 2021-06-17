@@ -36,7 +36,10 @@ const Colors = React.lazy(() => import('./views/theme/colors/Colors'));
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'));
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
-const User = React.lazy(() => import('./views/users/User'));
+// const User = React.lazy(() => import('./views/users/User'));
+const Roles = React.lazy(() => import('./views/roles/Roles'));
+const Settings = React.lazy(() => import('./views/settings/Settings'));
+const User = React.lazy(() => import('./views/user/User'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -78,7 +81,10 @@ const routes = [
   { path: '/notifications/toaster', name: 'Toaster', component: Toaster },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User }
+  // { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/Roles', exact: true, name: 'Roles', component: Roles },
+  { path: '/Settings', exact: true, name: 'Settings', component: Settings },
+  { path: '/User', exact: true, name: 'User', component: User },
 ];
 
 export default routes;
