@@ -1,7 +1,10 @@
 // Here you can add other styles
 
 a {
-  color: #3d5afe;
+  color: #004e76;
+}
+a:hover {
+  color: #0083b8;
 }
 .c-sidebar .c-sidebar-nav-link:hover,
 .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
@@ -11,5 +14,36 @@ a {
   background: #ececec;
 }
 .form-control {
-  height: calc(2.2em + 0.75rem + 2px) !important
+  height: calc(2.2em + 0.75rem + 2px) !important;
+}
+.removing-padding {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+.remove-padding {
+  padding-right: 8px !important;
+  padding-left: 8px !important;
+}
+.search-box {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.table th,
+.table td {
+  padding: 0.35rem;
+}
+.c-sidebar.c-sidebar-minimized .c-sidebar-nav-item:hover > .c-sidebar-nav-link,
+.c-sidebar.c-sidebar-minimized
+  .c-sidebar-nav-item:hover
+  > .c-sidebar-nav-dropdown-toggle {
+  background: #004e76;
+}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  color: white;
+  background-color: #017aad;
+  border-color: #c4c9d0 #c4c9d0 #ebedef;
+}
+.MuiButton-containedPrimary {
+  background-color: #017aad !important;
 }
