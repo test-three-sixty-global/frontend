@@ -20,7 +20,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-primary"
           header="9"
-          text="Test Run"
+          text="Bill payments"
           footerSlot={
             <ChartLineSimple
               pointed
@@ -51,7 +51,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-info"
           header="3"
-          text="Suits"
+          text="Bulk salary transfer"
           footerSlot={
             <ChartLineSimple
               pointed
@@ -83,7 +83,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-warning"
           header="1"
-          text="Plans"
+          text="Test failing trend"
           footerSlot={
             <ChartLineSimple
               className="mt-3"
@@ -115,7 +115,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-danger"
           header="5"
-          text="Shared Steps"
+          text="Transcations wide"
           footerSlot={
             <ChartBarSimple
               className="mt-3 mx-3"

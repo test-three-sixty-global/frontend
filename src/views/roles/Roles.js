@@ -21,7 +21,7 @@ import {
 
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import { TextField, Container, Button } from "@material-ui/core";
+import { TextField, Container, Button, Checkbox } from "@material-ui/core";
 
 const Roles = () => {
   const [array, setArray] = useState([
@@ -130,6 +130,28 @@ const Roles = () => {
                           name="emailname"
                           autoFocus
                         />
+                        {/* <div className="row">
+                          <div className="col-md-6">
+                            <h5>Organization:</h5>
+                            <label>Can add</label>
+                            <Checkbox
+                              checked={false}
+                              // onChange={handleChange}
+                              name="checkedB"
+                              color="primary"
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <h5>Site:</h5>
+                            <label>Can add</label>
+                            <Checkbox
+                              checked={false}
+                              // onChange={handleChange}
+                              name="checkedB"
+                              color="primary"
+                            />
+                          </div> 
+                        </div>*/}
                         {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
                         <Button
                           type="submit"

@@ -112,6 +112,7 @@ const Roles = () => {
                           fullWidth
                           label="Admin User Email"
                         />
+                        <label>Logo: &nbsp;</label>
                         <input type="file" style={{marginTop: "10px", marginBottom: "10px"}}
                         />
                         <Button

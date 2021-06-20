@@ -1,44 +1,109 @@
 import React, { lazy, useState } from "react";
 import {
-    CCol,
-    CNav,
-    CNavItem,
-    CNavLink,
-    CRow,
-    CTabContent,
-    CTabPane,
-    CCard,
-    CCardBody,
-    CTabs,
-    CCardHeader
-  } from '@coreui/react'
-  import CIcon from '@coreui/icons-react'
-  import { DocsLink } from 'src/reusable'
+  CCol,
+  CNav,
+  CNavItem,
+  CNavLink,
+  CRow,
+  CTabContent,
+  CTabPane,
+  CCard,
+  CCardBody,
+  CTabs,
+  CCardHeader
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { DocsLink } from "src/reusable";
 
 import usersData from "../users/TestsData";
-const WidgetsDropdown = lazy(() => import("../widgets/WidgetsDropdown.js"));
 
-const getBadge = status => {
-  switch (status) {
-    case "Active":
-      return "success";
-    case "Inactive":
-      return "secondary";
-    case "Pending":
-      return "warning";
-    case "Banned":
-      return "danger";
-    default:
-      return "primary";
-  }
-};
-const fields = ["name", "registered", "role", "status", "kind"];
-const SmsLists = () => {
-    const [active, setActive] = useState(1)
-    const lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.'
-    return (
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import EditIcon from "@material-ui/icons/Edit";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+
+const Tests = () => {
+  const [array, setArray] = useState([
+    {
+      emailListId: 2,
+      emailListName: "Test Postman ",
+      emailList: "a@a.com;b@b.com;c@c.com",
+      dateCreated: "2021-05-26T14:30:10.000+00:00",
+      dateModified: "2021-05-26T15:01:38.000+00:00",
+      createdBy: 1,
+      modifiedBy: 1,
+      organizationId: 1
+    },
+    {
+      emailListId: 3,
+      emailListName: "Test Postman 2",
+      emailList: "a@a.com;b@b.com",
+      dateCreated: "2021-05-26T14:45:33.000+00:00",
+      dateModified: "2021-05-26T14:46:27.000+00:00",
+      createdBy: 1,
+      modifiedBy: 1,
+      organizationId: 1
+    }
+  ]);
+  const [test, setTest] = useState([
+    {
+      testName: "Name 1",
+      dateCreated: "2021-05-26T14:45:33.000+00:00",
+    },
+    {
+      testName: "Name 2",
+      dateCreated: "2021-05-26T14:45:33.000+00:00",
+    },
+    {
+      testName: "Name 3",
+      dateCreated: "2021-05-26T14:45:33.000+00:00",
+    },
+    {
+      testName: "Name 4",
+      dateCreated: "2021-05-26T14:45:33.000+00:00",
+    }
+  ]);
+  const [testSteps, setTestSteps] = useState([
+    {
+      steps: "open | https://www.tonerprice.com/ | ",
+      override: "-",
+    },
+    {
+      steps: "click | link=Log in | ",
+      override: "-",
+    },
+    {
+      steps: "type | id=email | jayantar@test.net",
+      override: "type | id=email | abcdde@test.net",
+    },
+    {
+      steps: "click | id=pass | ",
+      override: "-",
+    },
+    {
+      steps: "type | id=pass | 123456",
+      override: "type | id=pass | abcdefg",
+    },
+    {
+      steps: "click | //button[@id='send2']/span/span | ",
+      override: "-",
+    },
+    {
+      steps: "click | //p/strong | ",
+      override: "-",
+    },
+    {
+      steps: "click | //p/strong | ",
+      override: "-",
+    },
+    {
+      steps: "verifyText | //p/strong | Hello, Jayantar Roy!",
+      override: "-",
+    },
+  ]);
+  return (
     <>
-      <h2 style={{ paddingLeft: "15px" }}>Tests</h2>
       <CCol xs="12" md="12" className="mb-4">
         <CCard>
           {/* <CCardHeader>
@@ -49,20 +114,61 @@ const SmsLists = () => {
             <CTabs>
               <CNav variant="tabs">
                 <CNavItem>
-                  <CNavLink>
-                    Sms Lists
-                  </CNavLink>
+                  <CNavLink style={{fontWeight: "bolder"}}>Test</CNavLink>
+                </CNavItem>
+                <CNavItem>
+                  <CNavLink style={{fontWeight: "bolder"}}>Tests Steps</CNavLink>
                 </CNavItem>
               </CNav>
               <CTabContent>
+               
                 <CTabPane>
-                  {`1. ${lorem}`}
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Test Name</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {test.map((item, key) => {
+                        return (
+                          <tr key={key}>
+                            {/* {console.log(item.emailListName)} */}
+                            <td>
+                              <a href="/tests">{item.testName}</a>
+                            </td>
+                            <td>{item.dateCreated}</td>
+                            <td>
+                              <DeleteOutlineIcon /> <EditIcon />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </CTabPane>
                 <CTabPane>
-                  {`2. ${lorem}`}
-                </CTabPane>
-                <CTabPane>
-                  {`3. ${lorem}`}
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Steps</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {testSteps.map((item, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>
+                              <a href="/tests">{item.steps}</a>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </CTabPane>
               </CTabContent>
             </CTabs>
@@ -73,4 +179,4 @@ const SmsLists = () => {
   );
 };
 
-export default SmsLists;
+export default Tests;

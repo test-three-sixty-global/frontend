@@ -22,12 +22,13 @@ const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 const Dashboard = () => {
   return (
     <>
+    <h2 style={{ paddingLeft: "15px" }}>Test Runs Analytics</h2>
       <WidgetsDropdown />
       <CCard>
         <CCardBody>
           <CRow>
             <CCol sm="5">
-              <h4 id="traffic" className="card-title mb-0">Runs</h4>
+              <h4 id="traffic" className="card-title mb-0">Concurrent tests</h4>
               <div className="small text-muted">May 2021</div>
             </CCol>
             <CCol sm="7" className="d-none d-md-block">
