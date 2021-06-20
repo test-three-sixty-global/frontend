@@ -20,6 +20,7 @@ import {
 } from "@coreui/react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
+import { Container, TextField, Button } from "@material-ui/core";
 
 const Roles = () => {
   const [array, setArray] = useState([
@@ -178,6 +179,9 @@ const Roles = () => {
                 <CNavItem>
                   <CNavLink>Users</CNavLink>
                 </CNavItem>
+                <CNavItem>
+                  <CNavLink>Create User</CNavLink>
+                </CNavItem>
               </CNav>
               <CTabContent>
                 <CTabPane>
@@ -232,6 +236,71 @@ const Roles = () => {
                       })}
                     </tbody>
                   </table>
+                </CTabPane>
+                <CTabPane>
+                  <Container component="main" maxWidth="xs">
+                    <div>
+                      <form>
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          // id="email"
+                          label="First Name"
+                          name="emailname"
+                          autoFocus
+                        />
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          label="Last Name"
+                        />
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          label="Email"
+                        />
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          label="Password"
+                          type="password"
+                        />
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          label="Address"
+                          // type="password"
+                        />
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          label="Phone number"
+                        />
+                        {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          // className={classes.submit}
+                        >
+                          Submit
+                        </Button>
+                      </form>
+                    </div>
+                  </Container>
                 </CTabPane>
               </CTabContent>
             </CTabs>

@@ -41,11 +41,11 @@ const Roles = React.lazy(() => import('./views/roles/Roles'));
 const Settings = React.lazy(() => import('./views/settings/Settings'));
 const User = React.lazy(() => import('./views/user/User'));
 const Organization = React.lazy(() => import('./views/organization/Organization'));
-const Site = React.lazy(() => import('./views/site/Site'));
 const Groups = React.lazy(() => import('./views/groups/Groups'));
 const Tests = React.lazy(() => import('./views/tests/Tests'));
 const EmailLists = React.lazy(() => import('./views/emailLists/EmailLists'));
 const SmsLists = React.lazy(() => import('./views/smsLists/SmsLists'));
+const Site = React.lazy(() => import('./views/site/Site'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -92,11 +92,11 @@ const routes = [
   { path: '/Settings', exact: true, name: 'Settings', component: Settings },
   { path: '/User', exact: true, name: 'User', component: User },
   { path: '/Organization', exact: true, name: 'Organization', component: Organization },
-  { path: '/Site ', exact: true, name: 'Site ', component: Site  },
   { path: '/Groups', exact: true, name: 'Groups', component: Groups },
   { path: '/Tests', exact: true, name: 'Tests', component: Tests },
   { path: '/EmailLists', exact: true, name: 'EmailLists', component: EmailLists },
   { path: '/SmsLists', exact: true, name: 'SmsLists', component: SmsLists },
+  { path: '/Site', exact: true, name: 'Site', component: Site },
 ];
 
 export default routes;

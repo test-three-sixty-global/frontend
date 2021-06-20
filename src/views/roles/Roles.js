@@ -21,6 +21,7 @@ import {
 
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
+import { TextField, Container, Button } from "@material-ui/core";
 
 const Roles = () => {
   const [array, setArray] = useState([
@@ -66,6 +67,9 @@ const Roles = () => {
                 <CNavItem>
                   <CNavLink>Roles</CNavLink>
                 </CNavItem>
+                <CNavItem>
+                  <CNavLink>Create Roles</CNavLink>
+                </CNavItem>
               </CNav>
               <CTabContent>
                 <CTabPane>
@@ -110,6 +114,35 @@ const Roles = () => {
                       })}
                     </tbody>
                   </table>
+                </CTabPane>
+                <CTabPane>
+                  {/* {`3. ${lorem}`} */}
+                  <Container component="main" maxWidth="xs">
+                    <div>
+                      <form>
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          // id="email"
+                          label="Role Name"
+                          name="emailname"
+                          autoFocus
+                        />
+                        {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          // className={classes.submit}
+                        >
+                          Submit
+                        </Button>
+                      </form>
+                    </div>
+                  </Container>
                 </CTabPane>
               </CTabContent>
             </CTabs>
