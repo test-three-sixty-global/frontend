@@ -14,7 +14,7 @@ export const LoginAction = (email, password) => {
 
   fetch(`${apiUrl}/${path}`, {
     method: "POST",
-    mode: "no-cors",
+    // mode: "no-cors",
     headers: {
       // Accept: 'application/json',
       "Content-Type": "application/json"
