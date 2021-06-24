@@ -1,3 +1,4 @@
 export const apiUrl = {
-    login: () => "/users/login"
+    login: () => "/users/login",
+    getEmail: () => "/emaillist"
 }

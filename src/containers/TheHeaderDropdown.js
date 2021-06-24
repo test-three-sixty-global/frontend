@@ -18,7 +18,9 @@ const TheHeaderDropdown = () => {
   const authed = useSelector(state => state.authReducer.authed);
 
   useEffect(() => {
-    !authed && history.push('/login')
+    if(!localStorage.getItem("token")){
+      !authed && history.push('/login')
+    }
   }, [authed])
   return (
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">

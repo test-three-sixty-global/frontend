@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CCol,
   CNav,
@@ -18,7 +18,18 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Button, Container } from "@material-ui/core";
 
+import { useDispatch, useSelector } from "react-redux";
+import * as EmailActionCreator from "../../redux/actionsCreator/emailActionCreator";
+
 const EmailLists = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(EmailActionCreator.getEmail())
+  }, [dispatch])
+
+  const data = useSelector(state => state.emailReducer.response);
+
   const [array, setArray] = useState([
     {
       emailListId: 2,
@@ -89,7 +100,7 @@ const EmailLists = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
+                      {data && data.map((item, key) => {
                         return (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}

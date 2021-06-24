@@ -20,13 +20,15 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
+  console.log("authed", authed)
   return (
     <Route
       {...rest}
       path='/' name="Home"
       render={(props) => authed === true
-        ? <TheLayout {...props}/>
-        : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
+        && <TheLayout {...props}/>
+        // : <Redirect to={{pathname: '/login', state: {from: props.location}}} />
+      }
     />
   )
 }
@@ -34,6 +36,7 @@ function PrivateRoute ({component: Component, authed, ...rest}) {
 
 const App = () => {
   const authed =  useSelector(state => state.authReducer.authed);
+  console.log(localStorage.getItem("token"))
     return (
       <HashRouter>
           <React.Suspense fallback={loading}>
