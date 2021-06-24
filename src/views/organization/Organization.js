@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import {
   CCol,
   CNav,
@@ -18,7 +18,18 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Container, Button } from "@material-ui/core";
 
-const Roles = () => {
+import { useDispatch, useSelector } from "react-redux";
+import * as OrganizationActionCreator from "../../redux/actionsCreator/organizationActionCreator";
+
+const Organization = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(OrganizationActionCreator.getOrganization())
+  }, [dispatch])
+
+  const data = useSelector(state => state.organizationReducer.response);
   const [array, setArray] = useState([
     {
       organizationId: 1,
@@ -75,7 +86,7 @@ const Roles = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
+                      {data && data.map((item, key) => {
                         return (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
@@ -137,4 +148,4 @@ const Roles = () => {
   );
 };
 
-export default Roles;
+export default Organization;
