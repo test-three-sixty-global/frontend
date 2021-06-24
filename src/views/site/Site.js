@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CCol,
   CNav,
@@ -18,7 +18,17 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Button, Container } from "@material-ui/core";
 
+import { useDispatch, useSelector } from "react-redux";
+import * as SiteActionCreator from "../../redux/actionsCreator/siteActionCreator";
+
 const Site = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(SiteActionCreator.getSite())
+  }, [dispatch])
+
+  const data = useSelector(state => state.siteReducer.response);
   const [array, setArray] = useState([
     {
       siteId: 8,
@@ -147,7 +157,7 @@ const Site = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
+                      {data && data.map((item, key) => {
                         return (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
