@@ -20,9 +20,9 @@ const authSlice = createSlice({
     [authActionsCreator.login.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
-      state.authed = true;
-      localStorage.setItem("token", action.payload.token)
-      localStorage.setItem("email", action.payload.email)
+      state.authed = action.payload ? true : false;
+      action.payload && localStorage.setItem("token", action.payload.token)
+      action.payload && localStorage.setItem("email", action.payload.email)
     },
     [authActionsCreator.login.rejected]: state => {
       state.loading = false;
