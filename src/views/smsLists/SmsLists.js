@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import {
   CCol,
   CNav,
@@ -17,7 +17,21 @@ import CIcon from "@coreui/icons-react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { Container, TextField, Button } from "@material-ui/core";
+
+
+import { useDispatch, useSelector } from "react-redux";
+import * as SmsActionsCreator from "../../redux/actionsCreator/smsActionsCreator";
+
 const SmsLists = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(SmsActionsCreator.getSms())
+  }, [dispatch])
+
+  const data = useSelector(state => state.smsReducer.response);
+
   const [array, setArray] = useState([
     {
       smsAlertListId: 2,
@@ -87,7 +101,7 @@ const SmsLists = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
+                      { data && data.map((item, key) => {
                         return (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}

@@ -1,4 +1,5 @@
 export const apiUrl = {
     login: () => "/users/login",
-    getEmail: () => "/emaillist"
+    getEmail: () => "/emaillist",
+    getSms: () => "/smsalertlist"
 }
