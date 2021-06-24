@@ -23,7 +23,8 @@ import emailReducer from "../reducer/emailReducer";
 import smsReducer from "../reducer/smsReducer";
 import organizationReducer from "../reducer/organizationReducer";
 import siteReducer from "../reducer/siteReducer";
+import roleReducer from "../reducer/roleReducer";
 
 export default configureStore({
-  reducer: { authReducer, emailReducer, smsReducer, organizationReducer, siteReducer },
+  reducer: { authReducer, emailReducer, smsReducer, organizationReducer, siteReducer, roleReducer },
 });

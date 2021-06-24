@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import {
   CBadge,
   CCard,
@@ -23,7 +23,17 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Container, Button, Checkbox } from "@material-ui/core";
 
+import { useDispatch, useSelector } from "react-redux";
+import * as RoleActionCreator from "../../redux/actionsCreator/roleActionCreator";
+
 const Roles = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(RoleActionCreator.getRole())
+  }, [dispatch])
+
+  const data = useSelector(state => state.roleReducer.response);
   const [array, setArray] = useState([
     {
       roleId: 6,
@@ -99,7 +109,7 @@ const Roles = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
+                      {data && data.map((item, key) => {
                         return (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}

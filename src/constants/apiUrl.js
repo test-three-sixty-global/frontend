@@ -3,5 +3,6 @@ export const apiUrl = {
     getEmail: () => "/emaillist",
     getSms: () => "/smsalertlist",
     getOrganization: () => "/organizations",
-    getSite: () => "/sites"
+    getSite: () => "/sites",
+    getRole: () => "/role"
 }
