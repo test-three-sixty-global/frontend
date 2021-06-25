@@ -10,3 +10,13 @@ export const getEmail = createAsyncThunk("email/get", async (data = {}) => {
   const response = await Api.fetch(emailData);
   return response.data.payload.emailList;
 });
+
+
+export const postEmail = createAsyncThunk("email/post", async (data = {}) => {
+  let emailData = {};
+  emailData.path = apiUrl.postEmail();
+  emailData.data = data;
+  emailData.csrf = authHeader()
+  const response = await Api.post(emailData);
+  return response.data.payload.emailList;
+});

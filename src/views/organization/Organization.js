@@ -30,16 +30,6 @@ const Organization = () => {
   }, [dispatch])
 
   const data = useSelector(state => state.organizationReducer.response);
-  const [array, setArray] = useState([
-    {
-      organizationId: 1,
-      organizationName: "this is org",
-      dateCreated: "2021-06-08T14:34:58.000+00:00",
-      imageUrl: null,
-      adminUserEmail: null,
-      multipartFile: null
-    }
-  ]);
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">

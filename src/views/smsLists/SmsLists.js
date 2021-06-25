@@ -32,28 +32,6 @@ const SmsLists = () => {
 
   const data = useSelector(state => state.smsReducer.response);
 
-  const [array, setArray] = useState([
-    {
-      smsAlertListId: 2,
-      smsListName: "SMs list Name 2",
-      smsList: "0300937338, 03343551968",
-      dateCreated: "2021-05-26T21:20:08.000+00:00",
-      dateModified: "2021-05-26T21:29:12.000+00:00",
-      createdBy: 1,
-      modifiedBy: 1,
-      organizationId: null
-    },
-    {
-      smsAlertListId: 1,
-      smsListName: "SMs list Name",
-      smsList: "03009373338",
-      dateCreated: "2021-05-23T01:48:26.000+00:00",
-      dateModified: "2021-05-23T01:48:34.000+00:00",
-      createdBy: null,
-      modifiedBy: null,
-      organizationId: 1
-    }
-  ]);
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">

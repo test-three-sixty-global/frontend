@@ -34,35 +34,6 @@ const Roles = () => {
   }, [dispatch])
 
   const data = useSelector(state => state.roleReducer.response);
-  const [array, setArray] = useState([
-    {
-      roleId: 6,
-      roleName: "Admin",
-      dateCreated: "2021-06-03T10:55:30.000+00:00",
-      dateModified: "2021-06-03T10:55:30.000+00:00",
-      organizationName: "this is org",
-      rolePermissions: [],
-      roleSites: []
-    },
-    {
-      roleId: 7,
-      roleName: "Admin 2",
-      dateCreated: "2021-06-03T11:21:26.000+00:00",
-      dateModified: "2021-06-03T11:21:26.000+00:00",
-      organizationName: "this is org",
-      rolePermissions: [],
-      roleSites: []
-    },
-    {
-      roleId: 8,
-      roleName: "Admin 3",
-      dateCreated: "2021-06-03T12:13:23.000+00:00",
-      dateModified: "2021-06-03T12:13:23.000+00:00",
-      organizationName: "this is org",
-      rolePermissions: [],
-      roleSites: []
-    }
-  ]);
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">

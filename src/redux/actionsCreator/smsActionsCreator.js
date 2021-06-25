@@ -8,5 +8,5 @@ export const getSms = createAsyncThunk("sms/get", async (data = {}) => {
   smsData.path = apiUrl.getSms();
   smsData.csrf = authHeader()
   const response = await Api.fetch(smsData);
-  return response.data.payload.smsData;
+  return response.data.payload.smsAlertList;
 });

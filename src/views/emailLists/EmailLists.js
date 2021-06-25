@@ -12,46 +12,36 @@ import {
   CTabs,
   CCardHeader,
   CInput,
-  CButton
+  CButton,
+  CTextarea
 } from "@coreui/react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import { TextField, Button, Container } from "@material-ui/core";
+import { TextField, Button, Container, TextareaAutosize } from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as EmailActionCreator from "../../redux/actionsCreator/emailActionCreator";
 
 const EmailLists = () => {
+
+  const [emailName, setEmailName] = useState("");
+  const [emailList, setEmailList] = useState("");
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(EmailActionCreator.getEmail())
-  }, [dispatch])
+    dispatch(EmailActionCreator.getEmail());
+  }, [dispatch]);
+
+  const submitEmailList = (e) => {
+
+    e.preventDefault();
+    const data = { emailListName: emailName, emailList: emailList };
+    dispatch(EmailActionCreator.postEmail(data));
+  }
 
   const data = useSelector(state => state.emailReducer.response);
 
-  const [array, setArray] = useState([
-    {
-      emailListId: 2,
-      emailListName: "Test Postman ",
-      emailList: "a@a.com;b@b.com;c@c.com",
-      dateCreated: "2021-05-26T14:30:10.000+00:00",
-      dateModified: "2021-05-26T15:01:38.000+00:00",
-      createdBy: 1,
-      modifiedBy: 1,
-      organizationId: 1
-    },
-    {
-      emailListId: 3,
-      emailListName: "Test Postman 2",
-      emailList: "a@a.com;b@b.com",
-      dateCreated: "2021-05-26T14:45:33.000+00:00",
-      dateModified: "2021-05-26T14:46:27.000+00:00",
-      createdBy: 1,
-      modifiedBy: 1,
-      organizationId: 1
-    }
-  ]);
   return (
     <>
       {/* <h2 style={{ paddingLeft: "15px" }}>Email Lists</h2> */}
@@ -74,7 +64,7 @@ const EmailLists = () => {
               <CTabContent>
                 <CTabPane>
                   {/* <CCardHeader> */}
-                  
+
                   <div className="float-right search-box">
                     <CCol sm="12">
                       <CInput
@@ -87,7 +77,7 @@ const EmailLists = () => {
                       />
                     </CCol>
                   </div>
-                 
+
                   {/* </CCardHeader> */}
                   <table className="table">
                     <thead>
@@ -100,20 +90,23 @@ const EmailLists = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data && data.map((item, key) => {
-                        return (
-                          <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
-                            <td><a href="/emailLists">{item.emailListName}</a></td>
-                            <td>{item.emailList}</td>
-                            <td>{item.dateCreated}</td>
-                            <td>{item.dateModified}</td>
-                            <td>
-                              <DeleteOutlineIcon /> <EditIcon />
-                            </td>
-                          </tr>
-                        );
-                      })}
+                      {data &&
+                        data.map((item, key) => {
+                          return (
+                            <tr key={key}>
+                              {/* {console.log(item.emailListName)} */}
+                              <td>
+                                <a href="/emailLists">{item.emailListName}</a>
+                              </td>
+                              <td>{item.emailList}</td>
+                              <td>{item.dateCreated}</td>
+                              <td>{item.dateModified}</td>
+                              <td>
+                                <DeleteOutlineIcon /> <EditIcon />
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </CTabPane>
@@ -121,7 +114,7 @@ const EmailLists = () => {
                   {/* {`3. ${lorem}`} */}
                   <Container component="main" maxWidth="xs">
                     <div>
-                      <form>
+                      <form onSubmit={submitEmailList}>
                         <TextField
                           variant="outlined"
                           margin="normal"
@@ -131,13 +124,25 @@ const EmailLists = () => {
                           label="Email Name"
                           name="emailname"
                           autoFocus
+                          onChange={e => setEmailName(e.target.value)}
                         />
-                        <TextField
+                        {/* <TextField
                           variant="outlined"
                           margin="normal"
                           required
                           fullWidth
                           label="Email List"
+                        /> */}
+                        <TextareaAutosize
+                          rowsMax={4}
+                          rowsMin={4}
+                          variant="outlined"
+                          style={{width: "100%", height: "90px"}}
+                          // aria-label="maximum height"
+                          placeholder="Input Emails ; seperated"
+                          onChange={e => setEmailList(e.target.value)}
+      //                     defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+      // ut labore et dolore magna aliqua."
                         />
                         {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
                         <Button
