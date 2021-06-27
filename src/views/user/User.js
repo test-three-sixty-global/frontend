@@ -1,28 +1,44 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import EditIcon from "@material-ui/icons/Edit";
+
 import {
-  CBadge,
   CCard,
   CCardBody,
-  CCardHeader,
   CCol,
-  CDataTable,
-  CRow,
-  CButton,
   CInput,
-  CListGroupItem,
-  CListGroup,
   CTabs,
   CNavItem,
   CNav,
   CTabContent,
   CTabPane,
-  CNavLink
+  CNavLink,
 } from "@coreui/react";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import EditIcon from "@material-ui/icons/Edit";
+
 import { Container, TextField, Button } from "@material-ui/core";
+import { userValidationSchema } from "../../validationSchemas/userValidationSchema";
+import { Formik } from "formik";
+import { UserForm } from "../base/forms/userForm/userForm";
+import { date } from "yup/lib/locale";
 
 const Roles = () => {
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: "",
+    telephone: "",
+    dateCreated: "",
+    dateModified: "",
+    userRoles: "",
+  };
+  const updateTbale = (item, key) => {
+    let tempData = [...array];
+    tempData.indexOf(tempData);
+  };
+
+  const [editedRow, setEditedRow] = useState({});
+
   const [array, setArray] = useState([
     {
       userId: 1,
@@ -38,7 +54,7 @@ const Roles = () => {
       telephone: null,
       lastLoginTime: null,
       companyUser: null,
-      userRoles: []
+      userRoles: [],
     },
     {
       userId: 2,
@@ -54,7 +70,7 @@ const Roles = () => {
       telephone: "03343551962",
       lastLoginTime: null,
       companyUser: false,
-      userRoles: []
+      userRoles: [],
     },
     {
       userId: 3,
@@ -70,7 +86,7 @@ const Roles = () => {
       telephone: "03343551962",
       lastLoginTime: null,
       companyUser: false,
-      userRoles: []
+      userRoles: [],
     },
     {
       userId: 4,
@@ -86,7 +102,7 @@ const Roles = () => {
       telephone: "03343551962",
       lastLoginTime: null,
       companyUser: false,
-      userRoles: []
+      userRoles: [],
     },
     {
       userId: 5,
@@ -102,7 +118,7 @@ const Roles = () => {
       telephone: "03343551962",
       lastLoginTime: null,
       companyUser: false,
-      userRoles: []
+      userRoles: [],
     },
     {
       userId: 6,
@@ -118,7 +134,7 @@ const Roles = () => {
       telephone: "03343551962",
       lastLoginTime: null,
       companyUser: false,
-      userRoles: []
+      userRoles: [],
     },
     {
       userId: 7,
@@ -134,7 +150,7 @@ const Roles = () => {
       telephone: "03343551962",
       lastLoginTime: null,
       companyUser: false,
-      userRoles: []
+      userRoles: [],
     },
     {
       userId: 8,
@@ -150,9 +166,20 @@ const Roles = () => {
       telephone: "03343551962",
       lastLoginTime: null,
       companyUser: false,
-      userRoles: []
-    }
+      userRoles: [],
+    },
   ]);
+
+  const updateUserData = (data) => {
+    date.dateCreated = console.log("sagsjha");
+    let tempArray = [...array];
+    tempArray[editedRow.key] = data;
+    tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
+    tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
+    setArray(tempArray);
+    setEditedRow({});
+  };
+
   return (
     <>
       {/* <CCol sm="12" xl="12">
@@ -217,9 +244,8 @@ const Roles = () => {
                     </thead>
                     <tbody>
                       {array.map((item, key) => {
-                        return (
+                        return editedRow.key !== key ? (
                           <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
                             <td>{item.firstName}</td>
                             <td>{item.lastName}</td>
                             <td>{item.email}</td>
@@ -229,9 +255,47 @@ const Roles = () => {
                             <td>{item.telephone}</td>
                             <td>{item.userRoles}</td>
                             <td>
-                              <DeleteOutlineIcon /> <EditIcon />
+                              <DeleteOutlineIcon />{" "}
+                              <EditIcon
+                                onClick={() =>
+                                  setEditedRow({ item: item, key: key })
+                                }
+                              />
                             </td>
                           </tr>
+                        ) : (
+                          <Formik
+                            validateOnChange={true}
+                            initialValues={initialValues}
+                            validationSchema={userValidationSchema}
+                            onSubmit={(values) => {
+                              console.log(values);
+                              updateUserData(values);
+                            }}
+                          >
+                            {({
+                              handleSubmit,
+                              handleChange,
+                              values,
+                              errors,
+                              touched,
+                              // dirty,
+                              isValid,
+                            }) => (
+                              <UserForm
+                                values={values}
+                                touched={touched}
+                                errors={errors}
+                                // dirty={dirty}
+                                isValid={isValid}
+                                handleSubmit={handleSubmit}
+                                handleChange={handleChange}
+                                dateCreated={editedRow.item.dateCreated}
+                                dateModified={editedRow.item.dateModified}
+                                setEditedRow={setEditedRow}
+                              />
+                            )}
+                          </Formik>
                         );
                       })}
                     </tbody>

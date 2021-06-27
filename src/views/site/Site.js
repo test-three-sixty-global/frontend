@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { siteValidationSchema } from "../../validationSchemas/siteValidationSchema";
+import { Formik } from "formik";
+import { SiteForm } from "../base/forms/siteForm/siteForm";
 import {
   CCol,
   CNav,
@@ -12,13 +15,24 @@ import {
   CTabs,
   CCardHeader,
   CInput,
-  CButton
+  CButton,
 } from "@coreui/react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Button, Container } from "@material-ui/core";
 
 const Site = () => {
+  const [editedRow, setEditedRow] = useState({});
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: "",
+    telephone: "",
+    dateCreated: "",
+    dateModified: "",
+    userRoles: "",
+  };
   const [array, setArray] = useState([
     {
       siteId: 8,
@@ -31,7 +45,7 @@ const Site = () => {
       deleted: false,
       organizationId: 1,
       siteTimeZone: "America/Los_Angeles",
-      description: ""
+      description: "",
     },
     {
       siteId: 7,
@@ -44,7 +58,7 @@ const Site = () => {
       deleted: false,
       organizationId: 1,
       siteTimeZone: "Pacific/Pago_Pago",
-      description: ""
+      description: "",
     },
     {
       siteId: 6,
@@ -57,7 +71,7 @@ const Site = () => {
       deleted: false,
       organizationId: 1,
       siteTimeZone: "time",
-      description: ""
+      description: "",
     },
     {
       siteId: 5,
@@ -70,7 +84,7 @@ const Site = () => {
       deleted: false,
       organizationId: 1,
       siteTimeZone: "time",
-      description: ""
+      description: "",
     },
     {
       siteId: 2,
@@ -83,7 +97,7 @@ const Site = () => {
       deleted: false,
       organizationId: 1,
       siteTimeZone: "time",
-      description: ""
+      description: "",
     },
     {
       siteId: 1,
@@ -96,9 +110,18 @@ const Site = () => {
       deleted: false,
       organizationId: 1,
       siteTimeZone: null,
-      description: null
-    }
+      description: null,
+    },
   ]);
+
+  const updateSiteData = (data) => {
+    let tempArray = [...array];
+    tempArray[editedRow.key] = data;
+    tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
+    tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
+    setArray(tempArray);
+    setEditedRow({});
+  };
   return (
     <>
       {/* <h2 style={{ paddingLeft: "15px" }}>Email Lists</h2> */}
@@ -148,7 +171,7 @@ const Site = () => {
                     </thead>
                     <tbody>
                       {array.map((item, key) => {
-                        return (
+                        return editedRow.key !== key ? (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
                             <td>
@@ -158,9 +181,47 @@ const Site = () => {
                             <td>{item.dateCreated}</td>
                             <td>{item.dateModified}</td>
                             <td>
-                              <DeleteOutlineIcon /> <EditIcon />
+                              <DeleteOutlineIcon />{" "}
+                              <EditIcon
+                                onClick={() =>
+                                  setEditedRow({ item: item, key: key })
+                                }
+                              />
                             </td>
                           </tr>
+                        ) : (
+                          <Formik
+                            validateOnChange={true}
+                            initialValues={initialValues}
+                            validationSchema={siteValidationSchema}
+                            onSubmit={(values) => {
+                              console.log(values);
+                              updateSiteData(values);
+                            }}
+                          >
+                            {({
+                              handleSubmit,
+                              handleChange,
+                              values,
+                              errors,
+                              touched,
+                              // dirty,
+                              isValid,
+                            }) => (
+                              <SiteForm
+                                values={values}
+                                touched={touched}
+                                errors={errors}
+                                // dirty={dirty}
+                                isValid={isValid}
+                                handleSubmit={handleSubmit}
+                                handleChange={handleChange}
+                                dateCreated={editedRow.item.dateCreated}
+                                dateModified={editedRow.item.dateModified}
+                                setEditedRow={setEditedRow}
+                              />
+                            )}
+                          </Formik>
                         );
                       })}
                     </tbody>
