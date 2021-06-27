@@ -27,7 +27,9 @@ export const deleteSms = createAsyncThunk("sms/delete", async (data = {}) => {
   return response.data.payload;
 });
 export const postSms = createAsyncThunk("sms/post", async (data = {}) => {
+  console.log(data);
   let smsData = {};
+  smsData.data = data;
   smsData.path = apiUrl.postSms();
   smsData.csrf = authHeader();
   const response = await Api.post(smsData);

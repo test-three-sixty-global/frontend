@@ -1,5 +1,6 @@
 import React, { lazy, useState, useEffect } from "react";
 import { smsValidationSchema } from "../../validationSchemas/smsValidation";
+import * as smsActionsCreator from "../../redux/actionsCreator/smsActionsCreator";
 import { Formik } from "formik";
 
 import {
@@ -23,81 +24,72 @@ import { Container, TextField, Button } from "@material-ui/core";
 import { SmsForm } from "../base/forms/smsForm/smsForm";
 import { useDispatch, useSelector } from "react-redux";
 import * as SmsActionsCreator from "../../redux/actionsCreator/smsActionsCreator";
+import { Spinner } from "../widgets/ui/loader";
 
 const SmsLists = () => {
-
   const dispatch = useDispatch();
+  const [formValues, setFormValues] = useState({
+    smsListName: "",
+    smsList: "",
+  });
+  const [editedRow, setEditedRow] = useState({});
+  const [activeTab, setActiveTab] = useState(0);
+  let response = useSelector((state) => state.smsReducer.response);
+  const loading = useSelector((state) => state.smsReducer.loading);
 
   useEffect(() => {
-    dispatch(SmsActionsCreator.getSms())
-  }, [dispatch])
+    console.log(activeTab);
+    activeTab === 0 && dispatch(SmsActionsCreator.getSms());
+  }, [dispatch, activeTab]);
 
-  const data = useSelector(state => state.smsReducer.response);
-  const [editedRow, setEditedRow] = useState({});
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    address: "",
-    telephone: "",
-    dateCreated: "",
-    dateModified: "",
-    userRoles: "",
+    smsListName: "",
+    smsList: "",
   };
-  const [array, setArray] = useState([
-    {
-      smsAlertListId: 2,
-      smsListName: "SMs list Name 2",
-      smsList: "0300937338, 03343551968",
-      dateCreated: "2021-05-26T21:20:08.000+00:00",
-      dateModified: "2021-05-26T21:29:12.000+00:00",
-      createdBy: 1,
-      modifiedBy: 1,
-      organizationId: null,
-    },
-    {
-      smsAlertListId: 1,
-      smsListName: "SMs list Name",
-      smsList: "03009373338",
-      dateCreated: "2021-05-23T01:48:26.000+00:00",
-      dateModified: "2021-05-23T01:48:34.000+00:00",
-      createdBy: null,
-      modifiedBy: null,
-      organizationId: 1,
-    },
-  ]);
 
   const updateSmsData = (data) => {
-    let tempArray = [...array];
-    tempArray[editedRow.key] = data;
-    tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
-    tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
-    setArray(tempArray);
-    setEditedRow({});
+    console.log(data);
+    let tempArray = [...response];
+    // tempArray[editedRow.key] = data;
+    data.id = editedRow.item.smsAlertListId;
+    data.dateCreated = editedRow.item.dateCreated;
+    data.dateModified = editedRow.item.dateModified;
+    // tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
+    // tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
+    console.log(data);
+    dispatch(smsActionsCreator.updateSms(data));
+    // response = tempArray;
+    // setEditedRow({});
+  };
+
+  const createSms = (e) => {
+    e.preventDefault();
+    dispatch(smsActionsCreator.postSms(formValues));
+  };
+
+  const set = (name) => {
+    return ({ target: { value } }) => {
+      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
+    };
   };
 
   return (
     <>
+      {console.log(activeTab)}
       <CCol xs="12" md="12" className="mb-4">
         <CCard>
-          {/* <CCardHeader>
-            Index indentifiers
-            <DocsLink name="CTabs"/>
-          </CCardHeader> */}
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem>
+                <CNavItem onClick={(e) => setActiveTab(0)}>
                   <CNavLink>SMS Lists</CNavLink>
                 </CNavItem>
-                <CNavItem>
+                <CNavItem onClick={(e) => setActiveTab(1)}>
                   <CNavLink>Create SMS</CNavLink>
                 </CNavItem>
               </CNav>
               <CTabContent>
                 <CTabPane>
-                  {/* <CCardHeader> */}
-
                   <div className="float-right search-box">
                     <CCol sm="12">
                       <CInput
@@ -106,12 +98,10 @@ const SmsLists = () => {
                         id="nf-email"
                         name="nf-email"
                         placeholder="Search"
-                        // autoComplete="email"
                       />
                     </CCol>
                   </div>
 
-                  {/* </CCardHeader> */}
                   <table className="table">
                     <thead>
                       <tr>
@@ -122,79 +112,94 @@ const SmsLists = () => {
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {array.map((item, key) => {
-                        return editedRow.key !== key ? (
-
-                          <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
-                            <td>
-                              <a href="/smsLists">{item.smsListName}</a>
-                            </td>
-                            <td>{item.smsList}</td>
-                            <td>{item.dateCreated}</td>
-                            <td>{item.dateModified}</td>
-                            <td>
-                              <DeleteOutlineIcon />
-                              <EditIcon
-                                onClick={() =>
-                                  setEditedRow({ item: item, key: key })
-                                }
-                              />
-                            </td>
-                          </tr>
-                        ) : (
-                          <Formik
-                            validateOnChange={true}
-                            initialValues={initialValues}
-                            validationSchema={smsValidationSchema}
-                            onSubmit={(values) => {
-                              console.log(values);
-                              updateSmsData(values);
-                            }}
-                          >
-                            {({
-                              handleSubmit,
-                              handleChange,
-                              values,
-                              errors,
-                              touched,
-                              // dirty,
-                              isValid,
-                            }) => (
-                              <SmsForm
-                                values={values}
-                                touched={touched}
-                                errors={errors}
-                                // dirty={dirty}
-                                isValid={isValid}
-                                handleSubmit={handleSubmit}
-                                handleChange={handleChange}
-                                dateCreated={editedRow.item.dateCreated}
-                                dateModified={editedRow.item.dateModified}
-                                setEditedRow={setEditedRow}
-                              />
-                            )}
-                          </Formik>
-                        );
-                      })}
-                    </tbody>
+                    {!loading ? (
+                      <tbody>
+                        {response &&
+                          response.length &&
+                          activeTab === 0 &&
+                          response.map((item, key) => {
+                            return editedRow.key !== key ? (
+                              <tr key={key}>
+                                <td>
+                                  <a href="/smsLists">{item.smsListName}</a>
+                                </td>
+                                <td>{item.smsList}</td>
+                                <td>{item.dateCreated}</td>
+                                <td>{item.dateModified}</td>
+                                <td>
+                                  <DeleteOutlineIcon
+                                    onClick={() =>
+                                      dispatch(
+                                        smsActionsCreator.deleteSms(key, item)
+                                      )
+                                    }
+                                  />
+                                  <EditIcon
+                                    onClick={() =>
+                                      setEditedRow({ item: item, key: key })
+                                    }
+                                  />
+                                </td>
+                              </tr>
+                            ) : (
+                              <Formik
+                                validateOnChange={true}
+                                initialValues={initialValues}
+                                validationSchema={smsValidationSchema}
+                                onSubmit={(values) => {
+                                  console.log(values);
+                                  updateSmsData(values);
+                                }}
+                              >
+                                {({
+                                  handleSubmit,
+                                  handleChange,
+                                  values,
+                                  errors,
+                                  touched,
+                                  isValid,
+                                }) => (
+                                  <SmsForm
+                                    values={values}
+                                    touched={touched}
+                                    errors={errors}
+                                    isValid={isValid}
+                                    handleSubmit={handleSubmit}
+                                    handleChange={handleChange}
+                                    dateCreated={editedRow.item.dateCreated}
+                                    dateModified={editedRow.item.dateModified}
+                                    setEditedRow={setEditedRow}
+                                  />
+                                )}
+                              </Formik>
+                            );
+                          })}
+                      </tbody>
+                    ) : (
+                      !editedRow.key && (
+                        <tr>
+                          <td colSpan="5">
+                            <Spinner height={80} width={80} />
+                          </td>
+                        </tr>
+                      )
+                    )}
                   </table>
                 </CTabPane>
                 <CTabPane>
-                  {/* {`3. ${lorem}`} */}
                   <Container component="main" maxWidth="xs">
                     <div>
-                      <form>
+                      <form onSubmit={(data) => createSms(data)}>
                         <TextField
                           variant="outlined"
                           margin="normal"
                           required
                           fullWidth
-                          // id="email"
                           label="SMS Name"
-                          name="emailname"
+                          name="smsName"
                           autoFocus
+                          value={formValues.smsListName}
+                          onChange={set("smsListName")}
                         />
                         <TextField
                           variant="outlined"
@@ -202,14 +207,16 @@ const SmsLists = () => {
                           required
                           fullWidth
                           label="SMS List"
+                          name="smsList"
+                          autoFocus
+                          value={formValues.smsList}
+                          onChange={set("smsList")}
                         />
-                        {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
                         <Button
                           type="submit"
                           fullWidth
                           variant="contained"
                           color="primary"
-                          // className={classes.submit}
                         >
                           Submit
                         </Button>

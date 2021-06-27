@@ -4,67 +4,62 @@ import {
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CCard,
   CCardBody,
   CTabs,
-  CCardHeader,
   CInput,
-  CButton,
-  CTextarea
 } from "@coreui/react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import { TextField, Button, Container, TextareaAutosize } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  Container,
+  TextareaAutosize,
+} from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as EmailActionCreator from "../../redux/actionsCreator/emailActionCreator";
+import { Spinner } from "../widgets/ui/loader";
 
 const EmailLists = () => {
-
   const [emailName, setEmailName] = useState("");
   const [emailList, setEmailList] = useState("");
+  const [activeTab, setActiveTab] = useState(0);
+
+  const response = useSelector((state) => state.emailReducer.response);
+  const loading = useSelector((state) => state.emailReducer.loading);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(EmailActionCreator.getEmail());
-  }, [dispatch]);
+    activeTab === 0 && dispatch(EmailActionCreator.getEmail());
+  }, [dispatch, activeTab]);
 
   const submitEmailList = (e) => {
-
     e.preventDefault();
     const data = { emailListName: emailName, emailList: emailList };
     dispatch(EmailActionCreator.postEmail(data));
-  }
-
-  const data = useSelector(state => state.emailReducer.response);
+  };
 
   return (
     <>
-      {/* <h2 style={{ paddingLeft: "15px" }}>Email Lists</h2> */}
       <CCol xs="12" md="12" className="mb-4">
         <CCard>
-          {/* <CCardHeader>
-            Index indentifiers
-            <DocsLink name="CTabs"/>
-          </CCardHeader> */}
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem>
+                <CNavItem onClick={() => setActiveTab(0)}>
                   <CNavLink>Email Lists</CNavLink>
                 </CNavItem>
-                <CNavItem>
+                <CNavItem onClick={() => setActiveTab(1)}>
                   <CNavLink>Create Email</CNavLink>
                 </CNavItem>
               </CNav>
               <CTabContent>
                 <CTabPane>
-                  {/* <CCardHeader> */}
-
                   <div className="float-right search-box">
                     <CCol sm="12">
                       <CInput
@@ -73,12 +68,9 @@ const EmailLists = () => {
                         id="nf-email"
                         name="nf-email"
                         placeholder="Search"
-                        // autoComplete="email"
                       />
                     </CCol>
                   </div>
-
-                  {/* </CCardHeader> */}
                   <table className="table">
                     <thead>
                       <tr>
@@ -89,29 +81,37 @@ const EmailLists = () => {
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {data &&
-                        data.map((item, key) => {
-                          return (
-                            <tr key={key}>
-                              {/* {console.log(item.emailListName)} */}
-                              <td>
-                                <a href="/emailLists">{item.emailListName}</a>
-                              </td>
-                              <td>{item.emailList}</td>
-                              <td>{item.dateCreated}</td>
-                              <td>{item.dateModified}</td>
-                              <td>
-                                <DeleteOutlineIcon /> <EditIcon />
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
+                    {!loading ? (
+                      <tbody>
+                        {response &&
+                          response.length &&
+                          activeTab === 0 &&
+                          response.map((item, key) => {
+                            return (
+                              <tr key={key}>
+                                <td>
+                                  <a href="/emailLists">{item.emailListName}</a>
+                                </td>
+                                <td>{item.emailList}</td>
+                                <td>{item.dateCreated}</td>
+                                <td>{item.dateModified}</td>
+                                <td>
+                                  <DeleteOutlineIcon /> <EditIcon />
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    ) : (
+                      <tr>
+                        <td colSpan="5">
+                          <Spinner height={80} width={80} />
+                        </td>
+                      </tr>
+                    )}
                   </table>
                 </CTabPane>
                 <CTabPane>
-                  {/* {`3. ${lorem}`} */}
                   <Container component="main" maxWidth="xs">
                     <div>
                       <form onSubmit={submitEmailList}>
@@ -120,37 +120,24 @@ const EmailLists = () => {
                           margin="normal"
                           required
                           fullWidth
-                          // id="email"
                           label="Email Name"
                           name="emailname"
                           autoFocus
-                          onChange={e => setEmailName(e.target.value)}
+                          onChange={(e) => setEmailName(e.target.value)}
                         />
-                        {/* <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          label="Email List"
-                        /> */}
                         <TextareaAutosize
                           rowsMax={4}
                           rowsMin={4}
                           variant="outlined"
-                          style={{width: "100%", height: "90px"}}
-                          // aria-label="maximum height"
+                          style={{ width: "100%", height: "90px" }}
                           placeholder="Input Emails ; seperated"
-                          onChange={e => setEmailList(e.target.value)}
-      //                     defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-      // ut labore et dolore magna aliqua."
+                          onChange={(e) => setEmailList(e.target.value)}
                         />
-                        {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
                         <Button
                           type="submit"
                           fullWidth
                           variant="contained"
                           color="primary"
-                          // className={classes.submit}
                         >
                           Submit
                         </Button>
