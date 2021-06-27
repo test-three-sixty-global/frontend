@@ -1,73 +1,73 @@
 import { createSlice } from "@reduxjs/toolkit";
-import * as smsActionsCreator from "../actionsCreator/smsActionsCreator";
+import * as userActionsCreator from "../actionsCreator/userActionsCreator";
 
-const smsSlice = createSlice({
-  name: "sms",
+const UserSlice = createSlice({
+  name: "user",
   initialState: {
     response: null,
     loading: false,
   },
   reducers: {},
   extraReducers: {
-    //getSms
+    //getUser
 
-    [smsActionsCreator.getSms.pending]: (state) => {
+    [userActionsCreator.getUser.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
-    [smsActionsCreator.getSms.fulfilled]: (state, action) => {
+    [userActionsCreator.getUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
     },
-    [smsActionsCreator.getSms.rejected]: (state) => {
+    [userActionsCreator.getUser.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
 
-    //post Sms
-    [smsActionsCreator.postSms.pending]: (state) => {
+    //post User
+    [userActionsCreator.postUser.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
-    [smsActionsCreator.postSms.fulfilled]: (state, action) => {
+    [userActionsCreator.postUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
     },
-    [smsActionsCreator.postSms.rejected]: (state) => {
+    [userActionsCreator.postUser.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
 
-    //updateSms
+    //updateUser
 
-    [smsActionsCreator.updateSms.pending]: (state) => {
+    [userActionsCreator.updateUser.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
-    [smsActionsCreator.updateSms.fulfilled]: (state, action) => {
+    [userActionsCreator.updateUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
     },
-    [smsActionsCreator.updateSms.rejected]: (state) => {
+    [userActionsCreator.updateUser.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
 
-    //delete sms
+    //delete User
 
-    [smsActionsCreator.deleteSms.pending]: (state) => {
+    [userActionsCreator.deleteUser.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
-    [smsActionsCreator.deleteSms.fulfilled]: (state, action) => {
+    [userActionsCreator.deleteUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
     },
-    [smsActionsCreator.deleteSms.rejected]: (state) => {
+    [userActionsCreator.deleteUser.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
   },
 });
 
-export default smsSlice.reducer;
+export default UserSlice.reducer;
