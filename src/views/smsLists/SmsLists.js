@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import { smsValidationSchema } from "../../validationSchemas/smsValidation";
 import { Formik } from "formik";
 
@@ -33,7 +33,6 @@ const SmsLists = () => {
   }, [dispatch])
 
   const data = useSelector(state => state.smsReducer.response);
-  const SmsLists = () => {
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
     firstName: "",
