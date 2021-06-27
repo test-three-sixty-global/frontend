@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import {
   CBadge,
   CCard,
@@ -23,36 +23,17 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Container, Button, Checkbox } from "@material-ui/core";
 
+import { useDispatch, useSelector } from "react-redux";
+import * as RoleActionCreator from "../../redux/actionsCreator/roleActionCreator";
+
 const Roles = () => {
-  const [array, setArray] = useState([
-    {
-      roleId: 6,
-      roleName: "Admin",
-      dateCreated: "2021-06-03T10:55:30.000+00:00",
-      dateModified: "2021-06-03T10:55:30.000+00:00",
-      organizationName: "this is org",
-      rolePermissions: [],
-      roleSites: []
-    },
-    {
-      roleId: 7,
-      roleName: "Admin 2",
-      dateCreated: "2021-06-03T11:21:26.000+00:00",
-      dateModified: "2021-06-03T11:21:26.000+00:00",
-      organizationName: "this is org",
-      rolePermissions: [],
-      roleSites: []
-    },
-    {
-      roleId: 8,
-      roleName: "Admin 3",
-      dateCreated: "2021-06-03T12:13:23.000+00:00",
-      dateModified: "2021-06-03T12:13:23.000+00:00",
-      organizationName: "this is org",
-      rolePermissions: [],
-      roleSites: []
-    }
-  ]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(RoleActionCreator.getRole())
+  }, [dispatch])
+
+  const data = useSelector(state => state.roleReducer.response);
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
@@ -99,7 +80,7 @@ const Roles = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
+                      {data && data.map((item, key) => {
                         return (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}

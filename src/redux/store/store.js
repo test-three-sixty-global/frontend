@@ -20,7 +20,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../reducer/authReducer";
 import emailReducer from "../reducer/emailReducer";
+import smsReducer from "../reducer/smsReducer";
+import organizationReducer from "../reducer/organizationReducer";
+import siteReducer from "../reducer/siteReducer";
+import roleReducer from "../reducer/roleReducer";
+import userReducer from "../reducer/userReducer";
 
 export default configureStore({
-  reducer: { authReducer, emailReducer },
+  reducer: {
+    authReducer,
+    emailReducer,
+    smsReducer,
+    organizationReducer,
+    siteReducer,
+    roleReducer,
+    userReducer,
+  },
 });

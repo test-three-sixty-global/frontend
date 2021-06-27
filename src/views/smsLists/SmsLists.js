@@ -1,6 +1,7 @@
 import React, { lazy, useState } from "react";
 import { smsValidationSchema } from "../../validationSchemas/smsValidation";
 import { Formik } from "formik";
+
 import {
   CCol,
   CNav,
@@ -20,7 +21,19 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { Container, TextField, Button } from "@material-ui/core";
 import { SmsForm } from "../base/forms/smsForm/smsForm";
+import { useDispatch, useSelector } from "react-redux";
+import * as SmsActionsCreator from "../../redux/actionsCreator/smsActionsCreator";
+
 const SmsLists = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(SmsActionsCreator.getSms())
+  }, [dispatch])
+
+  const data = useSelector(state => state.smsReducer.response);
+  const SmsLists = () => {
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
     firstName: "",
@@ -63,6 +76,7 @@ const SmsLists = () => {
     setArray(tempArray);
     setEditedRow({});
   };
+
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
@@ -112,6 +126,7 @@ const SmsLists = () => {
                     <tbody>
                       {array.map((item, key) => {
                         return editedRow.key !== key ? (
+
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
                             <td>

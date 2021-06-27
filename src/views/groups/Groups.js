@@ -180,7 +180,7 @@ const Groups = () => {
                               <DeleteOutlineIcon /> <EditIcon />
                             </td>
                             <td>
-                              <ArrowUpwardIcon color="red" /> <ArrowDownwardIcon />
+                              <ArrowUpwardIcon /> <ArrowDownwardIcon />
                             </td>
                           </tr>
                         );

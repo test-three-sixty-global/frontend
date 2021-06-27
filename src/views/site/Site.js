@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { siteValidationSchema } from "../../validationSchemas/siteValidationSchema";
 import { Formik } from "formik";
 import { SiteForm } from "../base/forms/siteForm/siteForm";
+
 import {
   CCol,
   CNav,
@@ -21,7 +22,17 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Button, Container } from "@material-ui/core";
 
+import { useDispatch, useSelector } from "react-redux";
+import * as SiteActionCreator from "../../redux/actionsCreator/siteActionCreator";
+
 const Site = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(SiteActionCreator.getSite())
+  }, [dispatch])
+
+  const data = useSelector(state => state.siteReducer.response);
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
     firstName: "",
@@ -172,6 +183,7 @@ const Site = () => {
                     <tbody>
                       {array.map((item, key) => {
                         return editedRow.key !== key ? (
+
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
                             <td>

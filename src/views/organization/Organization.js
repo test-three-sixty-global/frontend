@@ -20,8 +20,19 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Container, Button } from "@material-ui/core";
 import { OrganizationForm } from "../base/forms/organizationForm/organizationForm";
+import { useDispatch, useSelector } from "react-redux";
+import * as OrganizationActionCreator from "../../redux/actionsCreator/organizationActionCreator";
 
-const Roles = () => {
+const Organization = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(OrganizationActionCreator.getOrganization())
+  }, [dispatch])
+
+  const data = useSelector(state => state.organizationReducer.response);
+  
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
     organizationName: "",
@@ -96,6 +107,7 @@ const Roles = () => {
                     <tbody>
                       {array.map((item, key) => {
                         return editedRow.key !== key ? (
+
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
                             <td>
@@ -200,4 +212,4 @@ const Roles = () => {
   );
 };
 
-export default Roles;
+export default Organization;

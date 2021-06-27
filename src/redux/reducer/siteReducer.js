@@ -1,73 +1,74 @@
 import { createSlice } from "@reduxjs/toolkit";
-import * as smsActionsCreator from "../actionsCreator/smsActionsCreator";
+import * as siteActionCreator from "../actionsCreator/siteActionCreator";
 
-const smsSlice = createSlice({
-  name: "sms",
+const siteSlice = createSlice({
+  name: "site",
   initialState: {
     response: null,
     loading: false,
   },
   reducers: {},
   extraReducers: {
-    //getSms
+    // getSite
 
-    [smsActionsCreator.getSms.pending]: (state) => {
+    [siteActionCreator.getSite.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
-    [smsActionsCreator.getSms.fulfilled]: (state, action) => {
+    [siteActionCreator.getSite.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
     },
-    [smsActionsCreator.getSms.rejected]: (state) => {
+    [siteActionCreator.getSite.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
 
-    //post Sms
-    [smsActionsCreator.postSms.pending]: (state) => {
+    // postSite
+
+    [siteActionCreator.postSite.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
-    [smsActionsCreator.postSms.fulfilled]: (state, action) => {
+    [siteActionCreator.postSite.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
     },
-    [smsActionsCreator.postSms.rejected]: (state) => {
+    [siteActionCreator.postSite.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
 
-    //updateSms
+    // updateSite
 
-    [smsActionsCreator.updateSms.pending]: (state) => {
+    [siteActionCreator.updateSite.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
-    [smsActionsCreator.updateSms.fulfilled]: (state, action) => {
+    [siteActionCreator.updateSite.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
     },
-    [smsActionsCreator.updateSms.rejected]: (state) => {
+    [siteActionCreator.updateSite.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
 
-    //delete sms
+    // deleteSite
 
-    [smsActionsCreator.deleteSms.pending]: (state) => {
+    [siteActionCreator.deleteSite.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
-    [smsActionsCreator.deleteSms.fulfilled]: (state, action) => {
+    [siteActionCreator.deleteSite.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
     },
-    [smsActionsCreator.deleteSms.rejected]: (state) => {
+    [siteActionCreator.deleteSite.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
   },
 });
 
-export default smsSlice.reducer;
+export default siteSlice.reducer;
