@@ -1,4 +1,6 @@
-import React, { lazy, useState, useEffect } from "react";
+import React, { lazy, useState } from "react";
+import { organizationValidationSchema } from "../../validationSchemas/organizationValidationSchema";
+import { Formik } from "formik";
 import {
   CCol,
   CNav,
@@ -11,13 +13,13 @@ import {
   CCardBody,
   CTabs,
   CCardHeader,
-  CInput
+  CInput,
 } from "@coreui/react";
 
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import { TextField, Container, Button } from "@material-ui/core";
-
+import { OrganizationForm } from "../base/forms/organizationForm/organizationForm";
 import { useDispatch, useSelector } from "react-redux";
 import * as OrganizationActionCreator from "../../redux/actionsCreator/organizationActionCreator";
 
@@ -30,6 +32,33 @@ const Organization = () => {
   }, [dispatch])
 
   const data = useSelector(state => state.organizationReducer.response);
+  
+  const [editedRow, setEditedRow] = useState({});
+  const initialValues = {
+    organizationName: "",
+    dateCreated: "",
+    dateModified: "",
+  };
+  const [array, setArray] = useState([
+    {
+      organizationId: 1,
+      organizationName: "this is org",
+      dateCreated: "2021-06-08T14:34:58.000+00:00",
+      imageUrl: null,
+      adminUserEmail: null,
+      multipartFile: null,
+    },
+  ]);
+
+  const updateOrganizationData = (data) => {
+    console.log(data);
+    let tempArray = [...array];
+    tempArray[editedRow.key] = data;
+    tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
+    tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
+    setArray(tempArray);
+    setEditedRow({});
+  };
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
@@ -76,16 +105,59 @@ const Organization = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data && data.map((item, key) => {
-                        return (
+                      {array.map((item, key) => {
+                        return editedRow.key !== key ? (
+
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
-                            <td><a href="/organization">{item.organizationName}</a></td>
+                            <td>
+                              <a href="/organization">
+                                {item.organizationName}
+                              </a>
+                            </td>
                             <td>{item.dateCreated}</td>
                             <td>
-                              <DeleteOutlineIcon /> <EditIcon />
+                              <DeleteOutlineIcon />{" "}
+                              <EditIcon
+                                onClick={() =>
+                                  setEditedRow({ item: item, key: key })
+                                }
+                              />
                             </td>
                           </tr>
+                        ) : (
+                          <Formik
+                            validateOnChange={true}
+                            initialValues={initialValues}
+                            validationSchema={organizationValidationSchema}
+                            onSubmit={(values) => {
+                              console.log(values);
+                              updateOrganizationData(values);
+                            }}
+                          >
+                            {({
+                              handleSubmit,
+                              handleChange,
+                              values,
+                              errors,
+                              touched,
+                              // dirty,
+                              isValid,
+                            }) => (
+                              <OrganizationForm
+                                values={values}
+                                touched={touched}
+                                errors={errors}
+                                // dirty={dirty}
+                                isValid={isValid}
+                                handleSubmit={handleSubmit}
+                                handleChange={handleChange}
+                                dateCreated={editedRow.item.dateCreated}
+                                dateModified={editedRow.item.dateModified}
+                                setEditedRow={setEditedRow}
+                              />
+                            )}
+                          </Formik>
                         );
                       })}
                     </tbody>
@@ -114,7 +186,9 @@ const Organization = () => {
                           label="Admin User Email"
                         />
                         <label>Logo: &nbsp;</label>
-                        <input type="file" style={{marginTop: "10px", marginBottom: "10px"}}
+                        <input
+                          type="file"
+                          style={{ marginTop: "10px", marginBottom: "10px" }}
                         />
                         <Button
                           type="submit"
