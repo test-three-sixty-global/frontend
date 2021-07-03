@@ -43,24 +43,36 @@ const SmsLists = () => {
     activeTab === 0 && dispatch(SmsActionsCreator.getSms());
   }, [dispatch, activeTab]);
 
+  useEffect(()=>{
+    response && setEditedRow({})
+
+  },[response])
+
+
   const initialValues = {
-    smsListName: "",
-    smsList: "",
+    smsListName: '',
+    smsList:  '',
   };
 
   const updateSmsData = (data) => {
     console.log(data);
     let tempResponse = _.cloneDeep(response);
-    tempResponse[editedRow.key] = data;
-    data.id = editedRow.item.smsAlertListId;
-    data.dateCreated = editedRow.item.dateCreated;
-    data.dateModified = editedRow.item.dateModified;
-    tempResponse[editedRow.key] = data;
+    let tempEditesRow = _.cloneDeep(editedRow)
+    console.log(tempEditesRow)
+    tempEditesRow.item.smsList=data.smsList
+    tempEditesRow.item.smsListName=data.smsListName
+    tempEditesRow.item.dateModified=data.dateModified
+    tempEditesRow.item.dateCreated=data.dateCreated
+    tempResponse[tempEditesRow.key] = tempEditesRow.item;
+    // data.id = tempEditesRow.item.smsAlertListId;
+    // data.dateCreated = tempEditesRow.item.dateCreated;
+    // data.dateModified = tempEditesRow.item.dateModified;
     console.log(data);
     dispatch(
-      smsActionsCreator.updateSms({ smsList: tempResponse, data: data })
+      smsActionsCreator.updateSms({ smsList: tempResponse, data: tempEditesRow.item })
     );
-    setEditedRow({});
+    // debugger
+    // setEditedRow({});
   };
 
   const createSms = (e) => {
@@ -82,9 +94,25 @@ const SmsLists = () => {
     };
   };
 
+  useEffect(()=>{
+    console.log(editedRow)
+    if(editedRow.item && editedRow.item.smsListName) {
+      initialValues.smsList = editedRow.item.smsList
+    initialValues.smsListName = editedRow.item.smsListName
+      
+    }
+
+  },[editedRow])
+
+  // const setEditingRow = (data) => {
+
+  //   editedRow.item.smsList = item.smsList
+  //   editedRow.item.smsListName = item.smsListName
+  // }
+
   return (
     <>
-      {console.log(activeTab)}
+      {/* {console.log(activeTab)} */}
       <CCol xs="12" md="12" className="mb-4">
         <CCard>
           <CCardBody>
@@ -140,14 +168,20 @@ const SmsLists = () => {
                                     onClick={() => deleteSms(item, key)}
                                   />
                                   <EditIcon
-                                    onClick={() =>
+                                    onClick={() =>{
+                                      console.log("item",item)
                                       setEditedRow({ item: item, key: key })
+
+                                      // setEditingRow({ item: item, key: key })
+                                      
+                                    }
                                     }
                                   />
                                 </td>
                               </tr>
                             ) : (
                               <Formik
+                              enableReinitialize
                                 validateOnChange={true}
                                 initialValues={initialValues}
                                 validationSchema={smsValidationSchema}

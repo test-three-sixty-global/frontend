@@ -7,6 +7,7 @@ export const SmsForm = (props) => {
     // <Form role="form" onSubmit={props.handleSubmit}>
 
     <tr>
+      {console.log(props.values)}
       <td>
         <FormGroup
           className={

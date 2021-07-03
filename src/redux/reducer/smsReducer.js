@@ -45,6 +45,7 @@ const smsSlice = createSlice({
       state.response = null;
     },
     [smsActionsCreator.updateSms.fulfilled]: (state, action) => {
+      console.log(action.payload)
       state.loading = false;
       state.response = action.payload.smsList;
     },
@@ -56,7 +57,7 @@ const smsSlice = createSlice({
     //delete sms
 
     [smsActionsCreator.deleteSms.pending]: (state) => {
-      state.loading = false;
+      state.loading = true;
       state.response = null;
     },
     [smsActionsCreator.deleteSms.fulfilled]: (state, action) => {
