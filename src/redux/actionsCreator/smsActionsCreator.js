@@ -13,18 +13,18 @@ export const getSms = createAsyncThunk("sms/get", async (data = {}) => {
 
 export const updateSms = createAsyncThunk("sms/update", async (data = {}) => {
   let smsData = {};
-  smsData.data = data;
-  smsData.path = apiUrl.updateSms(data.id);
+  smsData.data = data.data;
+  smsData.path = apiUrl.updateSms(data.data.id);
   smsData.csrf = authHeader();
   const response = await Api.put(smsData);
-  return response.data.payload;
+  return { response: response.data.payload, smsList: data.smsList };
 });
 export const deleteSms = createAsyncThunk("sms/delete", async (data = {}) => {
   let smsData = {};
-  smsData.path = apiUrl.deleteSms(data.id);
+  smsData.path = apiUrl.deleteSms(data.item.id);
   smsData.csrf = authHeader();
   const response = await Api.dell(smsData);
-  return response.data.payload;
+  return { response: response.data.payload, smsList: data.smsList };
 });
 export const postSms = createAsyncThunk("sms/post", async (data = {}) => {
   console.log(data);

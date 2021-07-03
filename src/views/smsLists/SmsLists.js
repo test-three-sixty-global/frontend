@@ -25,6 +25,7 @@ import { SmsForm } from "../base/forms/smsForm/smsForm";
 import { useDispatch, useSelector } from "react-redux";
 import * as SmsActionsCreator from "../../redux/actionsCreator/smsActionsCreator";
 import { Spinner } from "../widgets/ui/loader";
+import _ from "lodash";
 
 const SmsLists = () => {
   const dispatch = useDispatch();
@@ -49,22 +50,30 @@ const SmsLists = () => {
 
   const updateSmsData = (data) => {
     console.log(data);
-    let tempArray = [...response];
-    // tempArray[editedRow.key] = data;
+    let tempResponse = _.cloneDeep(response);
+    tempResponse[editedRow.key] = data;
     data.id = editedRow.item.smsAlertListId;
     data.dateCreated = editedRow.item.dateCreated;
     data.dateModified = editedRow.item.dateModified;
-    // tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
-    // tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
+    tempResponse[editedRow.key] = data;
     console.log(data);
-    dispatch(smsActionsCreator.updateSms(data));
-    // response = tempArray;
-    // setEditedRow({});
+    dispatch(
+      smsActionsCreator.updateSms({ smsList: tempResponse, data: data })
+    );
+    setEditedRow({});
   };
 
   const createSms = (e) => {
     e.preventDefault();
     dispatch(smsActionsCreator.postSms(formValues));
+  };
+
+  const deleteSms = (item, key) => {
+    let tempResponse = _.cloneDeep(response);
+    tempResponse.splice(key, 1);
+    dispatch(
+      smsActionsCreator.deleteSms({ smsList: tempResponse, item: item })
+    );
   };
 
   const set = (name) => {
@@ -128,11 +137,7 @@ const SmsLists = () => {
                                 <td>{item.dateModified}</td>
                                 <td>
                                   <DeleteOutlineIcon
-                                    onClick={() =>
-                                      dispatch(
-                                        smsActionsCreator.deleteSms(key, item)
-                                      )
-                                    }
+                                    onClick={() => deleteSms(item, key)}
                                   />
                                   <EditIcon
                                     onClick={() =>

@@ -46,7 +46,7 @@ const smsSlice = createSlice({
     },
     [smsActionsCreator.updateSms.fulfilled]: (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.response = action.payload.smsList;
     },
     [smsActionsCreator.updateSms.rejected]: (state) => {
       state.loading = false;
@@ -56,12 +56,12 @@ const smsSlice = createSlice({
     //delete sms
 
     [smsActionsCreator.deleteSms.pending]: (state) => {
-      state.loading = true;
+      state.loading = false;
       state.response = null;
     },
     [smsActionsCreator.deleteSms.fulfilled]: (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.response = action.payload.smsList;
     },
     [smsActionsCreator.deleteSms.rejected]: (state) => {
       state.loading = false;
