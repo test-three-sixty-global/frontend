@@ -21,17 +21,23 @@ export const updateOrganization = createAsyncThunk(
     organizationData.path = apiUrl.updateOrganization(data.id);
     organizationData.csrf = authHeader();
     const response = await Api.put(organizationData);
-    return response.data.payload.organizationList;
+    return {
+      response: response.data.payload.organizationList,
+      organizationList: data.organizationList,
+    };
   }
 );
 export const deleteOrganization = createAsyncThunk(
   "organization/delete",
   async (data = {}) => {
     let organizationData = {};
-    organizationData.path = apiUrl.updateOrganization(data.id);
+    organizationData.path = apiUrl.updateOrganization(data.data.organizationId);
     organizationData.csrf = authHeader();
     const response = await Api.dell(organizationData);
-    return response.data.payload.organizationList;
+    return {
+      response: response.data.payload.organizationList,
+      organizationList: data.organizationList,
+    };
   }
 );
 export const postOrganization = createAsyncThunk(

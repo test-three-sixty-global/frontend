@@ -15,6 +15,7 @@ import {
   CCardHeader,
   CInput,
 } from "@coreui/react";
+import _ from "lodash";
 
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -24,21 +25,25 @@ import { useDispatch, useSelector } from "react-redux";
 import * as OrganizationActionCreator from "../../redux/actionsCreator/organizationActionCreator";
 
 const Organization = () => {
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(OrganizationActionCreator.getOrganization())
-  }, [dispatch])
+    dispatch(OrganizationActionCreator.getOrganization());
+  }, [dispatch]);
 
-  const data = useSelector(state => state.organizationReducer.response);
-  
+  const response = useSelector((state) => state.organizationReducer.response);
+
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
     organizationName: "",
     dateCreated: "",
     dateModified: "",
   };
+  const [formValues, setFormValues] = useState({
+    organizationName: "",
+    userEmail: "",
+    organizationLogo: "",
+  });
   const [array, setArray] = useState([
     {
       organizationId: 1,
@@ -52,13 +57,42 @@ const Organization = () => {
 
   const updateOrganizationData = (data) => {
     console.log(data);
-    let tempArray = [...array];
-    tempArray[editedRow.key] = data;
-    tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
-    tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
-    setArray(tempArray);
+    let tempResponse = _.cloneDeep(response);
+    let tempEditesRow = _.cloneDeep(editedRow);
+    tempEditesRow.item.organizationName = data.smsListName;
+    tempEditesRow.item.organizationLogo = "";
+    tempEditesRow.item.dateCreated = data.dateCreated;
+    tempEditesRow.item.dateModified = data.dateModified;
+    tempResponse[tempEditesRow.key] = tempEditesRow.item;
+    dispatch(
+      OrganizationActionCreator.updateOrganization({
+        organizationList: tempResponse,
+        data: tempEditesRow.item,
+      })
+    );
     setEditedRow({});
   };
+
+  const createOrganization = (e) => {
+    e.preventDefault();
+    dispatch(OrganizationActionCreator.postOrganization(formValues));
+  };
+  const set = (name) => {
+    return ({ target: { value } }) => {
+      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
+    };
+  };
+  const deleteOrganization = (item, key) => {
+    let tempResponse = _.cloneDeep(response);
+    tempResponse.splice(key, 1);
+    dispatch(
+      OrganizationActionCreator.deleteOrganization({
+        organizationList: tempResponse,
+        item: item,
+      })
+    );
+  };
+
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
@@ -107,7 +141,6 @@ const Organization = () => {
                     <tbody>
                       {array.map((item, key) => {
                         return editedRow.key !== key ? (
-
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
                             <td>
@@ -117,7 +150,9 @@ const Organization = () => {
                             </td>
                             <td>{item.dateCreated}</td>
                             <td>
-                              <DeleteOutlineIcon />{" "}
+                              <DeleteOutlineIcon
+                                onClick={() => deleteOrganization(item, key)}
+                              />
                               <EditIcon
                                 onClick={() =>
                                   setEditedRow({ item: item, key: key })
@@ -167,15 +202,17 @@ const Organization = () => {
                   {/* {`3. ${lorem}`} */}
                   <Container component="main" maxWidth="xs">
                     <div>
-                      <form>
+                      <form onSubmit={(data) => createOrganization(data)}>
                         <TextField
                           variant="outlined"
                           margin="normal"
                           required
                           fullWidth
                           // id="email"
-                          label="Organization Name"
-                          name="OrganizationName"
+                          label="organization Name"
+                          name="organizationName"
+                          value={formValues.organizationName}
+                          onChange={set("organizationName")}
                           autoFocus
                         />
                         <TextField
@@ -184,11 +221,15 @@ const Organization = () => {
                           required
                           fullWidth
                           label="Admin User Email"
+                          name="userEmail"
+                          value={formValues.userEmail}
+                          onChange={set("userEmail")}
                         />
                         <label>Logo: &nbsp;</label>
                         <input
                           type="file"
                           style={{ marginTop: "10px", marginBottom: "10px" }}
+                          value=""
                         />
                         <Button
                           type="submit"
