@@ -15,7 +15,7 @@ import {
   CCardBody,
   CTabs,
   CCardHeader,
-  CInput,
+  CInput
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
@@ -31,51 +31,47 @@ const SmsLists = () => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
     smsListName: "",
-    smsList: "",
+    smsList: ""
   });
   const [editedRow, setEditedRow] = useState({});
   const [activeTab, setActiveTab] = useState(0);
-  let response = useSelector((state) => state.smsReducer.response);
-  const loading = useSelector((state) => state.smsReducer.loading);
+  let response = useSelector(state => state.smsReducer.response);
+  const loading = useSelector(state => state.smsReducer.loading);
 
   useEffect(() => {
     console.log(activeTab);
     activeTab === 0 && dispatch(SmsActionsCreator.getSms());
   }, [dispatch, activeTab]);
 
-  useEffect(()=>{
-    response && setEditedRow({})
-
-  },[response])
-
+  useEffect(() => {
+    response && setEditedRow({});
+  }, [response]);
 
   const initialValues = {
-    smsListName: '',
-    smsList:  '',
+    smsListName: "",
+    smsList: ""
   };
 
-  const updateSmsData = (data) => {
+  const updateSmsData = data => {
     console.log(data);
     let tempResponse = _.cloneDeep(response);
-    let tempEditesRow = _.cloneDeep(editedRow)
-    console.log(tempEditesRow)
-    tempEditesRow.item.smsList=data.smsList
-    tempEditesRow.item.smsListName=data.smsListName
-    tempEditesRow.item.dateModified=data.dateModified
-    tempEditesRow.item.dateCreated=data.dateCreated
+    let tempEditesRow = _.cloneDeep(editedRow);
+    console.log(tempEditesRow);
+    tempEditesRow.item.smsList = data.smsList;
+    tempEditesRow.item.smsListName = data.smsListName;
+    tempEditesRow.item.dateModified = data.dateModified;
+    tempEditesRow.item.dateCreated = data.dateCreated;
     tempResponse[tempEditesRow.key] = tempEditesRow.item;
-    // data.id = tempEditesRow.item.smsAlertListId;
-    // data.dateCreated = tempEditesRow.item.dateCreated;
-    // data.dateModified = tempEditesRow.item.dateModified;
     console.log(data);
     dispatch(
-      smsActionsCreator.updateSms({ smsList: tempResponse, data: tempEditesRow.item })
+      smsActionsCreator.updateSms({
+        smsList: tempResponse,
+        data: tempEditesRow.item
+      })
     );
-    // debugger
-    // setEditedRow({});
   };
 
-  const createSms = (e) => {
+  const createSms = e => {
     e.preventDefault();
     dispatch(smsActionsCreator.postSms(formValues));
   };
@@ -88,27 +84,19 @@ const SmsLists = () => {
     );
   };
 
-  const set = (name) => {
+  const set = name => {
     return ({ target: { value } }) => {
-      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
+      setFormValues(oldValues => ({ ...oldValues, [name]: value }));
     };
   };
 
-  useEffect(()=>{
-    console.log(editedRow)
-    if(editedRow.item && editedRow.item.smsListName) {
-      initialValues.smsList = editedRow.item.smsList
-    initialValues.smsListName = editedRow.item.smsListName
-      
+  useEffect(() => {
+    console.log(editedRow);
+    if (editedRow.item && editedRow.item.smsListName) {
+      initialValues.smsList = editedRow.item.smsList;
+      initialValues.smsListName = editedRow.item.smsListName;
     }
-
-  },[editedRow])
-
-  // const setEditingRow = (data) => {
-
-  //   editedRow.item.smsList = item.smsList
-  //   editedRow.item.smsListName = item.smsListName
-  // }
+  }, [editedRow]);
 
   return (
     <>
@@ -118,10 +106,10 @@ const SmsLists = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem onClick={(e) => setActiveTab(0)}>
+                <CNavItem onClick={e => setActiveTab(0)}>
                   <CNavLink>SMS Lists</CNavLink>
                 </CNavItem>
-                <CNavItem onClick={(e) => setActiveTab(1)}>
+                <CNavItem onClick={e => setActiveTab(1)}>
                   <CNavLink>Create SMS</CNavLink>
                 </CNavItem>
               </CNav>
@@ -168,24 +156,19 @@ const SmsLists = () => {
                                     onClick={() => deleteSms(item, key)}
                                   />
                                   <EditIcon
-                                    onClick={() =>{
-                                      console.log("item",item)
-                                      setEditedRow({ item: item, key: key })
-
-                                      // setEditingRow({ item: item, key: key })
-                                      
-                                    }
-                                    }
+                                    onClick={() => {
+                                      setEditedRow({ item: item, key: key });
+                                    }}
                                   />
                                 </td>
                               </tr>
                             ) : (
                               <Formik
-                              enableReinitialize
+                                enableReinitialize
                                 validateOnChange={true}
                                 initialValues={initialValues}
                                 validationSchema={smsValidationSchema}
-                                onSubmit={(values) => {
+                                onSubmit={values => {
                                   console.log(values);
                                   updateSmsData(values);
                                 }}
@@ -196,7 +179,7 @@ const SmsLists = () => {
                                   values,
                                   errors,
                                   touched,
-                                  isValid,
+                                  isValid
                                 }) => (
                                   <SmsForm
                                     values={values}
@@ -228,7 +211,7 @@ const SmsLists = () => {
                 <CTabPane>
                   <Container component="main" maxWidth="xs">
                     <div>
-                      <form onSubmit={(data) => createSms(data)}>
+                      <form onSubmit={data => createSms(data)}>
                         <TextField
                           variant="outlined"
                           margin="normal"

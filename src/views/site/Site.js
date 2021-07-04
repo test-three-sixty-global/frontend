@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { siteValidationSchema } from "../../validationSchemas/siteValidationSchema";
 import { Formik } from "formik";
 import { SiteForm } from "../base/forms/siteForm/siteForm";
+import _ from "lodash";
 
 import {
   CCol,
@@ -28,11 +29,20 @@ import * as SiteActionCreator from "../../redux/actionsCreator/siteActionCreator
 const Site = () => {
   const dispatch = useDispatch();
 
+  const [activeTab, setActiveTab] = useState(0);
   useEffect(() => {
-    dispatch(SiteActionCreator.getSite())
-  }, [dispatch])
+    console.log(activeTab);
+    activeTab === 0 && dispatch(SiteActionCreator.getSite())
+  }, [dispatch, activeTab])
 
-  const data = useSelector(state => state.siteReducer.response);
+
+  let response = useSelector((state) => state.siteReducer.response);
+  const [formValues, setFormValues] = useState({
+    siteName: "",
+    siteUrl: "",
+    description: "",
+    siteTimeZone: "africa"
+  });
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
     firstName: "",
@@ -44,97 +54,64 @@ const Site = () => {
     dateModified: "",
     userRoles: "",
   };
-  const [array, setArray] = useState([
-    {
-      siteId: 8,
-      siteName: "SIte Three",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-06-12T20:51:40.000+00:00",
-      dateModified: "2021-06-12T20:51:40.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "America/Los_Angeles",
-      description: "",
-    },
-    {
-      siteId: 7,
-      siteName: "New Sie 74sssw",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-05-30T07:18:52.000+00:00",
-      dateModified: "2021-05-30T07:18:52.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "Pacific/Pago_Pago",
-      description: "",
-    },
-    {
-      siteId: 6,
-      siteName: "New Sie 74w",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-05-30T07:16:20.000+00:00",
-      dateModified: "2021-05-30T07:16:20.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "time",
-      description: "",
-    },
-    {
-      siteId: 5,
-      siteName: "Habib Bank",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-05-28T03:14:31.000+00:00",
-      dateModified: "2021-05-28T03:14:31.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "time",
-      description: "",
-    },
-    {
-      siteId: 2,
-      siteName: "New Sie",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-05-27T17:04:37.000+00:00",
-      dateModified: "2021-05-27T17:04:37.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "time",
-      description: "",
-    },
-    {
-      siteId: 1,
-      siteName: "Test Site",
-      siteUrl: null,
-      createdBy: null,
-      modifiedBy: null,
-      dateCreated: "2021-05-23T00:17:19.000+00:00",
-      dateModified: "2021-05-23T00:17:24.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: null,
-      description: null,
-    },
-  ]);
 
   const updateSiteData = (data) => {
-    let tempArray = [...array];
-    tempArray[editedRow.key] = data;
-    tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
-    tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
-    setArray(tempArray);
-    setEditedRow({});
+    console.log(data);
+    let tempResponse = _.cloneDeep(response);
+    let tempEditesRow = _.cloneDeep(editedRow);
+    console.log(tempEditesRow);
+    tempEditesRow.item.siteName = data.siteName;
+    tempEditesRow.item.siteUrl = data.siteUrl;
+    tempEditesRow.item.dateModified = data.dateModified;
+    tempEditesRow.item.dateCreated = data.dateCreated;
+    tempEditesRow.item.siteTimeZone = data.siteTimeZone;
+    tempResponse[tempEditesRow.key] = tempEditesRow.item;
+    console.log(data);
+    dispatch(
+      SiteActionCreator.updateSite({
+        siteList: tempResponse,
+        data: tempEditesRow.item
+      })
+    );
+  };
+  const deleteSite = (item, key) => {
+    let tempResponse = _.cloneDeep(response);
+    tempResponse.splice(key, 1);
+    dispatch(
+      SiteActionCreator.deleteSite({ siteList: tempResponse, item: item })
+    );
+  };
+  const set = name => {
+    return ({ target: { value } }) => {
+      setFormValues(oldValues => ({ ...oldValues, [name]: value }));
+    };
+  };
+  const createSite = e => {
+    e.preventDefault();
+    dispatch(SiteActionCreator.postSite(formValues));
+  };
+  const updateSmsData = data => {
+    console.log(data);
+    let tempResponse = _.cloneDeep(response);
+    let tempEditesRow = _.cloneDeep(editedRow);
+    console.log(tempEditesRow);
+    tempEditesRow.item.siteName = data.siteName;
+    tempEditesRow.item.siteUrl = data.siteUrl;
+    tempEditesRow.item.dateModified = data.dateModified;
+    tempEditesRow.item.dateCreated = data.dateCreated;
+    tempEditesRow.item.siteTimeZone = data.siteTimeZone;
+    tempResponse[tempEditesRow.key] = tempEditesRow.item;
+    console.log(data);
+    dispatch(
+      SiteActionCreator.updateSite({
+        siteList: tempResponse,
+        data: tempEditesRow.item
+      })
+    );
   };
   return (
     <>
+    {console.log(activeTab)}
       {/* <h2 style={{ paddingLeft: "15px" }}>Email Lists</h2> */}
       <CCol xs="12" md="12" className="mb-4">
         <CCard>
@@ -145,10 +122,10 @@ const Site = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem>
+                <CNavItem onClick={e => setActiveTab(0)}>
                   <CNavLink>Site</CNavLink>
                 </CNavItem>
-                <CNavItem>
+                <CNavItem onClick={e => setActiveTab(1)}>
                   <CNavLink>Create Site</CNavLink>
                 </CNavItem>
               </CNav>
@@ -181,7 +158,7 @@ const Site = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
+                      {response && activeTab === 0 && response.map((item, key) => {
                         return editedRow.key !== key ? (
 
                           <tr key={key}>
@@ -193,7 +170,7 @@ const Site = () => {
                             <td>{item.dateCreated}</td>
                             <td>{item.dateModified}</td>
                             <td>
-                              <DeleteOutlineIcon />{" "}
+                              <DeleteOutlineIcon  onClick={() => deleteSite(item, key)} />
                               <EditIcon
                                 onClick={() =>
                                   setEditedRow({ item: item, key: key })
@@ -243,7 +220,7 @@ const Site = () => {
                   {/* {`3. ${lorem}`} */}
                   <Container component="main" maxWidth="xs">
                     <div>
-                      <form>
+                      <form onSubmit={data => createSite(data)}>
                         <TextField
                           variant="outlined"
                           margin="normal"
@@ -251,8 +228,10 @@ const Site = () => {
                           fullWidth
                           // id="email"
                           label="Site Name"
-                          name="emailname"
+                          name="siteName"
                           autoFocus
+                          value={formValues.siteName}
+                          onChange={set("siteName")}
                         />
                         <TextField
                           variant="outlined"
@@ -260,6 +239,9 @@ const Site = () => {
                           required
                           fullWidth
                           label="Site URL"
+                          name="siteUrl"
+                          value={formValues.siteUrl}
+                          onChange={set("siteUrl")}
                         />
                         <TextField
                           variant="outlined"
@@ -267,6 +249,9 @@ const Site = () => {
                           required
                           fullWidth
                           label="Description"
+                          name="description"
+                          value={formValues.description}
+                          onChange={set("description")}
                         />
                         {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
                         <Button
