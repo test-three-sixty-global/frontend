@@ -98,12 +98,6 @@ const SmsLists = () => {
     }
   }, [editedRow]);
 
-  // const setEditingRow = (data) => {
-
-  //   editedRow.item.smsList = item.smsList
-  //   editedRow.item.smsListName = item.smsListName
-  // }
-
   return (
     <>
       {/* {console.log(activeTab)} */}

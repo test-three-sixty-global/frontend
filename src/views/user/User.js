@@ -26,6 +26,7 @@ import _ from "lodash";
 const Roles = () => {
   const dispatch = useDispatch();
   const response = useSelector((state) => state.userReducer.response);
+  const [activeTab, setActiveTab] = useState(0);
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -44,16 +45,12 @@ const Roles = () => {
     address: "",
     telephone: "",
   });
-  // const updateTbale = (item, key) => {
-  //   let tempData = [...array];
-  //   tempData.indexOf(tempData);
-  // };
 
   const [editedRow, setEditedRow] = useState({});
 
   useEffect(() => {
-    dispatch(userActionsCreator.getUser());
-  }, []);
+    activeTab === 0 && dispatch(userActionsCreator.getUser());
+  }, [activeTab]);
 
   const updateUserData = (data) => {
     console.log(editedRow);
@@ -99,6 +96,7 @@ const Roles = () => {
 
   const createUser = (e) => {
     e.preventDefault();
+    console.log(formValues);
     dispatch(userActionsCreator.postUser(formValues));
   };
 
@@ -125,10 +123,10 @@ const Roles = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem>
+                <CNavItem onClick={() => setActiveTab(0)}>
                   <CNavLink>Users</CNavLink>
                 </CNavItem>
-                <CNavItem>
+                <CNavItem onClick={() => setActiveTab(1)}>
                   <CNavLink>Create User</CNavLink>
                 </CNavItem>
               </CNav>
@@ -166,6 +164,7 @@ const Roles = () => {
                     </thead>
                     <tbody>
                       {response &&
+                        response?.length &&
                         response.map((item, key) => {
                           return editedRow.key !== key ? (
                             <tr key={key}>

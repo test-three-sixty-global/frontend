@@ -27,6 +27,7 @@ export const deleteUser = createAsyncThunk("user/delete", async (data = {}) => {
 });
 export const postUser = createAsyncThunk("user/post", async (data = {}) => {
   let userData = {};
+  userData.data = data;
   userData.path = apiUrl.postUser();
   userData.csrf = authHeader();
   const response = await Api.post(userData);
