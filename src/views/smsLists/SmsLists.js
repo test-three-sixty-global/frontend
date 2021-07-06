@@ -15,7 +15,8 @@ import {
   CCardBody,
   CTabs,
   CCardHeader,
-  CInput
+  CInput,
+  CAlert
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
@@ -35,8 +36,10 @@ const SmsLists = () => {
   });
   const [editedRow, setEditedRow] = useState({});
   const [activeTab, setActiveTab] = useState(0);
+  const [visible, setVisible] = React.useState(5)
   let response = useSelector(state => state.smsReducer.response);
   const loading = useSelector(state => state.smsReducer.loading);
+  const status = useSelector(state => state.emailReducer.status);
 
   useEffect(() => {
     console.log(activeTab);
@@ -211,6 +214,10 @@ const SmsLists = () => {
                 <CTabPane>
                   <Container component="main" maxWidth="xs">
                     <div>
+                    {status && status.length &&
+                      <CAlert color="success" style={{marginTop: "15px"}} show={visible} closeButton>
+                        Success
+                      </CAlert>}
                       <form onSubmit={data => createSms(data)}>
                         <TextField
                           variant="outlined"

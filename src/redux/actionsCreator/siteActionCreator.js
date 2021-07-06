@@ -33,5 +33,5 @@ export const deleteSite = createAsyncThunk("site/delete", async (data = {}) => {
   siteData.path = apiUrl.deleteSite(data.item.siteId);
   siteData.csrf = authHeader();
   const response = await Api.dell(siteData);
-  return response.data.payload.siteList;
+  return response.data;
 });

@@ -10,6 +10,7 @@ import {
   CCardBody,
   CTabs,
   CInput,
+  CAlert
 } from "@coreui/react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -17,7 +18,7 @@ import {
   TextField,
   Button,
   Container,
-  TextareaAutosize,
+  TextareaAutosize
 } from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -28,17 +29,23 @@ const EmailLists = () => {
   const [emailName, setEmailName] = useState("");
   const [emailList, setEmailList] = useState("");
   const [activeTab, setActiveTab] = useState(0);
+  const [visible, setVisible] = React.useState(5)
 
-  const response = useSelector((state) => state.emailReducer.response);
-  const loading = useSelector((state) => state.emailReducer.loading);
+  const response = useSelector(state => state.emailReducer.response);
+  const loading = useSelector(state => state.emailReducer.loading);
+  const status = useSelector(state => state.emailReducer.status);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     activeTab === 0 && dispatch(EmailActionCreator.getEmail());
   }, [dispatch, activeTab]);
+  useEffect(() => {
+      setEmailList("")
+      setEmailName("")
+  }, [status]);
 
-  const submitEmailList = (e) => {
+  const submitEmailList = e => {
     e.preventDefault();
     const data = { emailListName: emailName, emailList: emailList };
     dispatch(EmailActionCreator.postEmail(data));
@@ -114,6 +121,10 @@ const EmailLists = () => {
                 <CTabPane>
                   <Container component="main" maxWidth="xs">
                     <div>
+                      {status && status.length &&
+                      <CAlert color="success" style={{marginTop: "15px"}} show={visible} closeButton>
+                        Success
+                      </CAlert>}
                       <form onSubmit={submitEmailList}>
                         <TextField
                           variant="outlined"
@@ -123,7 +134,7 @@ const EmailLists = () => {
                           label="Email Name"
                           name="emailname"
                           autoFocus
-                          onChange={(e) => setEmailName(e.target.value)}
+                          onChange={e => setEmailName(e.target.value)}
                         />
                         <TextareaAutosize
                           rowsMax={4}
@@ -131,7 +142,7 @@ const EmailLists = () => {
                           variant="outlined"
                           style={{ width: "100%", height: "90px" }}
                           placeholder="Input Emails ; seperated"
-                          onChange={(e) => setEmailList(e.target.value)}
+                          onChange={e => setEmailList(e.target.value)}
                         />
                         <Button
                           type="submit"

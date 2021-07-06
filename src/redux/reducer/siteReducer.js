@@ -6,6 +6,7 @@ const siteSlice = createSlice({
   initialState: {
     response: null,
     loading: false,
+    status: ""
   },
   reducers: {},
   extraReducers: {
@@ -33,6 +34,7 @@ const siteSlice = createSlice({
     [siteActionCreator.postSite.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload;
+      state.status = action.payload.status
     },
     [siteActionCreator.postSite.rejected]: (state) => {
       state.loading = false;
