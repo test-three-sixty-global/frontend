@@ -29,10 +29,10 @@ const Site = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(SiteActionCreator.getSite())
-  }, [dispatch])
+    dispatch(SiteActionCreator.getSite());
+  }, [dispatch]);
 
-  const data = useSelector(state => state.siteReducer.response);
+  const data = useSelector((state) => state.siteReducer.response);
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
     firstName: "",
@@ -183,7 +183,6 @@ const Site = () => {
                     <tbody>
                       {array.map((item, key) => {
                         return editedRow.key !== key ? (
-
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
                             <td>

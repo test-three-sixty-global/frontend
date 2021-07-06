@@ -31,6 +31,7 @@ export const updateOrganization = createAsyncThunk(
     };
   }
 );
+
 export const deleteOrganization = createAsyncThunk(
   "organization/delete",
   async (data = {}) => {
@@ -47,6 +48,7 @@ export const deleteOrganization = createAsyncThunk(
     };
   }
 );
+
 export const postOrganization = createAsyncThunk(
   "organization/post",
   async (data = {}) => {

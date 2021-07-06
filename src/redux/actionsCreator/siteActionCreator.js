@@ -5,10 +5,11 @@ import { authHeader } from "../../constants/authHeader";
 
 export const getSite = createAsyncThunk("site/get", async (data = {}) => {
   let siteData = {};
+  siteData.data = data;
   siteData.path = apiUrl.getSite();
   siteData.csrf = authHeader();
-  const response = await Api.fetch(siteData);
-  return response.data.payload.siteList;
+  const response = await Api.post(siteData);
+  return response.data.payload;
 });
 export const postSite = createAsyncThunk("site/post", async (data = {}) => {
   let siteData = {};

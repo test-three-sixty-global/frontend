@@ -22,10 +22,12 @@ import { Formik } from "formik";
 import { UserForm } from "../base/forms/userForm/userForm";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
+import { Spinner } from "../widgets/ui/loader";
 
 const Roles = () => {
   const dispatch = useDispatch();
   const response = useSelector((state) => state.userReducer.response);
+  const loading = useSelector((state) => state.userReducer.loading);
   const [activeTab, setActiveTab] = useState(0);
   const initialValues = {
     firstName: "",
@@ -49,7 +51,16 @@ const Roles = () => {
   const [editedRow, setEditedRow] = useState({});
 
   useEffect(() => {
-    activeTab === 0 && dispatch(userActionsCreator.getUser());
+    if (activeTab === 0) {
+      const getUser = {
+        pageNo: 0,
+        pageSize: 20,
+        sortBy: "",
+        sortDirection: "",
+        searchParams: { email: "", lastName: "", firstName: "" },
+      };
+      dispatch(userActionsCreator.getUser(getUser));
+    }
   }, [activeTab]);
 
   const updateUserData = (data) => {
@@ -163,67 +174,77 @@ const Roles = () => {
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {response &&
-                        response?.length &&
-                        response.map((item, key) => {
-                          return editedRow.key !== key ? (
-                            <tr key={key}>
-                              <td>{item.firstName}</td>
-                              <td>{item.lastName}</td>
-                              <td>{item.email}</td>
-                              <td>{item.dateCreated}</td>
-                              <td>{item.dateModified}</td>
-                              <td>{item.address}</td>
-                              <td>{item.telephone}</td>
-                              <td>{item.userRoles}</td>
-                              <td>
-                                <DeleteOutlineIcon
-                                  onClick={() => deleteUser(item, key)}
-                                />{" "}
-                                <EditIcon
-                                  onClick={() =>
-                                    setEditedRow({ item: item, key: key })
-                                  }
-                                />
-                              </td>
-                            </tr>
-                          ) : (
-                            <Formik
-                              validateOnChange={true}
-                              initialValues={initialValues}
-                              validationSchema={userValidationSchema}
-                              onSubmit={(values) => {
-                                console.log(values);
-                                updateUserData(values);
-                              }}
-                            >
-                              {({
-                                handleSubmit,
-                                handleChange,
-                                values,
-                                errors,
-                                touched,
-                                // dirty,
-                                isValid,
-                              }) => (
-                                <UserForm
-                                  values={values}
-                                  touched={touched}
-                                  errors={errors}
-                                  // dirty={dirty}
-                                  isValid={isValid}
-                                  handleSubmit={handleSubmit}
-                                  handleChange={handleChange}
-                                  dateCreated={editedRow.item.dateCreated}
-                                  dateModified={editedRow.item.dateModified}
-                                  setEditedRow={setEditedRow}
-                                />
-                              )}
-                            </Formik>
-                          );
-                        })}
-                    </tbody>
+                    {!loading ? (
+                      <tbody>
+                        {response &&
+                          response?.length &&
+                          response.map((item, key) => {
+                            return editedRow.key !== key ? (
+                              <tr key={key}>
+                                <td>{item.firstName}</td>
+                                <td>{item.lastName}</td>
+                                <td>{item.email}</td>
+                                <td>{item.dateCreated}</td>
+                                <td>{item.dateModified}</td>
+                                <td>{item.address}</td>
+                                <td>{item.telephone}</td>
+                                <td>{item.userRoles}</td>
+                                <td>
+                                  <DeleteOutlineIcon
+                                    onClick={() => deleteUser(item, key)}
+                                  />{" "}
+                                  <EditIcon
+                                    onClick={() =>
+                                      setEditedRow({ item: item, key: key })
+                                    }
+                                  />
+                                </td>
+                              </tr>
+                            ) : (
+                              <Formik
+                                validateOnChange={true}
+                                initialValues={initialValues}
+                                validationSchema={userValidationSchema}
+                                onSubmit={(values) => {
+                                  console.log(values);
+                                  updateUserData(values);
+                                }}
+                              >
+                                {({
+                                  handleSubmit,
+                                  handleChange,
+                                  values,
+                                  errors,
+                                  touched,
+                                  // dirty,
+                                  isValid,
+                                }) => (
+                                  <UserForm
+                                    values={values}
+                                    touched={touched}
+                                    errors={errors}
+                                    // dirty={dirty}
+                                    isValid={isValid}
+                                    handleSubmit={handleSubmit}
+                                    handleChange={handleChange}
+                                    dateCreated={editedRow.item.dateCreated}
+                                    dateModified={editedRow.item.dateModified}
+                                    setEditedRow={setEditedRow}
+                                  />
+                                )}
+                              </Formik>
+                            );
+                          })}
+                      </tbody>
+                    ) : (
+                      !editedRow.key && (
+                        <tr>
+                          <td colSpan="5">
+                            <Spinner />
+                          </td>
+                        </tr>
+                      )
+                    )}
                   </table>
                 </CTabPane>
                 <CTabPane>

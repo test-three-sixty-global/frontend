@@ -40,7 +40,17 @@ const SmsLists = () => {
 
   useEffect(() => {
     console.log(activeTab);
-    activeTab === 0 && dispatch(SmsActionsCreator.getSms());
+    if (activeTab === 0) {
+      const getSms = {
+        pageNo: 0,
+        pageSize: 20,
+        sortBy: "",
+        sortDirection: "",
+        searchParams: { smsListName: "" },
+      };
+
+      dispatch(SmsActionsCreator.getSms(getSms));
+    }
   }, [dispatch, activeTab]);
 
   useEffect(() => {
