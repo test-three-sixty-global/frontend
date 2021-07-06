@@ -17,10 +17,14 @@ export const updateOrganization = createAsyncThunk(
   "organization/update",
   async (data = {}) => {
     let organizationData = {};
-    organizationData.data = data;
-    organizationData.path = apiUrl.updateOrganization(data.id);
+    organizationData.data = {
+      organizationName: data.data.organizationName,
+      adminUserEmail: data.data.adminUserEmail,
+    };
+    organizationData.path = apiUrl.updateOrganization(data.data.organizationId);
     organizationData.csrf = authHeader();
     const response = await Api.put(organizationData);
+    debugger;
     return {
       response: response.data.payload.organizationList,
       organizationList: data.organizationList,
@@ -31,9 +35,12 @@ export const deleteOrganization = createAsyncThunk(
   "organization/delete",
   async (data = {}) => {
     let organizationData = {};
-    organizationData.path = apiUrl.updateOrganization(data.data.organizationId);
+    console.log(data);
+    organizationData.path = apiUrl.deleteOrganization(data.item.organizationId);
     organizationData.csrf = authHeader();
+    debugger;
     const response = await Api.dell(organizationData);
+    debugger;
     return {
       response: response.data.payload.organizationList,
       organizationList: data.organizationList,
@@ -43,6 +50,8 @@ export const deleteOrganization = createAsyncThunk(
 export const postOrganization = createAsyncThunk(
   "organization/post",
   async (data = {}) => {
+    console.log(data);
+
     let organizationData = {};
     organizationData.data = data;
     organizationData.path = apiUrl.getOrganization();

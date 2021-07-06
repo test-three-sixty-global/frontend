@@ -16,6 +16,7 @@ import {
   CInput,
 } from "@coreui/react";
 import _ from "lodash";
+import axios from "axios";
 
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -26,12 +27,13 @@ import * as OrganizationActionCreator from "../../redux/actionsCreator/organizat
 
 const Organization = () => {
   const dispatch = useDispatch();
+  const response = useSelector((state) => state.organizationReducer.response);
+
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
-    dispatch(OrganizationActionCreator.getOrganization());
-  }, [dispatch]);
-
-  const response = useSelector((state) => state.organizationReducer.response);
+    activeTab === 0 && dispatch(OrganizationActionCreator.getOrganization());
+  }, [dispatch, activeTab]);
 
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
@@ -40,42 +42,117 @@ const Organization = () => {
     dateModified: "",
   };
   const [formValues, setFormValues] = useState({
-    organizationName: "",
-    userEmail: "",
-    organizationLogo: "",
+    organizationName: null,
+    userEmail: null,
+    organizationLogo: [],
   });
-  const [array, setArray] = useState([
-    {
-      organizationId: 1,
-      organizationName: "this is org",
-      dateCreated: "2021-06-08T14:34:58.000+00:00",
-      imageUrl: null,
-      adminUserEmail: null,
-      multipartFile: null,
-    },
-  ]);
+  const [file, setFile] = useState([]);
 
   const updateOrganizationData = (data) => {
-    console.log(data);
-    let tempResponse = _.cloneDeep(response);
-    let tempEditesRow = _.cloneDeep(editedRow);
-    tempEditesRow.item.organizationName = data.smsListName;
-    tempEditesRow.item.organizationLogo = "";
-    tempEditesRow.item.dateCreated = data.dateCreated;
-    tempEditesRow.item.dateModified = data.dateModified;
-    tempResponse[tempEditesRow.key] = tempEditesRow.item;
-    dispatch(
-      OrganizationActionCreator.updateOrganization({
-        organizationList: tempResponse,
-        data: tempEditesRow.item,
-      })
+    // console.log(data);
+    // console.log(editedRow);
+    // let tempResponse = _.cloneDeep(response);
+    // let tempEditesRow = _.cloneDeep(editedRow);
+    let newData = {};
+    newData.organizationName = data.organizationName;
+    // newData.organizationLogo = "ajgs";
+    // newData.organizationId = tempEditesRow.item.organizationId;
+    newData.adminUserEmail = "sds@gmail.com";
+
+    // tempEditesRow.item.organizationName = data.organizationName;
+    // tempEditesRow.item.organizationLogo = "sdsd";
+    // tempEditesRow.item.imageUrl = "sds";
+    // tempEditesRow.item.adminUserEmail = "sds@gmail.com";
+    // console.log(tempEditesRow);
+    // tempResponse[tempEditesRow.key] = newData;
+
+    // dispatch(
+    //   OrganizationActionCreator.updateOrganization({
+    //     organizationList: tempResponse,
+    //     data: newData,
+    //   })
+    // );
+    // setEditedRow({});
+
+    let formData = new FormData();
+    formData.append(
+      "organization",
+      new Blob(
+        [
+          JSON.stringify({
+            organizationName: newData.organizationName,
+            adminUserEmail: "gggdss@xssss.xom",
+          }),
+        ],
+        {
+          type: "application/json",
+        }
+      )
     );
-    setEditedRow({});
+    const headers = {
+      // "Content-Type": "multipart/formdata",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb25JZCI6MSwic3ViIjoiaGFtbWFkLnp1YmFpckBnbWFpbC5jb20iLCJleHAiOjE2MjM2NDQ5ODYsInVzZXJJZCI6MSwiaWF0IjoxNjIzNjQ0Njg2fQ.qbfZKSJHKoTteZsdricBtcqGVj8PLxMXWIv6gUmMucs",
+    };
+
+    axios
+      .put(
+        "http://ec2-18-116-115-34.us-east-2.compute.amazonaws.com:7080/api/v1/organizations",
+        formData,
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {});
   };
 
   const createOrganization = (e) => {
     e.preventDefault();
-    dispatch(OrganizationActionCreator.postOrganization(formValues));
+    let formData = new FormData();
+
+    formData.append(
+      "organization",
+      new Blob(
+        [
+          JSON.stringify({
+            organizationName: formValues.organizationName,
+            adminUserEmail: "gggdss@xssss.xom",
+          }),
+        ],
+        {
+          type: "application/json",
+        }
+      )
+    );
+
+    const headers = {
+      "Content-Type": undefined,
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb25JZCI6MSwic3ViIjoiaGFtbWFkLnp1YmFpckBnbWFpbC5jb20iLCJleHAiOjE2MjM2NDQ5ODYsInVzZXJJZCI6MSwiaWF0IjoxNjIzNjQ0Njg2fQ.qbfZKSJHKoTteZsdricBtcqGVj8PLxMXWIv6gUmMucs",
+    };
+
+    axios
+      .post(
+        "http://ec2-18-116-115-34.us-east-2.compute.amazonaws.com:7080/api/v1/organizations",
+        formData,
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {});
+
+    // e.preventDefault();
+    // formValues.userEmail = formValues.userEmail.replace("\t", "");
+    // console.log(formValues);
+    // console.log(formData);
+
+    // dispatch(OrganizationActionCreator.postOrganization(formData));
   };
   const set = (name) => {
     return ({ target: { value } }) => {
@@ -85,12 +162,18 @@ const Organization = () => {
   const deleteOrganization = (item, key) => {
     let tempResponse = _.cloneDeep(response);
     tempResponse.splice(key, 1);
+    debugger;
     dispatch(
       OrganizationActionCreator.deleteOrganization({
         organizationList: tempResponse,
         item: item,
       })
     );
+  };
+
+  const imageHandler = (e) => {
+    console.log(e.target.files[0]);
+    setFile(e.target.files[0]);
   };
 
   return (
@@ -104,10 +187,10 @@ const Organization = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem>
+                <CNavItem onClick={() => setActiveTab(0)}>
                   <CNavLink>Organization</CNavLink>
                 </CNavItem>
-                <CNavItem>
+                <CNavItem onClick={() => setActiveTab(1)}>
                   <CNavLink>Create Organization</CNavLink>
                 </CNavItem>
               </CNav>
@@ -139,62 +222,64 @@ const Organization = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
-                        return editedRow.key !== key ? (
-                          <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
-                            <td>
-                              <a href="/organization">
-                                {item.organizationName}
-                              </a>
-                            </td>
-                            <td>{item.dateCreated}</td>
-                            <td>
-                              <DeleteOutlineIcon
-                                onClick={() => deleteOrganization(item, key)}
-                              />
-                              <EditIcon
-                                onClick={() =>
-                                  setEditedRow({ item: item, key: key })
-                                }
-                              />
-                            </td>
-                          </tr>
-                        ) : (
-                          <Formik
-                            validateOnChange={true}
-                            initialValues={initialValues}
-                            validationSchema={organizationValidationSchema}
-                            onSubmit={(values) => {
-                              console.log(values);
-                              updateOrganizationData(values);
-                            }}
-                          >
-                            {({
-                              handleSubmit,
-                              handleChange,
-                              values,
-                              errors,
-                              touched,
-                              // dirty,
-                              isValid,
-                            }) => (
-                              <OrganizationForm
-                                values={values}
-                                touched={touched}
-                                errors={errors}
-                                // dirty={dirty}
-                                isValid={isValid}
-                                handleSubmit={handleSubmit}
-                                handleChange={handleChange}
-                                dateCreated={editedRow.item.dateCreated}
-                                dateModified={editedRow.item.dateModified}
-                                setEditedRow={setEditedRow}
-                              />
-                            )}
-                          </Formik>
-                        );
-                      })}
+                      {response &&
+                        response?.length &&
+                        response.map((item, key) => {
+                          return editedRow.key !== key ? (
+                            <tr key={key}>
+                              {/* {console.log(item.emailListName)} */}
+                              <td>
+                                <a href="/organization">
+                                  {item.organizationName}
+                                </a>
+                              </td>
+                              <td>{item.dateCreated}</td>
+                              <td>
+                                <DeleteOutlineIcon
+                                  onClick={() => deleteOrganization(item, key)}
+                                />
+                                <EditIcon
+                                  onClick={() =>
+                                    setEditedRow({ item: item, key: key })
+                                  }
+                                />
+                              </td>
+                            </tr>
+                          ) : (
+                            <Formik
+                              validateOnChange={true}
+                              initialValues={initialValues}
+                              validationSchema={organizationValidationSchema}
+                              onSubmit={(values) => {
+                                console.log(values);
+                                updateOrganizationData(values);
+                              }}
+                            >
+                              {({
+                                handleSubmit,
+                                handleChange,
+                                values,
+                                errors,
+                                touched,
+                                // dirty,
+                                isValid,
+                              }) => (
+                                <OrganizationForm
+                                  values={values}
+                                  touched={touched}
+                                  errors={errors}
+                                  // dirty={dirty}
+                                  isValid={isValid}
+                                  handleSubmit={handleSubmit}
+                                  handleChange={handleChange}
+                                  dateCreated={editedRow.item.dateCreated}
+                                  dateModified={editedRow.item.dateModified}
+                                  setEditedRow={setEditedRow}
+                                />
+                              )}
+                            </Formik>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </CTabPane>
@@ -229,7 +314,7 @@ const Organization = () => {
                         <input
                           type="file"
                           style={{ marginTop: "10px", marginBottom: "10px" }}
-                          value=""
+                          onChange={imageHandler}
                         />
                         <Button
                           type="submit"

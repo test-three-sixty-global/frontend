@@ -54,6 +54,7 @@ const Roles = () => {
 
   const updateUserData = (data) => {
     console.log(editedRow);
+    console.log(editedRow);
     console.log(data);
     let tempResponse = _.cloneDeep(response);
     let tempEditesRow = _.cloneDeep(editedRow);
