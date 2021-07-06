@@ -10,7 +10,7 @@ export const getOrganization = createAsyncThunk(
     organizationData.path = apiUrl.getOrganization();
     organizationData.csrf = authHeader();
     const response = await Api.fetch(organizationData);
-    return response.data.payload.organizationList;
+    return response.data.payload;
   }
 );
 export const updateOrganization = createAsyncThunk(

@@ -222,64 +222,70 @@ const Organization = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {response &&
-                        response?.length &&
-                        response.map((item, key) => {
-                          return editedRow.key !== key ? (
-                            <tr key={key}>
-                              {/* {console.log(item.emailListName)} */}
-                              <td>
-                                <a href="/organization">
-                                  {item.organizationName}
-                                </a>
-                              </td>
-                              <td>{item.dateCreated}</td>
-                              <td>
-                                <DeleteOutlineIcon
-                                  onClick={() => deleteOrganization(item, key)}
-                                />
-                                <EditIcon
-                                  onClick={() =>
-                                    setEditedRow({ item: item, key: key })
-                                  }
-                                />
-                              </td>
-                            </tr>
-                          ) : (
-                            <Formik
-                              validateOnChange={true}
-                              initialValues={initialValues}
-                              validationSchema={organizationValidationSchema}
-                              onSubmit={(values) => {
-                                console.log(values);
-                                updateOrganizationData(values);
-                              }}
-                            >
-                              {({
-                                handleSubmit,
-                                handleChange,
-                                values,
-                                errors,
-                                touched,
-                                // dirty,
-                                isValid,
-                              }) => (
-                                <OrganizationForm
-                                  values={values}
-                                  touched={touched}
-                                  errors={errors}
-                                  // dirty={dirty}
-                                  isValid={isValid}
-                                  handleSubmit={handleSubmit}
-                                  handleChange={handleChange}
-                                  dateCreated={editedRow.item.dateCreated}
-                                  dateModified={editedRow.item.dateModified}
-                                  setEditedRow={setEditedRow}
-                                />
-                              )}
-                            </Formik>
-                          );
-                        })}
+                      {
+                        response && (
+                          // response?.length &&
+                          // response.map((item, key) => {
+                          // editedRow.key !== key ? (
+                          <tr
+                          // key={key}
+                          >
+                            {/* {console.log(item.emailListName)} */}
+                            <td>
+                              <a href="/organization">
+                                {response.organizationName}
+                              </a>
+                            </td>
+                            <td>{response.dateCreated}</td>
+                            <td>
+                              {/* <DeleteOutlineIcon
+                                onClick={() => deleteOrganization(item, key)}
+                              />
+                              <EditIcon
+                                onClick={() =>
+                                  setEditedRow({ item: item, key: key })
+                                }
+                              /> */}
+                            </td>
+                          </tr>
+                        )
+                        // )
+                        // : (
+                        //   <Formik
+                        //     validateOnChange={true}
+                        //     initialValues={initialValues}
+                        //     validationSchema={organizationValidationSchema}
+                        //     onSubmit={(values) => {
+                        //       console.log(values);
+                        //       updateOrganizationData(values);
+                        //     }}
+                        //   >
+                        //     {({
+                        //       handleSubmit,
+                        //       handleChange,
+                        //       values,
+                        //       errors,
+                        //       touched,
+                        //       // dirty,
+                        //       isValid,
+                        //     }) => (
+                        //       <OrganizationForm
+                        //         values={values}
+                        //         touched={touched}
+                        //         errors={errors}
+                        //         // dirty={dirty}
+                        //         isValid={isValid}
+                        //         handleSubmit={handleSubmit}
+                        //         handleChange={handleChange}
+                        //         dateCreated={editedRow.item.dateCreated}
+                        //         dateModified={editedRow.item.dateModified}
+                        //         setEditedRow={setEditedRow}
+                        //       />
+                        //     )}
+                        //   </Formik>
+                        // )
+                        // })
+                      }
                     </tbody>
                   </table>
                 </CTabPane>
