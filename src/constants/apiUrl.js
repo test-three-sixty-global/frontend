@@ -1,6 +1,6 @@
 export const apiUrl = {
   login: () => "/users/login",
-  getEmail: () => "/emaillist",
+  getEmail: () => "/emaillist/paginated",
   postEmail: () => "/emaillist",
   getOrganization: () => "/organizations/user",
   postOrganization: () => "/organizations",

@@ -35,7 +35,17 @@ const EmailLists = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    activeTab === 0 && dispatch(EmailActionCreator.getEmail());
+    if (activeTab === 0) {
+      const getEmail = {
+        pageNo: 0,
+        pageSize: 20,
+        sortBy: "",
+        sortDirection: "",
+        searchParams: { emailListName: "" },
+      };
+
+      dispatch(EmailActionCreator.getEmail(getEmail));
+    }
   }, [dispatch, activeTab]);
 
   const submitEmailList = (e) => {
