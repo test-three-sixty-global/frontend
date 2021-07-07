@@ -81,7 +81,17 @@ const EmailLists = () => {
     );
   };
 
-  const deleteEmail = () => {};
+  const deleteEmail = (item, key) => {
+    let tempResponse = _.cloneDeep(response);
+    console.log(item);
+    tempResponse.splice(key, 1);
+    dispatch(
+      EmailActionCreator.deleteEmail({
+        emailList: tempResponse,
+        id: item.emailListId,
+      })
+    );
+  };
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
