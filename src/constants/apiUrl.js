@@ -20,4 +20,8 @@ export const apiUrl = {
   updateSms: (id) => `/smsalertlist/${id}`,
   deleteSms: (id) => `/smsalertlist/${id}`,
   getRole: () => "/role",
+  getGroupInitialData: () => "groups/initial/data",
+  postGroup: () => "groups",
+  postGroupList: () => "groups/paginated",
+  updateGroup: (id) => `groups/${id}`
 };
