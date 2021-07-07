@@ -21,4 +21,5 @@ export const apiUrl = {
   deleteSms: (id) => `/smsalertlist/${id}`,
   getRole: () => "/role",
   deleteEmail: (id) => `/emaillist/${id}`,
+  updateEmail: (id) => `/emaillist/${id}`,
 };

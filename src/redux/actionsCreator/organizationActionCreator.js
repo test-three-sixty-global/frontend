@@ -24,7 +24,6 @@ export const updateOrganization = createAsyncThunk(
     organizationData.path = apiUrl.updateOrganization(data.data.organizationId);
     organizationData.csrf = authHeader();
     const response = await Api.put(organizationData);
-    debugger;
     return {
       response: response.data.payload.organizationList,
       organizationList: data.organizationList,
@@ -39,9 +38,7 @@ export const deleteOrganization = createAsyncThunk(
     console.log(data);
     organizationData.path = apiUrl.deleteOrganization(data.item.organizationId);
     organizationData.csrf = authHeader();
-    debugger;
     const response = await Api.dell(organizationData);
-    debugger;
     return {
       response: response.data.payload.organizationList,
       organizationList: data.organizationList,

@@ -62,13 +62,21 @@ const EmailLists = () => {
     dispatch(EmailActionCreator.postEmail(data));
   };
 
+  useEffect(() => {
+    console.log(editedRow);
+    if (editedRow.item && editedRow.item.emailListName) {
+      initialValues.emailList = editedRow.item.emailList;
+      initialValues.emailListName = editedRow.item.emailListName;
+    }
+  }, [editedRow]);
+
   const updateEmailData = (data) => {
     console.log(data);
     let tempResponse = _.cloneDeep(response);
     let tempEditesRow = _.cloneDeep(editedRow);
     console.log(tempEditesRow);
-    tempEditesRow.item.smsList = data.emailList;
-    tempEditesRow.item.smsListName = data.emailListName;
+    tempEditesRow.item.emailList = data.emailList;
+    tempEditesRow.item.emailListName = data.emailListName;
     tempEditesRow.item.dateModified = data.dateModified;
     tempEditesRow.item.dateCreated = data.dateCreated;
     tempResponse[tempEditesRow.key] = tempEditesRow.item;

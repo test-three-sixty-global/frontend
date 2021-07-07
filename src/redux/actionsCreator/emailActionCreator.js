@@ -24,11 +24,11 @@ export const updateEmail = createAsyncThunk(
   "email/update",
   async (data = {}) => {
     let emailData = {};
-    emailData.path = apiUrl.postEmail();
-    emailData.data = data;
+    emailData.path = apiUrl.updateEmail(data.data.emailListId);
+    emailData.data = data.data;
     emailData.csrf = authHeader();
-    const response = await Api.post(emailData);
-    return response.data.payload;
+    const response = await Api.put(emailData);
+    return { response: response.data.payload, emailList: data.emailList };
   }
 );
 export const deleteEmail = createAsyncThunk(

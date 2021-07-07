@@ -42,16 +42,13 @@ const organizationSlice = createSlice({
     // updateOrganization
 
     [organizationActionCreator.updateOrganization.pending]: (state) => {
-      debugger;
       state.loading = true;
       state.response = null;
-      debugger;
     },
     [organizationActionCreator.updateOrganization.fulfilled]: (
       state,
       action
     ) => {
-      debugger;
       console.log(action.payload.organizationList);
       state.loading = false;
       state.response = action.payload.organizationList;

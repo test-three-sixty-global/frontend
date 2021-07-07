@@ -63,6 +63,19 @@ const Roles = () => {
     }
   }, [activeTab]);
 
+  useEffect(() => {
+    console.log(editedRow);
+
+    if (editedRow.item && editedRow.item.firstName) {
+      initialValues.firstName = editedRow.item.firstName;
+      initialValues.lastName = editedRow.item.lastName;
+      initialValues.email = editedRow.item.email;
+      initialValues.address = editedRow.item.address;
+      initialValues.telephone = editedRow.item.telephone;
+      initialValues.userRoles = editedRow.item.userRoles;
+    }
+  }, [editedRow]);
+
   const updateUserData = (data) => {
     console.log(editedRow);
     console.log(editedRow);
@@ -72,13 +85,13 @@ const Roles = () => {
     console.log(tempEditesRow);
     tempEditesRow.item.firstName = data.firstName;
     tempEditesRow.item.lastName = data.lastName;
-    tempEditesRow.item.email = data.email;
     tempEditesRow.item.telephone = data.telephone;
     tempEditesRow.item.address = data.address;
+    tempEditesRow.item.email = data.email;
     tempEditesRow.item.userRoles = [
       {
-        userRoleId: 10,
-        roleId: 6,
+        userRoleId: "",
+        roleId: "",
       },
     ];
     tempResponse[tempEditesRow.key] = tempEditesRow.item;
@@ -188,7 +201,7 @@ const Roles = () => {
                                 <td>{item.dateModified}</td>
                                 <td>{item.address}</td>
                                 <td>{item.telephone}</td>
-                                <td>{item.userRoles}</td>
+                                <td>Role</td>
                                 <td>
                                   <DeleteOutlineIcon
                                     onClick={() => deleteUser(item, key)}
@@ -204,6 +217,7 @@ const Roles = () => {
                               <Formik
                                 validateOnChange={true}
                                 initialValues={initialValues}
+                                enableReinitialize
                                 validationSchema={userValidationSchema}
                                 onSubmit={(values) => {
                                   console.log(values);

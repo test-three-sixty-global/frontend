@@ -42,15 +42,29 @@ const authSlice = createSlice({
     // delete
     [emailActionCreator.deleteEmail.pending]: (state) => {
       state.loading = true;
-      state.postResponse = null;
+      state.response = null;
     },
-    [emailActionCreator.postEmail.fulfilled]: (state, action) => {
+    [emailActionCreator.deleteEmail.fulfilled]: (state, action) => {
       state.loading = false;
-      state.postResponse = action.payload;
+      state.response = action.payload.emailList;
     },
-    [emailActionCreator.postEmail.rejected]: (state) => {
+    [emailActionCreator.deleteEmail.rejected]: (state) => {
       state.loading = false;
-      state.postResponse = null;
+      state.response = null;
+    },
+
+    // update
+    [emailActionCreator.updateEmail.pending]: (state) => {
+      state.loading = true;
+      state.response = null;
+    },
+    [emailActionCreator.updateEmail.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.response = action.payload.emailList;
+    },
+    [emailActionCreator.updateEmail.rejected]: (state) => {
+      state.loading = false;
+      state.response = null;
     },
   },
 });

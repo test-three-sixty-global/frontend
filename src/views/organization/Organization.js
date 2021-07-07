@@ -162,7 +162,6 @@ const Organization = () => {
   const deleteOrganization = (item, key) => {
     let tempResponse = _.cloneDeep(response);
     tempResponse.splice(key, 1);
-    debugger;
     dispatch(
       OrganizationActionCreator.deleteOrganization({
         organizationList: tempResponse,
