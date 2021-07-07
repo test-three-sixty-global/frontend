@@ -7,7 +7,7 @@ export const apiUrl = {
   updateOrganization: (id) => `/organizations/${id}`,
   deleteOrganization: (id) => `/organizations/${id}`,
   uploadOrganizationFile: (id) => `/uploadFile`,
-  getSite: () => "/sites",
+  getSite: () => "/sites/paginated",
   postSite: () => `/sites`,
   updateSite: (id) => `/sites/${id}`,
   deleteSite: (id) => `/sites/${id}`,
@@ -20,4 +20,5 @@ export const apiUrl = {
   updateSms: (id) => `/smsalertlist/${id}`,
   deleteSms: (id) => `/smsalertlist/${id}`,
   getRole: () => "/role",
+  getsiteInitialData: () => `/sites/initial/data`,
 };
