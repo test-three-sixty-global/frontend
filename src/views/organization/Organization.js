@@ -1,6 +1,7 @@
 import React, { lazy, useState, useEffect } from "react";
 import { organizationValidationSchema } from "../../validationSchemas/organizationValidationSchema";
 import { Formik } from "formik";
+import noImg from "../../assets/images/noImg.jpg";
 import {
   CCol,
   CNav,
@@ -24,10 +25,13 @@ import { TextField, Container, Button } from "@material-ui/core";
 import { OrganizationForm } from "../base/forms/organizationForm/organizationForm";
 import { useDispatch, useSelector } from "react-redux";
 import * as OrganizationActionCreator from "../../redux/actionsCreator/organizationActionCreator";
+import { Label } from "reactstrap";
+import { Spinner } from "../widgets/ui/loader";
 
 const Organization = () => {
   const dispatch = useDispatch();
   const response = useSelector((state) => state.organizationReducer.response);
+  const loading = useSelector((state) => state.organizationReducer.loading);
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -177,168 +181,38 @@ const Organization = () => {
 
   return (
     <>
-      <CCol xs="12" md="12" className="mb-4">
-        <CCard>
-          {/* <CCardHeader>
-            Index indentifiers
-            <DocsLink name="CTabs"/>
-          </CCardHeader> */}
-          <CCardBody>
-            <CTabs>
-              <CNav variant="tabs">
-                <CNavItem onClick={() => setActiveTab(0)}>
-                  <CNavLink>Organization</CNavLink>
-                </CNavItem>
-                <CNavItem onClick={() => setActiveTab(1)}>
-                  <CNavLink>Create Organization</CNavLink>
-                </CNavItem>
-              </CNav>
-
-              <CTabContent>
-                <CTabPane>
-                  {/* <CCardHeader> */}
-
-                  <div className="float-right search-box">
-                    <CCol sm="12">
-                      <CInput
-                        size="sm"
-                        type="email"
-                        id="nf-email"
-                        name="nf-email"
-                        placeholder="Search"
-                        // autoComplete="email"
-                      />
-                    </CCol>
-                  </div>
-
-                  {/* </CCardHeader> */}
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Organization Name</th>
-                        <th>Date Created</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        response && (
-                          // response?.length &&
-                          // response.map((item, key) => {
-                          // editedRow.key !== key ? (
-                          <tr
-                          // key={key}
-                          >
-                            {/* {console.log(item.emailListName)} */}
-                            <td>
-                              <a href="/organization">
-                                {response.organizationName}
-                              </a>
-                            </td>
-                            <td>{response.dateCreated}</td>
-                            <td>
-                              {/* <DeleteOutlineIcon
-                                onClick={() => deleteOrganization(item, key)}
-                              />
-                              <EditIcon
-                                onClick={() =>
-                                  setEditedRow({ item: item, key: key })
-                                }
-                              /> */}
-                            </td>
-                          </tr>
-                        )
-                        // )
-                        // : (
-                        //   <Formik
-                        //     validateOnChange={true}
-                        //     initialValues={initialValues}
-                        //     validationSchema={organizationValidationSchema}
-                        //     onSubmit={(values) => {
-                        //       console.log(values);
-                        //       updateOrganizationData(values);
-                        //     }}
-                        //   >
-                        //     {({
-                        //       handleSubmit,
-                        //       handleChange,
-                        //       values,
-                        //       errors,
-                        //       touched,
-                        //       // dirty,
-                        //       isValid,
-                        //     }) => (
-                        //       <OrganizationForm
-                        //         values={values}
-                        //         touched={touched}
-                        //         errors={errors}
-                        //         // dirty={dirty}
-                        //         isValid={isValid}
-                        //         handleSubmit={handleSubmit}
-                        //         handleChange={handleChange}
-                        //         dateCreated={editedRow.item.dateCreated}
-                        //         dateModified={editedRow.item.dateModified}
-                        //         setEditedRow={setEditedRow}
-                        //       />
-                        //     )}
-                        //   </Formik>
-                        // )
-                        // })
-                      }
-                    </tbody>
-                  </table>
-                </CTabPane>
-                <CTabPane>
-                  {/* {`3. ${lorem}`} */}
-                  <Container component="main" maxWidth="xs">
-                    <div>
-                      <form onSubmit={(data) => createOrganization(data)}>
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          // id="email"
-                          label="organization Name"
-                          name="organizationName"
-                          value={formValues.organizationName}
-                          onChange={set("organizationName")}
-                          autoFocus
-                        />
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          label="Admin User Email"
-                          name="userEmail"
-                          value={formValues.userEmail}
-                          onChange={set("userEmail")}
-                        />
-                        <label>Logo: &nbsp;</label>
-                        <input
-                          type="file"
-                          style={{ marginTop: "10px", marginBottom: "10px" }}
-                          onChange={imageHandler}
-                        />
-                        <Button
-                          type="submit"
-                          fullWidth
-                          variant="contained"
-                          color="primary"
-                          // className={classes.submit}
-                        >
-                          Submit
-                        </Button>
-                      </form>
-                    </div>
-                  </Container>
-                </CTabPane>
-              </CTabContent>
-            </CTabs>
-          </CCardBody>
-        </CCard>
-      </CCol>
+      {!loading ? (
+        <CCol xs="4" md="4" className="mb-4 mt-5 pt-5 mx-auto text-center">
+          <CCard
+            style={{
+              boxShadow:
+                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+            }}
+          >
+            <CCardHeader>Organization</CCardHeader>
+            <div className="d-inline ml-auto">
+              <EditIcon className="d-inline ml-auto m-3 text-info" />
+            </div>
+            <CCardBody className="p-3 pb-0 mb-3">
+              <img
+                width="175px"
+                height="175px"
+                className=" rounded-circle d-block mx-auto"
+                src={
+                  response?.organizationLogo ? response.organizationLogo : noImg
+                }
+              />
+              <Label className="pt-2 text-center ">
+                <span style={{ fontWeight: "bold", fontSize: "35px" }}>
+                  {response?.organizationName.toUpperCase()}
+                </span>
+              </Label>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      ) : (
+        <Spinner height="120" width="120" />
+      )}
     </>
   );
 };
