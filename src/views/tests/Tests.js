@@ -12,9 +12,9 @@ import {
   CTabs,
   CCardHeader,
   CLabel,
-  CSelect
+  CSelect,
 } from "@coreui/react";
-import { Container, TextField, Button } from "@material-ui/core";
+import { Container, TextField, Button, Modal } from "@material-ui/core";
 import CIcon from "@coreui/icons-react";
 import { DocsLink } from "src/reusable";
 
@@ -29,7 +29,9 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import * as TestActionCreator from "../../redux/actionsCreator/testActionCreator";
 import * as GroupActionCreator from "../../redux/actionsCreator/groupActionCreator";
 import { Spinner } from "../widgets/ui/loader";
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import { ModalBody } from "reactstrap";
+import { CroneLists } from "../crone/crone";
 
 const Tests = () => {
   const dispatch = useDispatch();
@@ -48,106 +50,113 @@ const Tests = () => {
       pageSize: 20,
       sortBy: "",
       sortDirection: "",
-      searchParams: { testName: "" }
+      searchParams: { testName: "" },
     };
     activeTab === 0 && dispatch(TestActionCreator.postTestList(data));
-    activeTab === 2 && dispatch(GroupActionCreator.getGroupInitialData())
+    activeTab === 2 && dispatch(GroupActionCreator.getGroupInitialData());
     // activeTab === 3 ||
     //   (activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData()));
     // activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
   }, [activeTab]);
 
-  let response = useSelector(state => state.groupReducer.response);
-  let responsePost = useSelector(state => state.testReducer.responsePost);
-  let responseCreate = useSelector(state => state.testReducer.responseCreate);
-  const loading = useSelector(state => state.groupReducer.loading);
+  let response = useSelector((state) => state.groupReducer.response);
+  let responsePost = useSelector((state) => state.testReducer.responsePost);
+  let responseCreate = useSelector((state) => state.testReducer.responseCreate);
+  const loading = useSelector((state) => state.groupReducer.loading);
+  const [crone, setCrone] = useState(false);
 
-const createTest = (e) => {
-  e.preventDefault();
-  dispatch(TestActionCreator.postTest(formValues));
-}
-
-const set = name => {
-  return ({ target: { value } }) => {
-    setFormValues(oldValues => ({ ...oldValues, [name]: value }));
+  const createTest = (e) => {
+    e.preventDefault();
+    dispatch(TestActionCreator.postTest(formValues));
   };
-};
 
-const updateExec = (value, id) => {
-  console.log(value, id)
-  let data = {
-    data: {executionType: value},
-    id: id
-  }
-  dispatch(TestActionCreator.updateTestExec(data));
-}
+  const set = (name) => {
+    return ({ target: { value } }) => {
+      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
+    };
+  };
 
-const updateScreenshot = (value, id) => {
-  console.log(value, id)
-  let data = {
-    data: {screenShotOption: value},
-    id: id
-  }
-  dispatch(TestActionCreator.updateTestScreenshot(data));
-}
+  const updateExec = (value, id) => {
+    console.log(value, id);
+    let data = {
+      data: { executionType: value },
+      id: id,
+    };
+    dispatch(TestActionCreator.updateTestExec(data));
+  };
+
+  const updateScreenshot = (value, id) => {
+    console.log(value, id);
+    let data = {
+      data: { screenShotOption: value },
+      id: id,
+    };
+    dispatch(TestActionCreator.updateTestScreenshot(data));
+  };
   const [testSteps, setTestSteps] = useState([
     {
       steps: "open | https://www.tonerprice.com/ | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "click | link=Log in | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "type | id=email | jayantar@test.net",
-      override: "type | id=email | abcdde@test.net"
+      override: "type | id=email | abcdde@test.net",
     },
     {
       steps: "click | id=pass | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "type | id=pass | 123456",
-      override: "type | id=pass | abcdefg"
+      override: "type | id=pass | abcdefg",
     },
     {
       steps: "click | //button[@id='send2']/span/span | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "click | //p/strong | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "click | //p/strong | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "verifyText | //p/strong | Hello, Jayantar Roy!",
-      override: "-"
-    }
+      override: "-",
+    },
   ]);
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
+        <Modal open={crone} onClose={() => setCrone(false)}>
+          <ModalBody>
+            <CroneLists />
+          </ModalBody>
+        </Modal>
         <CCard>
           {/* <CCardHeader>
             Index indentifiers
             <DocsLink name="CTabs"/>
           </CCardHeader> */}
+
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem onClick={e => setActiveTab(0)}>
+                <CNavItem onClick={(e) => setActiveTab(0)}>
                   <CNavLink style={{ fontWeight: "bolder" }}>Test</CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(1)}>
+                <CNavItem onClick={(e) => setActiveTab(1)}>
                   <CNavLink style={{ fontWeight: "bolder" }}>
                     Tests Steps
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(2)}>
+                <CNavItem onClick={(e) => setActiveTab(2)}>
                   <CNavLink style={{ fontWeight: "bolder" }}>
                     Create Test
                   </CNavLink>
@@ -168,66 +177,80 @@ const updateScreenshot = (value, id) => {
                     </thead>
                     <tbody>
                       {console.log(responsePost)}
-                      {responsePost && responsePost.map((item, key) => {
-                        return (
-                          <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
-                            <td>
-                              <a href="/tests">{item.testName}</a>
-                            </td>
-                            <td>{item.emailListName}</td>
-                            {/* <td>{item.emailListName}</td> */}
-                            <td>
-                              {item.dateModified}
-                            </td>
-                            <td>
-                              <AccessTimeIcon />
-                            </td>
-                            
-                            <td style={{ width: "55%" }}>
-                              <div className="row">
-                                <div className="col-md-3">
-                                  <CSelect
-                                    custom
-                                    size="sm"
-                                    name="selectScrshot"
-                                    id="SelectLm"
-                                    onChange={(e) => updateScreenshot(e.target.value, item.testCaseId)}
-                                  >
-                                    <option value="0">Scr Shot</option>
-                                    <option value="fail">Fail</option>
-                                    <option value="eachstep">Each step</option>
-                                    <option value="never">Never</option>
-                                  </CSelect>
+                      {responsePost &&
+                        responsePost.map((item, key) => {
+                          return (
+                            <tr key={key}>
+                              {/* {console.log(item.emailListName)} */}
+                              <td>
+                                <a href="/tests">{item.testName}</a>
+                              </td>
+                              <td>{item.emailListName}</td>
+                              {/* <td>{item.emailListName}</td> */}
+                              <td>{item.dateModified}</td>
+                              <td onClick={() => setCrone(true)}>
+                                <AccessTimeIcon />
+                              </td>
+
+                              <td style={{ width: "55%" }}>
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <CSelect
+                                      custom
+                                      size="sm"
+                                      name="selectScrshot"
+                                      id="SelectLm"
+                                      onChange={(e) =>
+                                        updateScreenshot(
+                                          e.target.value,
+                                          item.testCaseId
+                                        )
+                                      }
+                                    >
+                                      <option value="0">Scr Shot</option>
+                                      <option value="fail">Fail</option>
+                                      <option value="eachstep">
+                                        Each step
+                                      </option>
+                                      <option value="never">Never</option>
+                                    </CSelect>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <CSelect
+                                      custom
+                                      size="sm"
+                                      name="selectScrshot"
+                                      id="SelectLm"
+                                      onChange={(e) =>
+                                        updateExec(
+                                          e.target.value,
+                                          item.testCaseId
+                                        )
+                                      }
+                                    >
+                                      <option value="0">Exec mode</option>
+                                      <option value="none">None</option>
+                                      <option value="sequential">
+                                        Sequential
+                                      </option>
+                                      <option value="concurrent">
+                                        Concurrent
+                                      </option>
+                                    </CSelect>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <PlayArrowIcon style={{ color: "green" }} />{" "}
+                                    &nbsp;&nbsp;
+                                    <EditIcon /> &nbsp;
+                                    <DeleteOutlineIcon
+                                      style={{ color: "red" }}
+                                    />
+                                  </div>
                                 </div>
-                                <div className="col-md-3">
-                                  <CSelect
-                                    custom
-                                    size="sm"
-                                    name="selectScrshot"
-                                    id="SelectLm"
-                                    onChange={(e) => updateExec(e.target.value, item.testCaseId)}
-                                  >
-                                    <option value="0">Exec mode</option>
-                                    <option value="none">None</option>
-                                    <option value="sequential">
-                                      Sequential
-                                    </option>
-                                    <option value="concurrent">
-                                      Concurrent
-                                    </option>
-                                  </CSelect>
-                                </div>
-                                <div className="col-md-2">
-                                 <PlayArrowIcon style={{color: "green"}}/> &nbsp;&nbsp;
-                                 <EditIcon /> &nbsp;
-                                 <DeleteOutlineIcon style={{color: "red"}} /> 
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </CTabPane>
@@ -252,12 +275,12 @@ const updateScreenshot = (value, id) => {
                   </table>
                 </CTabPane>
                 <CTabPane>
-                <Container component="main" maxWidth="xs">
+                  <Container component="main" maxWidth="xs">
                     <div>
                       {/* {console.log("response",response)} */}
                       {!loading ? (
                         response && (
-                          <form onSubmit={data => createTest(data)}>
+                          <form onSubmit={(data) => createTest(data)}>
                             <TextField
                               variant="outlined"
                               margin="normal"
@@ -279,7 +302,7 @@ const updateScreenshot = (value, id) => {
                                 onChange={set("emailAddressListId")}
                               >
                                 <option value="0">Please select email</option>
-                                {response.emailList.map(item => {
+                                {response.emailList.map((item) => {
                                   return (
                                     <option value={item.emailListId}>
                                       {item.emailListName}
@@ -297,7 +320,7 @@ const updateScreenshot = (value, id) => {
                                 onChange={set("smsAlertListId")}
                               >
                                 <option value="0">Please select sms</option>
-                                {response.smsList.map(item => {
+                                {response.smsList.map((item) => {
                                   return (
                                     <option value={item.smsAlertListId}>
                                       {item.smsListName}

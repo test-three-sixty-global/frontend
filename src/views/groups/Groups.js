@@ -25,7 +25,7 @@ import { Container, TextField, Button, Modal } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "../widgets/ui/loader";
 import * as GroupActionCreator from "../../redux/actionsCreator/groupActionCreator";
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import { SettingsCellRounded } from "@material-ui/icons";
 import { CroneLists } from "../crone/crone";
 import { ModalBody } from "reactstrap";
@@ -67,12 +67,11 @@ const Groups = () => {
     activeTab === 1 && dispatch(GroupActionCreator.getAllTestCases());
   }, [activeTab]);
 
-  let response = useSelector(state => state.groupReducer.response);
-  let responsePost = useSelector(state => state.groupReducer.responsePost);
-  const loading = useSelector(state => state.groupReducer.loading);
+  let response = useSelector((state) => state.groupReducer.response);
+  let responsePost = useSelector((state) => state.groupReducer.responsePost);
+  const loading = useSelector((state) => state.groupReducer.loading);
 
-  const createGroup = e => {
-
+  const createGroup = (e) => {
     e.preventDefault();
     dispatch(GroupActionCreator.postGroup(formValues));
   };
@@ -82,12 +81,11 @@ const Groups = () => {
       siteGroupName: formValues.siteGroupName,
       emailAddressListId: formValues.emailAddressListId,
       smsAlertListId: formValues.smsAlertListId,
-      siteId: formValues.siteId
+      siteId: formValues.siteId,
     };
     let data = {
       formValues: form,
-      id: updateId
-
+      id: updateId,
     };
     dispatch(GroupActionCreator.updateGroup(data));
   };
@@ -99,35 +97,32 @@ const Groups = () => {
   };
 
   const updateScreenshot = (value, id) => {
-    console.log(value, id)
+    console.log(value, id);
     let data = {
-      data: {screenShotOption: value},
-      id: id
-    }
+      data: { screenShotOption: value },
+      id: id,
+    };
     dispatch(GroupActionCreator.updateGroupScreenshot(data));
-
-  }
+  };
   const updateExec = (value, id) => {
-    console.log(value, id)
+    console.log(value, id);
     let data = {
-      data: {executionType: value},
-      id: id
-    }
+      data: { executionType: value },
+      id: id,
+    };
     dispatch(GroupActionCreator.updateGroupExec(data));
-
-  }
-  const updateFrequency= (value, id) => {
-    console.log(value, id)
-    if(value){
-      setFrequency()
+  };
+  const updateFrequency = (value, id) => {
+    console.log(value, id);
+    if (value) {
+      setFrequency();
       let data = {
-        data: {frequency: value},
-        id: id
-      }
+        data: { frequency: value },
+        id: id,
+      };
       dispatch(GroupActionCreator.updateGroupFrequency(data));
     }
-
-  }
+  };
   const [array, setArray] = useState([
     {
       emailListId: 2,
@@ -219,12 +214,7 @@ const Groups = () => {
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
-        <Modal
-          open={crone}
-          xs="6"
-          onClose={() => setCrone(false)}
-          style={{ widows: "50%" }}
-        >
+        <Modal open={crone} onClose={() => setCrone(false)}>
           <ModalBody>
             <CroneLists />
           </ModalBody>
@@ -233,8 +223,7 @@ const Groups = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem onClick={e => setActiveTab(0)}>
-
+                <CNavItem onClick={(e) => setActiveTab(0)}>
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 0}
@@ -242,17 +231,15 @@ const Groups = () => {
                     Groups
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(1)}>
+                <CNavItem onClick={(e) => setActiveTab(1)}>
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 1}
-
                   >
                     Test
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(2)}>
-
+                <CNavItem onClick={(e) => setActiveTab(2)}>
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 2}
@@ -260,8 +247,7 @@ const Groups = () => {
                     Tests Steps
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(3)}>
-
+                <CNavItem onClick={(e) => setActiveTab(3)}>
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 3}
@@ -270,8 +256,7 @@ const Groups = () => {
                   </CNavLink>
                 </CNavItem>
                 <CNavItem
-                  onClick={e => setActiveTab(4)}
-
+                  onClick={(e) => setActiveTab(4)}
                   style={{ display: style }}
                 >
                   <CNavLink
@@ -308,11 +293,11 @@ const Groups = () => {
                                 <a href="/groups">View</a>
                               </td>
                               <td>{item.dateModified}</td>
-                              <td>
+                              <td onClick={() => setCrone(true)}>
                                 <AccessTimeIcon />
                               </td>
                               {/* <td>{item.dateModified}</td> */}
-                              <td style={{width: "55%"}}>
+                              <td style={{ width: "55%" }}>
                                 <div className="row">
                                   <div className="col-md-2">
                                     <CSelect
@@ -320,11 +305,18 @@ const Groups = () => {
                                       size="sm"
                                       name="selectScrshot"
                                       id="SelectLm"
-                                      onChange={(e) => updateScreenshot(e.target.value, item.siteGroupId)}
+                                      onChange={(e) =>
+                                        updateScreenshot(
+                                          e.target.value,
+                                          item.siteGroupId
+                                        )
+                                      }
                                     >
                                       <option value="0">Scr Shot</option>
                                       <option value="fail">Fail</option>
-                                      <option value="eachstep">Each step</option>
+                                      <option value="eachstep">
+                                        Each step
+                                      </option>
                                       <option value="never">Never</option>
                                     </CSelect>
                                   </div>
@@ -334,22 +326,41 @@ const Groups = () => {
                                       size="sm"
                                       name="selectScrshot"
                                       id="SelectLm"
-                                      onChange={(e) => updateExec(e.target.value, item.siteGroupId)}
+                                      onChange={(e) =>
+                                        updateExec(
+                                          e.target.value,
+                                          item.siteGroupId
+                                        )
+                                      }
                                       // onChange={set("emailAddressListId")}
                                     >
                                       <option value="0">Exec mode</option>
                                       <option value="none">None</option>
-                                      <option value="sequential">Sequential</option>
-                                      <option value="concurrent">Concurrent</option>
+                                      <option value="sequential">
+                                        Sequential
+                                      </option>
+                                      <option value="concurrent">
+                                        Concurrent
+                                      </option>
                                     </CSelect>
                                   </div>
                                   <div className="col-md-1">
-                                   <input style={{width: "100%"}} 
-                                          type="number" value={frequency} 
-                                          onChange={(e) => updateFrequency(e.target.value, item.siteGroupId, key)} />
+                                    <input
+                                      style={{ width: "100%" }}
+                                      type="number"
+                                      value={frequency}
+                                      onChange={(e) =>
+                                        updateFrequency(
+                                          e.target.value,
+                                          item.siteGroupId,
+                                          key
+                                        )
+                                      }
+                                    />
                                   </div>
                                   <div className="col-md-2">
-                                  <PlayArrowIcon style={{color: "green"}} />{" "} &nbsp;&nbsp;
+                                    <PlayArrowIcon style={{ color: "green" }} />{" "}
+                                    &nbsp;&nbsp;
                                     <EditIcon
                                       onClick={() => {
                                         setStyle("block");
@@ -358,11 +369,13 @@ const Groups = () => {
                                         setUpdateId(item.siteGroupId);
                                         setFormValues(item);
                                       }}
-                                    />{" "}&nbsp;
-                                    <DeleteOutlineIcon style={{color: "red"}}/>{" "}
+                                    />{" "}
+                                    &nbsp;
+                                    <DeleteOutlineIcon
+                                      style={{ color: "red" }}
+                                    />{" "}
                                   </div>
                                 </div>
-
                               </td>
                             </tr>
                           );
@@ -520,8 +533,7 @@ const Groups = () => {
                       {/* {console.log("response",response)} */}
                       {!loading ? (
                         response && (
-                          <form onSubmit={data => editGroup(data)}>
-
+                          <form onSubmit={(data) => editGroup(data)}>
                             {console.log(item)}
                             <TextField
                               variant="outlined"
@@ -550,8 +562,7 @@ const Groups = () => {
                                 <option value={item.emailAddressListId}>
                                   {item.emailListName}
                                 </option>
-                                {response.emailList.map(item => {
-
+                                {response.emailList.map((item) => {
                                   return (
                                     <option value={item.emailListId}>
                                       {item.emailListName}
@@ -571,8 +582,7 @@ const Groups = () => {
                                 <option value={item.smsAlertListId}>
                                   {item.smsListName}
                                 </option>
-                                {response.smsList.map(item => {
-
+                                {response.smsList.map((item) => {
                                   return (
                                     <option value={item.smsAlertListId}>
                                       {item.smsListName}
@@ -592,8 +602,7 @@ const Groups = () => {
                                 <option value={item.siteId}>
                                   {item.siteName}
                                 </option>
-                                {response.siteList.map(item => {
-
+                                {response.siteList.map((item) => {
                                   return (
                                     <option value={item.siteId}>
                                       {item.siteName}
@@ -627,8 +636,7 @@ const Groups = () => {
                                   siteGroupName: "",
                                   emailAddressListId: 0,
                                   smsAlertListId: 0,
-                                  siteId: 0
-
+                                  siteId: 0,
                                 });
                               }}
                             >
