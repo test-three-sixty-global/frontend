@@ -27,4 +27,8 @@ export const apiUrl = {
   getsiteInitialData: () => `/sites/initial/data`,
   deleteEmail: (id) => `/emaillist/${id}`,
   updateEmail: (id) => `/emaillist/${id}`,
+  getGroupTestCases: (id) => `/groups/${id}/testcases`,
+  getGroupTestStep: (id) => `/groups/${id}/testcasesteps`,
+  getallTestCases: () => `/testcases`,
+  getAllTestSteps: () => ``,
 };
