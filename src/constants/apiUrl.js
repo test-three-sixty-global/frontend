@@ -20,6 +20,7 @@ export const apiUrl = {
   updateSms: (id) => `/smsalertlist/${id}`,
   deleteSms: (id) => `/smsalertlist/${id}`,
   getRole: () => "/role",
+  getsiteInitialData: () => `/sites/initial/data`,
   deleteEmail: (id) => `/emaillist/${id}`,
   updateEmail: (id) => `/emaillist/${id}`,
 };

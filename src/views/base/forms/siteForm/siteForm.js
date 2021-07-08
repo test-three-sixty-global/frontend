@@ -2,6 +2,7 @@ import React from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import { FormGroup, Form, Input, InputGroup } from "reactstrap";
+import { CSelect } from "@coreui/react";
 export const SiteForm = (props) => {
   return (
     // <Form role="form" onSubmit={props.handleSubmit}>
@@ -23,6 +24,34 @@ export const SiteForm = (props) => {
               id="siteName"
             ></Input>
           </InputGroup>
+        </FormGroup>
+      </td>
+      <td>
+        <FormGroup
+          className={
+            props.errors.siteTimeZone ? "mb-3 border border-danger" : "mb-3"
+          }
+        >
+          <CSelect
+            custom
+            size="lg"
+            name="siteTimeZone"
+            id="siteTimeZone"
+            onChange={props.handleChange}
+            value={props.values.siteTimeZone}
+            required
+          >
+            <option>Please select timezone</option>
+            {props.siteInitialData &&
+              props.siteInitialData.timeZones.length &&
+              props.siteInitialData.timeZones.map((item, key) => {
+                return (
+                  <option value={item.split("^")[0]} key={key}>
+                    {item}
+                  </option>
+                );
+              })}
+          </CSelect>
         </FormGroup>
       </td>
       <td>

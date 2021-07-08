@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { siteValidationSchema } from "../../validationSchemas/siteValidationSchema";
 import { Formik } from "formik";
 import { SiteForm } from "../base/forms/siteForm/siteForm";
+import _ from "lodash";
 
 import {
   CCol,
@@ -17,6 +18,7 @@ import {
   CCardHeader,
   CInput,
   CButton,
+  CSelect,
 } from "@coreui/react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -24,117 +26,94 @@ import { TextField, Button, Container } from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as SiteActionCreator from "../../redux/actionsCreator/siteActionCreator";
+import { Spinner } from "../widgets/ui/loader";
 
 const Site = () => {
   const dispatch = useDispatch();
 
+  const [activeTab, setActiveTab] = useState(0);
   useEffect(() => {
-    dispatch(SiteActionCreator.getSite());
-  }, [dispatch]);
+    console.log(activeTab);
+    dispatch(SiteActionCreator.getSiteInitialData());
+    if (activeTab === 0) {
+      const getSite = {
+        pageNo: 0,
+        pageSize: 20,
+        sortBy: "",
+        sortDirection: "",
+        searchParams: { siteName: "" },
+      };
+      dispatch(SiteActionCreator.getSite(getSite));
+    } else {
+      // dispatch(SiteActionCreator.getSiteInitialData());
+    }
+  }, [dispatch, activeTab]);
 
-  const data = useSelector((state) => state.siteReducer.response);
+  const response = useSelector((state) => state.siteReducer.response);
+  const loading = useSelector((state) => state.siteReducer.loading);
+  const siteInitialData = useSelector(
+    (state) => state.siteReducer.siteInitialData
+  );
+  const [formValues, setFormValues] = useState({
+    siteName: "",
+    siteUrl: "",
+    description: "",
+    siteTimeZone: "",
+  });
+
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    address: "",
-    telephone: "",
-    dateCreated: "",
-    dateModified: "",
-    userRoles: "",
+    siteName: "",
+    siteTimeZone: "",
   };
-  const [array, setArray] = useState([
-    {
-      siteId: 8,
-      siteName: "SIte Three",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-06-12T20:51:40.000+00:00",
-      dateModified: "2021-06-12T20:51:40.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "America/Los_Angeles",
-      description: "",
-    },
-    {
-      siteId: 7,
-      siteName: "New Sie 74sssw",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-05-30T07:18:52.000+00:00",
-      dateModified: "2021-05-30T07:18:52.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "Pacific/Pago_Pago",
-      description: "",
-    },
-    {
-      siteId: 6,
-      siteName: "New Sie 74w",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-05-30T07:16:20.000+00:00",
-      dateModified: "2021-05-30T07:16:20.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "time",
-      description: "",
-    },
-    {
-      siteId: 5,
-      siteName: "Habib Bank",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-05-28T03:14:31.000+00:00",
-      dateModified: "2021-05-28T03:14:31.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "time",
-      description: "",
-    },
-    {
-      siteId: 2,
-      siteName: "New Sie",
-      siteUrl: "",
-      createdBy: 1,
-      modifiedBy: 1,
-      dateCreated: "2021-05-27T17:04:37.000+00:00",
-      dateModified: "2021-05-27T17:04:37.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: "time",
-      description: "",
-    },
-    {
-      siteId: 1,
-      siteName: "Test Site",
-      siteUrl: null,
-      createdBy: null,
-      modifiedBy: null,
-      dateCreated: "2021-05-23T00:17:19.000+00:00",
-      dateModified: "2021-05-23T00:17:24.000+00:00",
-      deleted: false,
-      organizationId: 1,
-      siteTimeZone: null,
-      description: null,
-    },
-  ]);
+
+  useEffect(() => {
+    console.log(editedRow);
+    if (editedRow.item && editedRow.item.siteName) {
+      initialValues.siteName = editedRow.item.siteName;
+      initialValues.siteTimeZone = editedRow.item.siteTimeZone;
+    }
+  }, [editedRow]);
 
   const updateSiteData = (data) => {
-    let tempArray = [...array];
-    tempArray[editedRow.key] = data;
-    tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
-    tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
-    setArray(tempArray);
+    console.log(data);
+    let tempResponse = _.cloneDeep(response);
+    let tempEditesRow = _.cloneDeep(editedRow);
+    console.log(tempEditesRow);
+    tempEditesRow.item.siteName = data.siteName;
+    tempEditesRow.item.dateModified = data.dateModified;
+    tempEditesRow.item.dateCreated = data.dateCreated;
+    tempEditesRow.item.siteTimeZone = data.siteTimeZone;
+    tempResponse[tempEditesRow.key] = tempEditesRow.item;
+    console.log(data);
+    dispatch(
+      SiteActionCreator.updateSite({
+        siteList: tempResponse,
+        data: tempEditesRow.item,
+      })
+    );
+
     setEditedRow({});
+  };
+  const deleteSite = (item, key) => {
+    let tempResponse = _.cloneDeep(response);
+    tempResponse.splice(key, 1);
+    dispatch(
+      SiteActionCreator.deleteSite({ siteList: tempResponse, item: item })
+    );
+  };
+  const set = (name) => {
+    return ({ target: { value } }) => {
+      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
+    };
+  };
+  const createSite = (e) => {
+    e.preventDefault();
+    dispatch(SiteActionCreator.postSite(formValues));
   };
   return (
     <>
+      {console.log(activeTab)}
       {/* <h2 style={{ paddingLeft: "15px" }}>Email Lists</h2> */}
       <CCol xs="12" md="12" className="mb-4">
         <CCard>
@@ -145,10 +124,10 @@ const Site = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem>
+                <CNavItem onClick={(e) => setActiveTab(0)}>
                   <CNavLink>Site</CNavLink>
                 </CNavItem>
-                <CNavItem>
+                <CNavItem onClick={(e) => setActiveTab(1)}>
                   <CNavLink>Create Site</CNavLink>
                 </CNavItem>
               </CNav>
@@ -174,112 +153,160 @@ const Site = () => {
                     <thead>
                       <tr>
                         <th>Site Name</th>
-                        {/* <th>Email Lists</th> */}
+                        <th>Time Zone</th>
                         <th>Date Created</th>
                         <th>Date Modified</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {array.map((item, key) => {
-                        return editedRow.key !== key ? (
-                          <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
-                            <td>
-                              <a href="/site">{item.siteName}</a>
-                            </td>
-                            {/* <td>{item.emailList}</td> */}
-                            <td>{item.dateCreated}</td>
-                            <td>{item.dateModified}</td>
-                            <td>
-                              <DeleteOutlineIcon />{" "}
-                              <EditIcon
-                                onClick={() =>
-                                  setEditedRow({ item: item, key: key })
-                                }
-                              />
-                            </td>
-                          </tr>
-                        ) : (
-                          <Formik
-                            validateOnChange={true}
-                            initialValues={initialValues}
-                            validationSchema={siteValidationSchema}
-                            onSubmit={(values) => {
-                              console.log(values);
-                              updateSiteData(values);
-                            }}
-                          >
-                            {({
-                              handleSubmit,
-                              handleChange,
-                              values,
-                              errors,
-                              touched,
-                              // dirty,
-                              isValid,
-                            }) => (
-                              <SiteForm
-                                values={values}
-                                touched={touched}
-                                errors={errors}
-                                // dirty={dirty}
-                                isValid={isValid}
-                                handleSubmit={handleSubmit}
-                                handleChange={handleChange}
-                                dateCreated={editedRow.item.dateCreated}
-                                dateModified={editedRow.item.dateModified}
-                                setEditedRow={setEditedRow}
-                              />
-                            )}
-                          </Formik>
-                        );
-                      })}
-                    </tbody>
+                    {!loading ? (
+                      <tbody>
+                        {response &&
+                          response.length &&
+                          activeTab === 0 &&
+                          response.map((item, key) => {
+                            return editedRow.key !== key ? (
+                              <tr key={key}>
+                                {/* {console.log(item.emailListName)} */}
+                                <td>
+                                  <a href="/site">{item.siteName}</a>
+                                </td>
+                                <td>{item.siteTimeZone}</td>
+                                <td>{item.dateCreated}</td>
+                                <td>{item.dateModified}</td>
+                                <td>
+                                  <DeleteOutlineIcon
+                                    onClick={() => deleteSite(item, key)}
+                                  />
+                                  <EditIcon
+                                    onClick={() =>
+                                      setEditedRow({ item: item, key: key })
+                                    }
+                                  />
+                                </td>
+                              </tr>
+                            ) : (
+                              <Formik
+                                enableReinitialize
+                                validateOnChange={true}
+                                initialValues={initialValues}
+                                validationSchema={siteValidationSchema}
+                                onSubmit={(values) => {
+                                  console.log(values);
+                                  updateSiteData(values);
+                                }}
+                              >
+                                {({
+                                  handleSubmit,
+                                  handleChange,
+                                  values,
+                                  errors,
+                                  touched,
+                                  // dirty,
+                                  isValid,
+                                }) => (
+                                  <SiteForm
+                                    values={values}
+                                    touched={touched}
+                                    errors={errors}
+                                    // dirty={dirty}
+                                    isValid={isValid}
+                                    handleSubmit={handleSubmit}
+                                    handleChange={handleChange}
+                                    dateCreated={editedRow.item.dateCreated}
+                                    dateModified={editedRow.item.dateModified}
+                                    setEditedRow={setEditedRow}
+                                    siteInitialData={siteInitialData}
+                                  />
+                                )}
+                              </Formik>
+                            );
+                          })}
+                      </tbody>
+                    ) : (
+                      <div className="text-center pt-5 mt-5">
+                        <Spinner height="100" width="100" />
+                      </div>
+                    )}
+              
                   </table>
                 </CTabPane>
                 <CTabPane>
-                  {/* {`3. ${lorem}`} */}
-                  <Container component="main" maxWidth="xs">
-                    <div>
-                      <form>
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          // id="email"
-                          label="Site Name"
-                          name="emailname"
-                          autoFocus
-                        />
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          label="Site URL"
-                        />
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          label="Description"
-                        />
-                        {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
-                        <Button
-                          type="submit"
-                          fullWidth
-                          variant="contained"
-                          color="primary"
-                          // className={classes.submit}
-                        >
-                          Submit
-                        </Button>
-                      </form>
+                  {!loading ? (
+                    <Container component="main" maxWidth="xs">
+                      <div>
+                        <form onSubmit={(data) => createSite(data)}>
+                          <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            // id="email"
+                            label="Site Name"
+                            name="siteName"
+                            autoFocus
+                            value={formValues.siteName}
+                            onChange={set("siteName")}
+                          />
+                          <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            label="Site URL"
+                            name="siteUrl"
+                            value={formValues.siteUrl}
+                            onChange={set("siteUrl")}
+                          />
+                          {console.log(siteInitialData)}
+                          <CSelect
+                            custom
+                            size="lg"
+                            name="siteTimeZone"
+                            id="siteTimeZone"
+                            onChange={set(`siteTimeZone`)}
+                            value={formValues.siteTimeZone}
+                            required
+                          >
+                            <option>Please select timezone</option>
+                            {siteInitialData &&
+                              siteInitialData.timeZones.length &&
+                              siteInitialData.timeZones.map((item, key) => {
+                                return (
+                                  <option value={item.split("^")[0]} key={key}>
+                                    {item}
+                                  </option>
+                                );
+                              })}
+                          </CSelect>
+                          <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            label="Description"
+                            name="description"
+                            value={formValues.description}
+                            onChange={set("description")}
+                          />
+                          {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
+                          <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            // className={classes.submit}
+                          >
+                            Submit
+                          </Button>
+                        </form>
+                      </div>
+                    </Container>
+                  ) : (
+                    <div className="text-center pt-5 mt-5">
+                      <Spinner height="100" width="100" />
                     </div>
-                  </Container>
+                  )}
                 </CTabPane>
               </CTabContent>
             </CTabs>

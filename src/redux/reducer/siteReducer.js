@@ -6,6 +6,8 @@ const siteSlice = createSlice({
   initialState: {
     response: null,
     loading: false,
+    status: "",
+    siteInitialData: null,
   },
   reducers: {},
   extraReducers: {
@@ -47,7 +49,7 @@ const siteSlice = createSlice({
     },
     [siteActionCreator.updateSite.fulfilled]: (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.response = action.payload.siteList;
     },
     [siteActionCreator.updateSite.rejected]: (state) => {
       state.loading = false;
@@ -62,11 +64,26 @@ const siteSlice = createSlice({
     },
     [siteActionCreator.deleteSite.fulfilled]: (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.response = action.payload.siteList;
     },
     [siteActionCreator.deleteSite.rejected]: (state) => {
       state.loading = false;
       state.response = null;
+    },
+
+    // get siteInitialData
+
+    [siteActionCreator.getSiteInitialData.pending]: (state) => {
+      state.loading = true;
+      state.siteInitialData = null;
+    },
+    [siteActionCreator.getSiteInitialData.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.siteInitialData = action.payload.payload;
+    },
+    [siteActionCreator.getSiteInitialData.rejected]: (state) => {
+      state.loading = false;
+      state.siteInitialData = null;
     },
   },
 });

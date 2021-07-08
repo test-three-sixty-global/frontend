@@ -18,6 +18,7 @@ export const postEmail = createAsyncThunk("email/post", async (data = {}) => {
   emailData.data = data;
   emailData.csrf = authHeader();
   const response = await Api.post(emailData);
+
   return response.data.payload;
 });
 export const updateEmail = createAsyncThunk(

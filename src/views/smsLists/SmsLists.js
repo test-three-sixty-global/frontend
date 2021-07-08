@@ -16,6 +16,7 @@ import {
   CTabs,
   CCardHeader,
   CInput,
+  CAlert
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
@@ -31,15 +32,18 @@ const SmsLists = () => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
     smsListName: "",
-    smsList: "",
+    smsList: ""
   });
   const [editedRow, setEditedRow] = useState({});
   const [activeTab, setActiveTab] = useState(0);
-  let response = useSelector((state) => state.smsReducer.response);
-  const loading = useSelector((state) => state.smsReducer.loading);
+  const [visible, setVisible] = React.useState(5)
+  let response = useSelector(state => state.smsReducer.response);
+  const loading = useSelector(state => state.smsReducer.loading);
+  const status = useSelector(state => state.emailReducer.status);
 
   useEffect(() => {
     console.log(activeTab);
+
     if (activeTab === 0) {
       const getSms = {
         pageNo: 0,
@@ -59,10 +63,11 @@ const SmsLists = () => {
 
   const initialValues = {
     smsListName: "",
-    smsList: "",
+    smsList: ""
+
   };
 
-  const updateSmsData = (data) => {
+  const updateSmsData = data => {
     console.log(data);
     let tempResponse = _.cloneDeep(response);
     let tempEditesRow = _.cloneDeep(editedRow);
@@ -76,12 +81,13 @@ const SmsLists = () => {
     dispatch(
       smsActionsCreator.updateSms({
         smsList: tempResponse,
-        data: tempEditesRow.item,
+        data: tempEditesRow.item
+
       })
     );
   };
 
-  const createSms = (e) => {
+  const createSms = e => {
     e.preventDefault();
     dispatch(smsActionsCreator.postSms(formValues));
   };
@@ -94,9 +100,9 @@ const SmsLists = () => {
     );
   };
 
-  const set = (name) => {
+  const set = name => {
     return ({ target: { value } }) => {
-      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
+      setFormValues(oldValues => ({ ...oldValues, [name]: value }));
     };
   };
 
@@ -116,10 +122,10 @@ const SmsLists = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem onClick={(e) => setActiveTab(0)}>
+                <CNavItem onClick={e => setActiveTab(0)}>
                   <CNavLink>SMS Lists</CNavLink>
                 </CNavItem>
-                <CNavItem onClick={(e) => setActiveTab(1)}>
+                <CNavItem onClick={e => setActiveTab(1)}>
                   <CNavLink>Create SMS</CNavLink>
                 </CNavItem>
               </CNav>
@@ -167,10 +173,9 @@ const SmsLists = () => {
                                   />
                                   <EditIcon
                                     onClick={() => {
+
                                       console.log("item", item);
                                       setEditedRow({ item: item, key: key });
-
-                                      // setEditingRow({ item: item, key: key })
                                     }}
                                   />
                                 </td>
@@ -181,7 +186,7 @@ const SmsLists = () => {
                                 validateOnChange={true}
                                 initialValues={initialValues}
                                 validationSchema={smsValidationSchema}
-                                onSubmit={(values) => {
+                                onSubmit={values => {
                                   console.log(values);
                                   updateSmsData(values);
                                 }}
@@ -192,7 +197,7 @@ const SmsLists = () => {
                                   values,
                                   errors,
                                   touched,
-                                  isValid,
+                                  isValid
                                 }) => (
                                   <SmsForm
                                     values={values}
@@ -224,7 +229,11 @@ const SmsLists = () => {
                 <CTabPane>
                   <Container component="main" maxWidth="xs">
                     <div>
-                      <form onSubmit={(data) => createSms(data)}>
+                    {status && status.length &&
+                      <CAlert color="success" style={{marginTop: "15px"}} show={visible} closeButton>
+                        Success
+                      </CAlert>}
+                      <form onSubmit={data => createSms(data)}>
                         <TextField
                           variant="outlined"
                           margin="normal"

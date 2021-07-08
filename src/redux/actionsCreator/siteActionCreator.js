@@ -17,20 +17,34 @@ export const postSite = createAsyncThunk("site/post", async (data = {}) => {
   siteData.path = apiUrl.postSite();
   siteData.csrf = authHeader();
   const response = await Api.post(siteData);
-  return response.data.payload.siteList;
+  return response.data.payload;
 });
 export const updateSite = createAsyncThunk("site/update", async (data = {}) => {
+  console.log(data);
   let siteData = {};
-  siteData.data = data;
-  siteData.path = apiUrl.updateSite(data.id);
+  siteData.data = data.data;
+  siteData.path = apiUrl.updateSite(data.data.siteId);
   siteData.csrf = authHeader();
   const response = await Api.put(siteData);
-  return response.data.payload.siteList;
+  return { response: response.data, siteList: data.siteList };
 });
 export const deleteSite = createAsyncThunk("site/delete", async (data = {}) => {
   let siteData = {};
-  siteData.path = apiUrl.deleteSite(data.id);
+  console.log(data);
+  siteData.path = apiUrl.deleteSite(data.item.siteId);
   siteData.csrf = authHeader();
   const response = await Api.dell(siteData);
-  return response.data.payload.siteList;
+  return { response: response.data, siteList: data.siteList };
 });
+
+export const getSiteInitialData = createAsyncThunk(
+  "site/getSiteInitialData",
+  async (data = {}) => {
+    let siteData = {};
+    console.log(data);
+    siteData.path = apiUrl.getsiteInitialData();
+    siteData.csrf = authHeader();
+    const response = await Api.fetch(siteData);
+    return response.data;
+  }
+);
