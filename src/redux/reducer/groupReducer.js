@@ -7,7 +7,8 @@ const groupSlice = createSlice({
     response: null,
     loading: false,
     status: "",
-    responsePost: null
+    responsePost: null,
+    updateResponse: null
   },
   reducers: {},
   extraReducers: {
@@ -69,6 +70,52 @@ const groupSlice = createSlice({
       [groupActionCreator.updateGroup.rejected]: (state) => {
         state.loading = false;
         state.responsePost = null;
+      },
+    // updateGroupScreenshot
+    [groupActionCreator.updateGroupScreenshot.pending]: (state) => {
+        state.loading = true;
+        state.updateResponse = null;
+      },
+      [groupActionCreator.updateGroupScreenshot.fulfilled]: (state, action) => {
+        state.loading = false;
+        state.updateResponse = action.payload;
+        // state.status = action.payload.status
+      },
+      [groupActionCreator.updateGroupScreenshot.rejected]: (state) => {
+        state.loading = false;
+        state.updateResponse = null;
+      },
+
+
+    // updateGroupExec
+    [groupActionCreator.updateGroupExec.pending]: (state) => {
+        state.loading = true;
+        state.updateResponse = null;
+      },
+      [groupActionCreator.updateGroupExec.fulfilled]: (state, action) => {
+        state.loading = false;
+        state.updateResponse = action.payload;
+        // state.status = action.payload.status
+      },
+      [groupActionCreator.updateGroupExec.rejected]: (state) => {
+        state.loading = false;
+        state.updateResponse = null;
+      },
+
+
+    // updateGroupFrequency
+    [groupActionCreator.updateGroupFrequency.pending]: (state) => {
+        state.loading = true;
+        state.updateResponse = null;
+      },
+      [groupActionCreator.updateGroupFrequency.fulfilled]: (state, action) => {
+        state.loading = false;
+        state.updateResponse = action.payload;
+        // state.status = action.payload.status
+      },
+      [groupActionCreator.updateGroupFrequency.rejected]: (state) => {
+        state.loading = false;
+        state.updateResponse = null;
       },
 
   },

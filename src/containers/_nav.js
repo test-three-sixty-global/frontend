@@ -32,7 +32,7 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Site',
+    name: 'Project',
     to: '/site',
     icon: 'cil-user',
     badge: {
