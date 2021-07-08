@@ -26,6 +26,7 @@ import siteReducer from "../reducer/siteReducer";
 import roleReducer from "../reducer/roleReducer";
 import userReducer from "../reducer/userReducer";
 import groupReducer from "../reducer/groupReducer";
+import testReducer from "../reducer/testReducer";
 
 export default configureStore({
   reducer: {
@@ -36,6 +37,7 @@ export default configureStore({
     siteReducer,
     roleReducer,
     userReducer,
-    groupReducer
+    groupReducer,
+    testReducer
   },
 });

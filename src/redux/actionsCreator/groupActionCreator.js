@@ -30,6 +30,7 @@ export const postGroupList = createAsyncThunk(
     groupListData.csrf = authHeader();
     const response = await Api.post(groupListData);
     return response.data.payload;
+
   }
 );
 export const updateGroup = createAsyncThunk(
@@ -39,7 +40,31 @@ export const updateGroup = createAsyncThunk(
     groupData.data = data.formValues;
     groupData.path = apiUrl.updateGroup(data.id);
     groupData.csrf = authHeader();
-    const response = await Api.post(groupData);
+    const response = await Api.put(groupData);
+    return response.data.payload;
+  });
+export const updateGroupScreenshot = createAsyncThunk("groupScreenshot/put", async (data = {}) => {
+    let groupScreenshotData = {};
+    groupScreenshotData.data = data.data;
+    groupScreenshotData.path = apiUrl.updateGroupScreenshot(data.id);
+    groupScreenshotData.csrf = authHeader();
+    const response = await Api.put(groupScreenshotData);
+    return response.data.payload;
+  });
+export const updateGroupExec = createAsyncThunk("groupExec/put", async (data = {}) => {
+    let groupExecData = {};
+    groupExecData.data = data.data;
+    groupExecData.path = apiUrl.updateGroupExec(data.id);
+    groupExecData.csrf = authHeader();
+    const response = await Api.put(groupExecData);
+    return response.data.payload;
+  });
+export const updateGroupFrequency = createAsyncThunk("groupFrequency/put", async (data = {}) => {
+    let groupFrequencyData = {};
+    groupFrequencyData.data = data.data;
+    groupFrequencyData.path = apiUrl.updateGroupFrequency(data.id);
+    groupFrequencyData.csrf = authHeader();
+    const response = await Api.put(groupFrequencyData);
     return response.data.payload;
   }
 );
