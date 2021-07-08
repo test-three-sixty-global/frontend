@@ -5,14 +5,15 @@ import { authHeader } from "../../constants/authHeader";
 
 export const getSms = createAsyncThunk("sms/get", async (data = {}) => {
   let smsData = {};
+  smsData.data = data;
   smsData.path = apiUrl.getSms();
   smsData.csrf = authHeader();
-  const response = await Api.fetch(smsData);
-  return response.data.payload.smsAlertList;
+  const response = await Api.post(smsData);
+  return response.data.payload;
 });
 
 export const updateSms = createAsyncThunk("sms/update", async (data = {}) => {
-  console.log(data)
+  console.log(data);
 
   let smsData = {};
   smsData.data = data.data;

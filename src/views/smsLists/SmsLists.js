@@ -43,7 +43,18 @@ const SmsLists = () => {
 
   useEffect(() => {
     console.log(activeTab);
-    activeTab === 0 && dispatch(SmsActionsCreator.getSms());
+
+    if (activeTab === 0) {
+      const getSms = {
+        pageNo: 0,
+        pageSize: 20,
+        sortBy: "",
+        sortDirection: "",
+        searchParams: { smsListName: "" },
+      };
+
+      dispatch(SmsActionsCreator.getSms(getSms));
+    }
   }, [dispatch, activeTab]);
 
   useEffect(() => {
@@ -53,6 +64,7 @@ const SmsLists = () => {
   const initialValues = {
     smsListName: "",
     smsList: ""
+
   };
 
   const updateSmsData = data => {
@@ -70,6 +82,7 @@ const SmsLists = () => {
       smsActionsCreator.updateSms({
         smsList: tempResponse,
         data: tempEditesRow.item
+
       })
     );
   };
@@ -160,6 +173,8 @@ const SmsLists = () => {
                                   />
                                   <EditIcon
                                     onClick={() => {
+
+                                      console.log("item", item);
                                       setEditedRow({ item: item, key: key });
                                     }}
                                   />

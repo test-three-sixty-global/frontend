@@ -60,6 +60,7 @@ const Site = () => {
     description: "",
     siteTimeZone: "",
   });
+
   const [editedRow, setEditedRow] = useState({});
   const initialValues = {
     siteName: "",
@@ -227,6 +228,7 @@ const Site = () => {
                         <Spinner height="100" width="100" />
                       </div>
                     )}
+              
                   </table>
                 </CTabPane>
                 <CTabPane>
