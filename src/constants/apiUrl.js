@@ -33,5 +33,9 @@ export const apiUrl = {
   postTestList: () => `testcases/paginated`,
   postTest: () => `testcases`,
   updateTestExec: (id) => `testcases/${id}/execution/type`,
-  updateTestScreenshot: (id) => `/testcases/${id}/screenshot`
+  updateTestScreenshot: (id) => `/testcases/${id}/screenshot`,
+  getGroupTestCases: (id) => `/groups/${id}/testcases`,
+  getGroupTestStep: (id) => `/groups/${id}/testcasesteps`,
+  getallTestCases: () => `/testcases`,
+  getAllTestSteps: () => ``,
 };

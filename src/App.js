@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import "./scss/style.scss";
-import { CroneLists } from "./views/crone/crone";
 
 const loading = (
   <div className="pt-3 text-center">

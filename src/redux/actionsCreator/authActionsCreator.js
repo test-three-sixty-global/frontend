@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import Api from "src/api-config/api-config";
+import Api from "../../services/httpService";
 import { apiUrl } from "src/constants/apiUrl";
 
 export const login = createAsyncThunk("auth/login", async (data = {}) => {
@@ -10,4 +10,4 @@ export const login = createAsyncThunk("auth/login", async (data = {}) => {
   return response.data.payload;
 });
 
-export const logout = createAction('auth/logout')
+export const logout = createAction("auth/logout");
