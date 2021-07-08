@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import {
   CCol,
   CNav,
@@ -10,20 +10,87 @@ import {
   CCard,
   CCardBody,
   CTabs,
-  CCardHeader
+  CCardHeader,
+  CLabel,
+  CSelect
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-import { DocsLink } from "src/reusable";
-
 import usersData from "../users/TestsData";
 
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import { Container, TextField, Button } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "../widgets/ui/loader";
+import * as GroupActionCreator from "../../redux/actionsCreator/groupActionCreator";
 
 const Groups = () => {
+  const dispatch = useDispatch();
+
+  const [activeTab, setActiveTab] = useState(0);
+  const [style, setStyle] = useState("none");
+  const [item, setItem] = useState([]);
+  const [updateId, setUpdateId] = useState();
+
+
+
+  const [formValues, setFormValues] = useState({
+    siteGroupName: "",
+    emailAddressListId: 0,
+    smsAlertListId: 0,
+    siteId: 0
+  });
+
+  useEffect(() => {
+    console.log(activeTab);
+    let data = {
+      pageNo: 0,
+      pageSize: 20,
+      sortBy: "",
+      sortDirection: "",
+      searchParams: {
+        projectName: "",
+        testCaseName: "",
+        emailList: "",
+        smsListName: ""
+      }
+    };
+    activeTab === 3 || activeTab === 4  && dispatch(GroupActionCreator.getGroupInitialData());
+    activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
+  }, [activeTab]);
+
+
+  let response = useSelector(state => state.groupReducer.response);
+  let responsePost = useSelector(state => state.groupReducer.responsePost);
+  const loading = useSelector(state => state.groupReducer.loading);
+
+  const createGroup = e => {
+    e.preventDefault();
+    dispatch(GroupActionCreator.postGroup(formValues));
+  };
+  const editGroup = e => {
+    e.preventDefault();
+    let form = {
+      siteGroupName: formValues.siteGroupName,
+      emailAddressListId: formValues.emailAddressListId,
+      smsAlertListId: formValues.smsAlertListId,
+      siteId: formValues.siteId
+    }
+    let data = {
+      formValues: form,
+      id: updateId
+    }
+    dispatch(GroupActionCreator.updateGroup(data));
+  };
+
+  const set = name => {
+    return ({ target: { value } }) => {
+      setFormValues(oldValues => ({ ...oldValues, [name]: value }));
+    };
+  };
+
   const [array, setArray] = useState([
     {
       emailListId: 2,
@@ -49,58 +116,58 @@ const Groups = () => {
   const [test, setTest] = useState([
     {
       testName: "Name 1",
-      order: "1",
+      order: "1"
     },
     {
       testName: "Name 2",
-      order: "2",
+      order: "2"
     },
     {
       testName: "Name 3",
-      order: "3",
+      order: "3"
     },
     {
       testName: "Name 4",
-      order: "4",
+      order: "4"
     }
   ]);
   const [testSteps, setTestSteps] = useState([
     {
       steps: "open | https://www.tonerprice.com/ | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "click | link=Log in | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "type | id=email | jayantar@test.net",
-      override: "type | id=email | abcdde@test.net",
+      override: "type | id=email | abcdde@test.net"
     },
     {
       steps: "click | id=pass | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "type | id=pass | 123456",
-      override: "type | id=pass | abcdefg",
+      override: "type | id=pass | abcdefg"
     },
     {
       steps: "click | //button[@id='send2']/span/span | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "click | //p/strong | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "click | //p/strong | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "verifyText | //p/strong | Hello, Jayantar Roy!",
-      override: "-",
-    },
+      override: "-"
+    }
   ]);
   return (
     <>
@@ -113,18 +180,30 @@ const Groups = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem>
-                  <CNavLink style={{fontWeight: "bolder"}}>Groups</CNavLink>
+                <CNavItem onClick={e => setActiveTab(0)}>
+                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 0}>Groups</CNavLink>
                 </CNavItem>
-                <CNavItem>
-                  <CNavLink style={{fontWeight: "bolder"}}>Test</CNavLink>
+                <CNavItem onClick={e => setActiveTab(1)}>
+                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 1}>Test</CNavLink>
                 </CNavItem>
-                <CNavItem>
-                  <CNavLink style={{fontWeight: "bolder"}}>Tests Steps</CNavLink>
+                <CNavItem onClick={e => setActiveTab(2)}>
+                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 2}>
+                    Tests Steps
+                  </CNavLink>
+                </CNavItem>
+                <CNavItem onClick={e => setActiveTab(3)}>
+                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 3}>
+                    Create Group
+                  </CNavLink>
+                </CNavItem>
+                <CNavItem onClick={e => setActiveTab(4)} style={{ display: style }}>
+                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 4}>
+                    Edit Group
+                  </CNavLink>
                 </CNavItem>
               </CNav>
               <CTabContent>
-                <CTabPane>
+                <CTabPane visible={activeTab === 0}>
                   <table className="table">
                     <thead>
                       <tr>
@@ -136,20 +215,29 @@ const Groups = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {array.map((item, key) => {
+                      {responsePost && responsePost.map((item, key) => {
                         return (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
                             <td>
-                              <a href="/emailLists">{item.emailListName}</a>
+                              <a href="/emailLists">{item.siteGroupName}</a>
                             </td>
-                            <td><a href="/groups">Tests</a></td>
+                            <td>
+                              <a href="/groups">Tests</a>
+                            </td>
                             <td>
                               <AccessTimeIcon />
                             </td>
                             {/* <td>{item.dateModified}</td> */}
                             <td>
-                              <DeleteOutlineIcon /> <EditIcon />
+                              <DeleteOutlineIcon /> <EditIcon onClick={() => {
+                                setStyle("block")
+                                setActiveTab(4)
+                                setItem(item)
+                                setUpdateId(item.siteGroupId)
+                                setFormValues(item)
+                                
+                                }} />
                             </td>
                           </tr>
                         );
@@ -157,7 +245,7 @@ const Groups = () => {
                     </tbody>
                   </table>
                 </CTabPane>
-                <CTabPane>
+                <CTabPane visible={activeTab === 1}>
                   <table className="table">
                     <thead>
                       <tr>
@@ -188,7 +276,7 @@ const Groups = () => {
                     </tbody>
                   </table>
                 </CTabPane>
-                <CTabPane>
+                <CTabPane visible={activeTab === 2}>
                   <table className="table">
                     <thead>
                       <tr>
@@ -206,14 +294,222 @@ const Groups = () => {
                               <a href="/groups">{item.steps}</a>
                             </td>
                             <td>Override</td>
-                            <td>
-                            {item.override}
-                            </td>
+                            <td>{item.override}</td>
                           </tr>
                         );
                       })}
                     </tbody>
                   </table>
+                </CTabPane>
+                <CTabPane visible={activeTab === 3}>
+                  <Container component="main" maxWidth="xs">
+                    <div>
+                      {/* {console.log("response",response)} */}
+                      {!loading ? (
+                        response && (
+                          <form onSubmit={data => createGroup(data)}>
+                            <TextField
+                              variant="outlined"
+                              margin="normal"
+                              required
+                              fullWidth
+                              // id="email"
+                              label="Group Name"
+                              name="groupName"
+                              autoFocus
+                              value={formValues.siteGroupName}
+                              onChange={set("siteGroupName")}
+                            />
+                            <div className="form-padding">
+                              <CSelect
+                                custom
+                                size="md"
+                                name="selectEmail"
+                                id="SelectLm"
+                                onChange={set("emailAddressListId")}
+                              >
+                                <option value="0">Please select email</option>
+                                {response.emailList.map(item => {
+                                  return (
+                                    <option value={item.emailListId}>
+                                      {item.emailListName}
+                                    </option>
+                                  );
+                                })}
+                              </CSelect>
+                            </div>
+                            <div className="form-padding">
+                              <CSelect
+                                custom
+                                size="md"
+                                name="selectSms"
+                                id="SelectLm"
+                                onChange={set("smsAlertListId")}
+                              >
+                                <option value="0">Please select sms</option>
+                                {response.smsList.map(item => {
+                                  return (
+                                    <option value={item.smsAlertListId}>
+                                      {item.smsListName}
+                                    </option>
+                                  );
+                                })}
+                              </CSelect>
+                            </div>
+                            <div className="form-padding">
+                              <CSelect
+                                custom
+                                size="md"
+                                name="selectSite"
+                                id="SelectLm"
+                                onChange={set("siteId")}
+                              >
+                                <option value="0">Please select site</option>
+                                {response.siteList.map(item => {
+                                  return (
+                                    <option value={item.siteId}>
+                                      {item.siteName}
+                                    </option>
+                                  );
+                                })}
+                              </CSelect>
+                            </div>
+                            <Button
+                              type="submit"
+                              fullWidth
+                              variant="contained"
+                              color="primary"
+                            >
+                              Submit
+                            </Button>
+                          </form>
+                        )
+                      ) : (
+                        <tr>
+                          <td colSpan="5">
+                            <Spinner height={80} width={80} />
+                          </td>
+                        </tr>
+                      )}
+                    </div>
+                  </Container>
+                </CTabPane>
+                <CTabPane visible={activeTab === 4}>
+                <Container component="main" maxWidth="xs">
+                    <div>
+                      {/* {console.log("response",response)} */}
+                      {!loading ? (
+                        response && (
+                          <form onSubmit={data => editGroup(data)}>
+                          {console.log(item)}
+                            <TextField
+                              variant="outlined"
+                              margin="normal"
+                              required
+                              fullWidth
+                              // id="email"
+                              label="Group Name"
+                              name="groupName"
+                              autoFocus
+                              value={ formValues.siteGroupName ? formValues.siteGroupName : item.siteGroupName}
+                              onChange={set("siteGroupName")}
+                            />
+                            <div className="form-padding">
+                              <CSelect
+                                custom
+                                size="md"
+                                name="selectEmail"
+                                id="SelectLm"
+                                onChange={set("emailAddressListId")}
+                              >
+                                <option value={item.emailAddressListId}>{item.emailListName}</option>
+                                {response.emailList.map(item => {
+                                  return (
+                                    <option value={item.emailListId}>
+                                      {item.emailListName}
+                                    </option>
+                                  );
+                                })}
+                              </CSelect>
+                            </div>
+                            <div className="form-padding">
+                              <CSelect
+                                custom
+                                size="md"
+                                name="selectSms"
+                                id="SelectLm"
+                                onChange={set("smsAlertListId")}
+                              >
+                                <option value={item.smsAlertListId}>{item.smsListName}</option>
+                                {response.smsList.map(item => {
+                                  return (
+                                    <option value={item.smsAlertListId}>
+                                      {item.smsListName}
+                                    </option>
+                                  );
+                                })}
+                              </CSelect>
+                            </div>
+                            <div className="form-padding">
+                              <CSelect
+                                custom
+                                size="md"
+                                name="selectSite"
+                                id="SelectLm"
+                                onChange={set("siteId")}
+                              >
+                                <option value={item.siteId}>{item.siteName}</option>
+                                {response.siteList.map(item => {
+                                  return (
+                                    <option value={item.siteId}>
+                                      {item.siteName}
+                                    </option>
+                                  );
+                                })}
+                              </CSelect>
+                            </div>
+                            <Button
+                              type="submit"
+                              // fullWidth
+                              variant="contained"
+                              color="primary"
+                              className="d-inline mx-1"
+                              // style={{paddingLeft: "10px", paddingRight: "10px"}}
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              type="submit"
+                              // fullWidth
+                              variant="contained"
+                              className="d-inline mx-1"
+                              color="secondary"
+                              // style={{paddingLeft: "10px", paddingRight: "10px"}}
+                              onClick={() => {
+                                setItem([])
+                                setActiveTab(0)
+                                setStyle("none")
+                                setFormValues({
+                                siteGroupName: "",
+                                emailAddressListId: 0,
+                                smsAlertListId: 0,
+                                siteId: 0
+                              })}
+                            }
+                            >
+                              Cancel
+                            </Button>
+                          </form>
+                        )
+                      ) : (
+                        <tr>
+                          <td colSpan="5">
+                            <Spinner height={80} width={80} />
+                          </td>
+                        </tr>
+                      )}
+                    </div>
+                  </Container>
                 </CTabPane>
               </CTabContent>
             </CTabs>
