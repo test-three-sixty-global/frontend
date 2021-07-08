@@ -6,13 +6,13 @@ const authSlice = createSlice({
   initialState: {
     response: null,
     loading: false,
-    postResponse: null
+    postResponse: null,
   },
   reducers: {},
   extraReducers: {
     // Get
 
-    [emailActionCreator.getEmail.pending]: state => {
+    [emailActionCreator.getEmail.pending]: (state) => {
       state.loading = true;
       state.response = null;
     },
@@ -20,13 +20,13 @@ const authSlice = createSlice({
       state.loading = false;
       state.response = action.payload;
     },
-    [emailActionCreator.getEmail.rejected]: state => {
+    [emailActionCreator.getEmail.rejected]: (state) => {
       state.loading = false;
       state.response = null;
     },
 
     // Post
-    [emailActionCreator.postEmail.pending]: state => {
+    [emailActionCreator.postEmail.pending]: (state) => {
       state.loading = true;
       state.postResponse = null;
     },
@@ -34,11 +34,39 @@ const authSlice = createSlice({
       state.loading = false;
       state.postResponse = action.payload;
     },
-    [emailActionCreator.postEmail.rejected]: state => {
+    [emailActionCreator.postEmail.rejected]: (state) => {
       state.loading = false;
       state.postResponse = null;
-    }
-  }
+    },
+
+    // delete
+    [emailActionCreator.deleteEmail.pending]: (state) => {
+      state.loading = true;
+      state.response = null;
+    },
+    [emailActionCreator.deleteEmail.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.response = action.payload.emailList;
+    },
+    [emailActionCreator.deleteEmail.rejected]: (state) => {
+      state.loading = false;
+      state.response = null;
+    },
+
+    // update
+    [emailActionCreator.updateEmail.pending]: (state) => {
+      state.loading = true;
+      state.response = null;
+    },
+    [emailActionCreator.updateEmail.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.response = action.payload.emailList;
+    },
+    [emailActionCreator.updateEmail.rejected]: (state) => {
+      state.loading = false;
+      state.response = null;
+    },
+  },
 });
 
 export default authSlice.reducer;

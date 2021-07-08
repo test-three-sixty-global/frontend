@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { siteValidationSchema } from "../../validationSchemas/siteValidationSchema";
+import { Formik } from "formik";
+import { SiteForm } from "../base/forms/siteForm/siteForm";
+
 import {
   CCol,
   CNav,
@@ -12,7 +16,7 @@ import {
   CTabs,
   CCardHeader,
   CInput,
-  CButton
+  CButton,
 } from "@coreui/react";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -25,10 +29,110 @@ const Site = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(SiteActionCreator.getSite())
-  }, [dispatch])
+    dispatch(SiteActionCreator.getSite());
+  }, [dispatch]);
 
-  const data = useSelector(state => state.siteReducer.response);
+  const data = useSelector((state) => state.siteReducer.response);
+  const [editedRow, setEditedRow] = useState({});
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: "",
+    telephone: "",
+    dateCreated: "",
+    dateModified: "",
+    userRoles: "",
+  };
+  const [array, setArray] = useState([
+    {
+      siteId: 8,
+      siteName: "SIte Three",
+      siteUrl: "",
+      createdBy: 1,
+      modifiedBy: 1,
+      dateCreated: "2021-06-12T20:51:40.000+00:00",
+      dateModified: "2021-06-12T20:51:40.000+00:00",
+      deleted: false,
+      organizationId: 1,
+      siteTimeZone: "America/Los_Angeles",
+      description: "",
+    },
+    {
+      siteId: 7,
+      siteName: "New Sie 74sssw",
+      siteUrl: "",
+      createdBy: 1,
+      modifiedBy: 1,
+      dateCreated: "2021-05-30T07:18:52.000+00:00",
+      dateModified: "2021-05-30T07:18:52.000+00:00",
+      deleted: false,
+      organizationId: 1,
+      siteTimeZone: "Pacific/Pago_Pago",
+      description: "",
+    },
+    {
+      siteId: 6,
+      siteName: "New Sie 74w",
+      siteUrl: "",
+      createdBy: 1,
+      modifiedBy: 1,
+      dateCreated: "2021-05-30T07:16:20.000+00:00",
+      dateModified: "2021-05-30T07:16:20.000+00:00",
+      deleted: false,
+      organizationId: 1,
+      siteTimeZone: "time",
+      description: "",
+    },
+    {
+      siteId: 5,
+      siteName: "Habib Bank",
+      siteUrl: "",
+      createdBy: 1,
+      modifiedBy: 1,
+      dateCreated: "2021-05-28T03:14:31.000+00:00",
+      dateModified: "2021-05-28T03:14:31.000+00:00",
+      deleted: false,
+      organizationId: 1,
+      siteTimeZone: "time",
+      description: "",
+    },
+    {
+      siteId: 2,
+      siteName: "New Sie",
+      siteUrl: "",
+      createdBy: 1,
+      modifiedBy: 1,
+      dateCreated: "2021-05-27T17:04:37.000+00:00",
+      dateModified: "2021-05-27T17:04:37.000+00:00",
+      deleted: false,
+      organizationId: 1,
+      siteTimeZone: "time",
+      description: "",
+    },
+    {
+      siteId: 1,
+      siteName: "Test Site",
+      siteUrl: null,
+      createdBy: null,
+      modifiedBy: null,
+      dateCreated: "2021-05-23T00:17:19.000+00:00",
+      dateModified: "2021-05-23T00:17:24.000+00:00",
+      deleted: false,
+      organizationId: 1,
+      siteTimeZone: null,
+      description: null,
+    },
+  ]);
+
+  const updateSiteData = (data) => {
+    let tempArray = [...array];
+    tempArray[editedRow.key] = data;
+    tempArray[editedRow.key].dateCreated = editedRow.item.dateCreated;
+    tempArray[editedRow.key].dateModified = editedRow.item.dateModified;
+    setArray(tempArray);
+    setEditedRow({});
+  };
   return (
     <>
       {/* <h2 style={{ paddingLeft: "15px" }}>Email Lists</h2> */}
@@ -77,8 +181,8 @@ const Site = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data && data.map((item, key) => {
-                        return (
+                      {array.map((item, key) => {
+                        return editedRow.key !== key ? (
                           <tr key={key}>
                             {/* {console.log(item.emailListName)} */}
                             <td>
@@ -88,9 +192,47 @@ const Site = () => {
                             <td>{item.dateCreated}</td>
                             <td>{item.dateModified}</td>
                             <td>
-                              <DeleteOutlineIcon /> <EditIcon />
+                              <DeleteOutlineIcon />{" "}
+                              <EditIcon
+                                onClick={() =>
+                                  setEditedRow({ item: item, key: key })
+                                }
+                              />
                             </td>
                           </tr>
+                        ) : (
+                          <Formik
+                            validateOnChange={true}
+                            initialValues={initialValues}
+                            validationSchema={siteValidationSchema}
+                            onSubmit={(values) => {
+                              console.log(values);
+                              updateSiteData(values);
+                            }}
+                          >
+                            {({
+                              handleSubmit,
+                              handleChange,
+                              values,
+                              errors,
+                              touched,
+                              // dirty,
+                              isValid,
+                            }) => (
+                              <SiteForm
+                                values={values}
+                                touched={touched}
+                                errors={errors}
+                                // dirty={dirty}
+                                isValid={isValid}
+                                handleSubmit={handleSubmit}
+                                handleChange={handleChange}
+                                dateCreated={editedRow.item.dateCreated}
+                                dateModified={editedRow.item.dateModified}
+                                setEditedRow={setEditedRow}
+                              />
+                            )}
+                          </Formik>
                         );
                       })}
                     </tbody>

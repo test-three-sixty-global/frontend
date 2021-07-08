@@ -1,158 +1,130 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import EditIcon from "@material-ui/icons/Edit";
+
 import {
-  CBadge,
   CCard,
   CCardBody,
-  CCardHeader,
   CCol,
-  CDataTable,
-  CRow,
-  CButton,
   CInput,
-  CListGroupItem,
-  CListGroup,
   CTabs,
   CNavItem,
   CNav,
   CTabContent,
   CTabPane,
-  CNavLink
+  CNavLink,
 } from "@coreui/react";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import EditIcon from "@material-ui/icons/Edit";
+import * as userActionsCreator from "../../redux/actionsCreator/userActionsCreator";
+
 import { Container, TextField, Button } from "@material-ui/core";
+import { userValidationSchema } from "../../validationSchemas/userValidationSchema";
+import { Formik } from "formik";
+import { UserForm } from "../base/forms/userForm/userForm";
+import { useDispatch, useSelector } from "react-redux";
+import _ from "lodash";
+import { Spinner } from "../widgets/ui/loader";
 
 const Roles = () => {
-  const [array, setArray] = useState([
-    {
-      userId: 1,
-      lastName: "Zubair",
-      firstName: "Hammad",
-      email: "hammad.zubair@gmail.com",
-      password: null,
-      deleted: false,
-      dateCreated: null,
-      dateModified: "2021-06-14T20:39:58.000+00:00",
-      organizationId: 1,
-      address: null,
-      telephone: null,
-      lastLoginTime: null,
-      companyUser: null,
-      userRoles: []
-    },
-    {
-      userId: 2,
-      lastName: "Rehan",
-      firstName: "Muhammad",
-      email: "r.abc@gmail.com",
-      password: null,
-      deleted: false,
-      dateCreated: "2021-06-14T12:35:56.000+00:00",
-      dateModified: "2021-06-14T16:55:59.000+00:00",
-      organizationId: 1,
-      address: "No Address",
-      telephone: "03343551962",
-      lastLoginTime: null,
-      companyUser: false,
-      userRoles: []
-    },
-    {
-      userId: 3,
-      lastName: "Rehan",
-      firstName: "Muhammad",
-      email: "r.abc1@gmail.com",
-      password: null,
-      deleted: false,
-      dateCreated: "2021-06-14T12:38:04.000+00:00",
-      dateModified: "2021-06-14T16:55:59.000+00:00",
-      organizationId: 1,
-      address: "No Address",
-      telephone: "03343551962",
-      lastLoginTime: null,
-      companyUser: false,
-      userRoles: []
-    },
-    {
-      userId: 4,
-      lastName: "Rehan",
-      firstName: "Muhammad",
-      email: "r.abrrc1@gmail.com",
-      password: null,
-      deleted: false,
-      dateCreated: "2021-06-14T12:40:52.000+00:00",
-      dateModified: "2021-06-14T16:55:59.000+00:00",
-      organizationId: 1,
-      address: "No Address",
-      telephone: "03343551962",
-      lastLoginTime: null,
-      companyUser: false,
-      userRoles: []
-    },
-    {
-      userId: 5,
-      lastName: "Rehan",
-      firstName: "Muhammad",
-      email: "rd.abrrc1@gmail.com",
-      password: null,
-      deleted: false,
-      dateCreated: "2021-06-14T12:42:17.000+00:00",
-      dateModified: "2021-06-14T16:55:59.000+00:00",
-      organizationId: 1,
-      address: "No Address",
-      telephone: "03343551962",
-      lastLoginTime: null,
-      companyUser: false,
-      userRoles: []
-    },
-    {
-      userId: 6,
-      lastName: "Rehan",
-      firstName: "Muhammad",
-      email: "rdz.abrrc1@gmail.com",
-      password: null,
-      deleted: false,
-      dateCreated: "2021-06-14T12:48:19.000+00:00",
-      dateModified: "2021-06-14T16:55:59.000+00:00",
-      organizationId: 1,
-      address: "No Address",
-      telephone: "03343551962",
-      lastLoginTime: null,
-      companyUser: false,
-      userRoles: []
-    },
-    {
-      userId: 7,
-      lastName: "Rehan",
-      firstName: "Muhammad",
-      email: "rer.abc@gmail.com",
-      password: null,
-      deleted: false,
-      dateCreated: "2021-06-14T13:07:48.000+00:00",
-      dateModified: "2021-06-14T16:55:59.000+00:00",
-      organizationId: 1,
-      address: "No Address",
-      telephone: "03343551962",
-      lastLoginTime: null,
-      companyUser: false,
-      userRoles: []
-    },
-    {
-      userId: 8,
-      lastName: "Rehan",
-      firstName: "Muhammad",
-      email: "rer1.abc@gmail.com",
-      password: null,
-      deleted: false,
-      dateCreated: "2021-06-14T13:14:27.000+00:00",
-      dateModified: "2021-06-14T16:55:59.000+00:00",
-      organizationId: 1,
-      address: "No Address",
-      telephone: "03343551962",
-      lastLoginTime: null,
-      companyUser: false,
-      userRoles: []
+  const dispatch = useDispatch();
+  const response = useSelector((state) => state.userReducer.response);
+  const loading = useSelector((state) => state.userReducer.loading);
+  const [activeTab, setActiveTab] = useState(0);
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: "",
+    telephone: "",
+    dateCreated: "",
+    dateModified: "",
+    userRoles: "",
+  };
+  const [formValues, setFormValues] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    address: "",
+    telephone: "",
+  });
+
+  const [editedRow, setEditedRow] = useState({});
+
+  useEffect(() => {
+    if (activeTab === 0) {
+      const getUser = {
+        pageNo: 0,
+        pageSize: 20,
+        sortBy: "",
+        sortDirection: "",
+        searchParams: { email: "", lastName: "", firstName: "" },
+      };
+      dispatch(userActionsCreator.getUser(getUser));
     }
-  ]);
+  }, [activeTab]);
+
+  useEffect(() => {
+    console.log(editedRow);
+
+    if (editedRow.item && editedRow.item.firstName) {
+      initialValues.firstName = editedRow.item.firstName;
+      initialValues.lastName = editedRow.item.lastName;
+      initialValues.email = editedRow.item.email;
+      initialValues.address = editedRow.item.address;
+      initialValues.telephone = editedRow.item.telephone;
+      initialValues.userRoles = editedRow.item.userRoles;
+    }
+  }, [editedRow]);
+
+  const updateUserData = (data) => {
+    console.log(editedRow);
+    console.log(editedRow);
+    console.log(data);
+    let tempResponse = _.cloneDeep(response);
+    let tempEditesRow = _.cloneDeep(editedRow);
+    console.log(tempEditesRow);
+    tempEditesRow.item.firstName = data.firstName;
+    tempEditesRow.item.lastName = data.lastName;
+    tempEditesRow.item.telephone = data.telephone;
+    tempEditesRow.item.address = data.address;
+    tempEditesRow.item.email = data.email;
+    tempEditesRow.item.userRoles = [
+      {
+        userRoleId: "",
+        roleId: "",
+      },
+    ];
+    tempResponse[tempEditesRow.key] = tempEditesRow.item;
+    dispatch(
+      userActionsCreator.updateUser({
+        userList: tempResponse,
+        data: tempEditesRow.item,
+      })
+    );
+
+    setEditedRow({});
+  };
+
+  const deleteUser = (item, key) => {
+    let tempResponse = _.cloneDeep(response);
+    tempResponse.splice(key, 1);
+    dispatch(
+      userActionsCreator.deleteUser({ userList: tempResponse, item: item })
+    );
+  };
+
+  const set = (name) => {
+    return ({ target: { value } }) => {
+      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
+    };
+  };
+
+  const createUser = (e) => {
+    e.preventDefault();
+    console.log(formValues);
+    dispatch(userActionsCreator.postUser(formValues));
+  };
+
   return (
     <>
       {/* <CCol sm="12" xl="12">
@@ -176,10 +148,10 @@ const Roles = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem>
+                <CNavItem onClick={() => setActiveTab(0)}>
                   <CNavLink>Users</CNavLink>
                 </CNavItem>
-                <CNavItem>
+                <CNavItem onClick={() => setActiveTab(1)}>
                   <CNavLink>Create User</CNavLink>
                 </CNavItem>
               </CNav>
@@ -215,32 +187,84 @@ const Roles = () => {
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {array.map((item, key) => {
-                        return (
-                          <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
-                            <td>{item.firstName}</td>
-                            <td>{item.lastName}</td>
-                            <td>{item.email}</td>
-                            <td>{item.dateCreated}</td>
-                            <td>{item.dateModified}</td>
-                            <td>{item.address}</td>
-                            <td>{item.telephone}</td>
-                            <td>{item.userRoles}</td>
-                            <td>
-                              <DeleteOutlineIcon /> <EditIcon />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
+                    {!loading ? (
+                      <tbody>
+                        {response &&
+                          response?.length &&
+                          response.map((item, key) => {
+                            return editedRow.key !== key ? (
+                              <tr key={key}>
+                                <td>{item.firstName}</td>
+                                <td>{item.lastName}</td>
+                                <td>{item.email}</td>
+                                <td>{item.dateCreated}</td>
+                                <td>{item.dateModified}</td>
+                                <td>{item.address}</td>
+                                <td>{item.telephone}</td>
+                                <td>Role</td>
+                                <td>
+                                  <DeleteOutlineIcon
+                                    onClick={() => deleteUser(item, key)}
+                                  />{" "}
+                                  <EditIcon
+                                    onClick={() =>
+                                      setEditedRow({ item: item, key: key })
+                                    }
+                                  />
+                                </td>
+                              </tr>
+                            ) : (
+                              <Formik
+                                validateOnChange={true}
+                                initialValues={initialValues}
+                                enableReinitialize
+                                validationSchema={userValidationSchema}
+                                onSubmit={(values) => {
+                                  console.log(values);
+                                  updateUserData(values);
+                                }}
+                              >
+                                {({
+                                  handleSubmit,
+                                  handleChange,
+                                  values,
+                                  errors,
+                                  touched,
+                                  // dirty,
+                                  isValid,
+                                }) => (
+                                  <UserForm
+                                    values={values}
+                                    touched={touched}
+                                    errors={errors}
+                                    // dirty={dirty}
+                                    isValid={isValid}
+                                    handleSubmit={handleSubmit}
+                                    handleChange={handleChange}
+                                    dateCreated={editedRow.item.dateCreated}
+                                    dateModified={editedRow.item.dateModified}
+                                    setEditedRow={setEditedRow}
+                                  />
+                                )}
+                              </Formik>
+                            );
+                          })}
+                      </tbody>
+                    ) : (
+                      !editedRow.key && (
+                        <tr>
+                          <td colSpan="5">
+                            <Spinner />
+                          </td>
+                        </tr>
+                      )
+                    )}
                   </table>
                 </CTabPane>
                 <CTabPane>
                   <Container component="main" maxWidth="xs">
                     <div>
-                      <form>
+                      <form onSubmit={(e) => createUser(e)}>
                         <TextField
                           variant="outlined"
                           margin="normal"
@@ -249,6 +273,8 @@ const Roles = () => {
                           // id="email"
                           label="First Name"
                           name="emailname"
+                          value={formValues.firstName}
+                          onChange={set("firstName")}
                           autoFocus
                         />
                         <TextField
@@ -257,6 +283,8 @@ const Roles = () => {
                           required
                           fullWidth
                           label="Last Name"
+                          value={formValues.lastName}
+                          onChange={set("lastName")}
                         />
                         <TextField
                           variant="outlined"
@@ -264,6 +292,8 @@ const Roles = () => {
                           required
                           fullWidth
                           label="Email"
+                          value={formValues.email}
+                          onChange={set("email")}
                         />
                         <TextField
                           variant="outlined"
@@ -272,6 +302,8 @@ const Roles = () => {
                           fullWidth
                           label="Password"
                           type="password"
+                          value={formValues.password}
+                          onChange={set("password")}
                         />
                         <TextField
                           variant="outlined"
@@ -279,6 +311,8 @@ const Roles = () => {
                           required
                           fullWidth
                           label="Address"
+                          value={formValues.address}
+                          onChange={set("address")}
                           // type="password"
                         />
                         <TextField
@@ -287,6 +321,8 @@ const Roles = () => {
                           required
                           fullWidth
                           label="Phone number"
+                          value={formValues.telephone}
+                          onChange={set("telephone")}
                         />
                         {/* <input type="file" style={{marginTop: "10px", marginBottom: "10px"}} />*/}
                         <Button
