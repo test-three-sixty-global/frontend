@@ -49,8 +49,9 @@ const organizationSlice = createSlice({
       state,
       action
     ) => {
+      console.log(action.payload.organizationList);
       state.loading = false;
-      state.response = action.payload;
+      state.response = action.payload.organizationList;
     },
     [organizationActionCreator.updateOrganization.rejected]: (state) => {
       state.loading = false;
@@ -68,7 +69,7 @@ const organizationSlice = createSlice({
       action
     ) => {
       state.loading = false;
-      state.response = action.payload;
+      state.response = action.payload.organizationList;
     },
     [organizationActionCreator.deleteOrganization.rejected]: (state) => {
       state.loading = false;

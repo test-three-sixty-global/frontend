@@ -10,33 +10,47 @@ export const getOrganization = createAsyncThunk(
     organizationData.path = apiUrl.getOrganization();
     organizationData.csrf = authHeader();
     const response = await Api.fetch(organizationData);
-    return response.data.payload.organizationList;
+    return response.data.payload;
   }
 );
 export const updateOrganization = createAsyncThunk(
   "organization/update",
   async (data = {}) => {
     let organizationData = {};
-    organizationData.data = data;
-    organizationData.path = apiUrl.updateOrganization(data.id);
+    organizationData.data = {
+      organizationName: data.data.organizationName,
+      adminUserEmail: data.data.adminUserEmail,
+    };
+    organizationData.path = apiUrl.updateOrganization(data.data.organizationId);
     organizationData.csrf = authHeader();
     const response = await Api.put(organizationData);
-    return response.data.payload.organizationList;
+    return {
+      response: response.data.payload.organizationList,
+      organizationList: data.organizationList,
+    };
   }
 );
+
 export const deleteOrganization = createAsyncThunk(
   "organization/delete",
   async (data = {}) => {
     let organizationData = {};
-    organizationData.path = apiUrl.updateOrganization(data.id);
+    console.log(data);
+    organizationData.path = apiUrl.deleteOrganization(data.item.organizationId);
     organizationData.csrf = authHeader();
     const response = await Api.dell(organizationData);
-    return response.data.payload.organizationList;
+    return {
+      response: response.data.payload.organizationList,
+      organizationList: data.organizationList,
+    };
   }
 );
+
 export const postOrganization = createAsyncThunk(
   "organization/post",
   async (data = {}) => {
+    console.log(data);
+
     let organizationData = {};
     organizationData.data = data;
     organizationData.path = apiUrl.getOrganization();

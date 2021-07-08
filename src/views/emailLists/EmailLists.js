@@ -12,33 +12,51 @@ import {
   CInput,
   CAlert
 } from "@coreui/react";
+import { emailValidationSchema } from "../../validationSchemas/emailValidationSchema";
+import _ from "lodash";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
+import { Formik } from "formik";
 import {
   TextField,
   Button,
   Container,
   TextareaAutosize
 } from "@material-ui/core";
-
 import { useDispatch, useSelector } from "react-redux";
 import * as EmailActionCreator from "../../redux/actionsCreator/emailActionCreator";
 import { Spinner } from "../widgets/ui/loader";
+import { EmailForm } from "../base/forms/emailForm/emailForm";
 
 const EmailLists = () => {
   const [emailName, setEmailName] = useState("");
   const [emailList, setEmailList] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [visible, setVisible] = React.useState(5)
+  const [editedRow, setEditedRow] = useState({});
 
   const response = useSelector(state => state.emailReducer.response);
   const loading = useSelector(state => state.emailReducer.loading);
   const status = useSelector(state => state.emailReducer.status);
 
   const dispatch = useDispatch();
+  const initialValues = {
+    emailListName: "",
+    emailList: "",
+  };
 
   useEffect(() => {
-    activeTab === 0 && dispatch(EmailActionCreator.getEmail());
+    if (activeTab === 0) {
+      const getEmail = {
+        pageNo: 0,
+        pageSize: 20,
+        sortBy: "",
+        sortDirection: "",
+        searchParams: { emailListName: "" },
+      };
+
+      dispatch(EmailActionCreator.getEmail(getEmail));
+    }
   }, [dispatch, activeTab]);
   useEffect(() => {
       setEmailList("")
@@ -51,6 +69,44 @@ const EmailLists = () => {
     dispatch(EmailActionCreator.postEmail(data));
   };
 
+  useEffect(() => {
+    console.log(editedRow);
+    if (editedRow.item && editedRow.item.emailListName) {
+      initialValues.emailList = editedRow.item.emailList;
+      initialValues.emailListName = editedRow.item.emailListName;
+    }
+  }, [editedRow]);
+
+  const updateEmailData = (data) => {
+    console.log(data);
+    let tempResponse = _.cloneDeep(response);
+    let tempEditesRow = _.cloneDeep(editedRow);
+    console.log(tempEditesRow);
+    tempEditesRow.item.emailList = data.emailList;
+    tempEditesRow.item.emailListName = data.emailListName;
+    tempEditesRow.item.dateModified = data.dateModified;
+    tempEditesRow.item.dateCreated = data.dateCreated;
+    tempResponse[tempEditesRow.key] = tempEditesRow.item;
+    console.log(data);
+    dispatch(
+      EmailActionCreator.updateEmail({
+        emailList: tempResponse,
+        data: tempEditesRow.item,
+      })
+    );
+  };
+
+  const deleteEmail = (item, key) => {
+    let tempResponse = _.cloneDeep(response);
+    console.log(item);
+    tempResponse.splice(key, 1);
+    dispatch(
+      EmailActionCreator.deleteEmail({
+        emailList: tempResponse,
+        id: item.emailListId,
+      })
+    );
+  };
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
@@ -94,7 +150,7 @@ const EmailLists = () => {
                           response.length &&
                           activeTab === 0 &&
                           response.map((item, key) => {
-                            return (
+                            return editedRow.key !== key ? (
                               <tr key={key}>
                                 <td>
                                   <a href="/emailLists">{item.emailListName}</a>
@@ -103,9 +159,49 @@ const EmailLists = () => {
                                 <td>{item.dateCreated}</td>
                                 <td>{item.dateModified}</td>
                                 <td>
-                                  <DeleteOutlineIcon /> <EditIcon />
+                                  <DeleteOutlineIcon
+                                    onClick={() => deleteEmail(item, key)}
+                                  />
+                                  <EditIcon
+                                    onClick={() => {
+                                      console.log("item", item);
+                                      setEditedRow({ item: item, key: key });
+                                    }}
+                                  />
                                 </td>
                               </tr>
+                            ) : (
+                              <Formik
+                                enableReinitialize
+                                validateOnChange={true}
+                                initialValues={initialValues}
+                                validationSchema={emailValidationSchema}
+                                onSubmit={(values) => {
+                                  console.log(values);
+                                  updateEmailData(values);
+                                }}
+                              >
+                                {({
+                                  handleSubmit,
+                                  handleChange,
+                                  values,
+                                  errors,
+                                  touched,
+                                  isValid,
+                                }) => (
+                                  <EmailForm
+                                    values={values}
+                                    touched={touched}
+                                    errors={errors}
+                                    isValid={isValid}
+                                    handleSubmit={handleSubmit}
+                                    handleChange={handleChange}
+                                    dateCreated={editedRow.item.dateCreated}
+                                    dateModified={editedRow.item.dateModified}
+                                    setEditedRow={setEditedRow}
+                                  />
+                                )}
+                              </Formik>
                             );
                           })}
                       </tbody>

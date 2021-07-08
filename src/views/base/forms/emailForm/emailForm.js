@@ -2,56 +2,47 @@ import React from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import { FormGroup, Form, Input, InputGroup } from "reactstrap";
-import { CSelect } from "@coreui/react";
-export const SiteForm = (props) => {
+export const EmailForm = (props) => {
   return (
     // <Form role="form" onSubmit={props.handleSubmit}>
 
     <tr>
+      {console.log(props.values)}
       <td>
         <FormGroup
           className={
-            props.errors.siteName ? "mb-3 border border-danger" : "mb-3"
+            props.errors.firstName ? "mb-3 border border-danger" : "mb-3"
           }
         >
           <InputGroup className="input-group-alternative">
             <Input
-              placeholder="Site Name"
+              placeholder="smsListName"
               type="text"
               onChange={props.handleChange}
-              value={props.values.siteName}
-              name="siteName"
-              id="siteName"
+              value={props.values.emailListName}
+              name="emailListName"
+              id="emailListName"
             ></Input>
           </InputGroup>
         </FormGroup>
       </td>
+
       <td>
         <FormGroup
           className={
-            props.errors.siteTimeZone ? "mb-3 border border-danger" : "mb-3"
+            props.errors.lastName ? "mb-3 border border-danger" : "mb-3"
           }
         >
-          <CSelect
-            custom
-            size="lg"
-            name="siteTimeZone"
-            id="siteTimeZone"
-            onChange={props.handleChange}
-            value={props.values.siteTimeZone}
-            required
-          >
-            <option>Please select timezone</option>
-            {props.siteInitialData &&
-              props.siteInitialData.timeZones.length &&
-              props.siteInitialData.timeZones.map((item, key) => {
-                return (
-                  <option value={item.split("^")[0]} key={key}>
-                    {item}
-                  </option>
-                );
-              })}
-          </CSelect>
+          <InputGroup className="input-group-alternative">
+            <Input
+              placeholder="SMS List"
+              type="text"
+              onChange={props.handleChange}
+              value={props.values.emailList}
+              name="emailList"
+              id="emailList"
+            ></Input>
+          </InputGroup>
         </FormGroup>
       </td>
       <td>

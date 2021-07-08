@@ -121,7 +121,7 @@ export const UserForm = (props) => {
               placeholder="Phone #"
               type="text"
               onChange={props.handleChange}
-              value={props.values.phone}
+              value={props.values.telephone}
               name="telephone"
               id="telephone"
             ></Input>
