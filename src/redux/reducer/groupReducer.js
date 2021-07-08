@@ -8,7 +8,7 @@ const groupSlice = createSlice({
     loading: false,
     status: "",
     responsePost: null,
-    updateResponse: null
+    updateResponse: null,
     GroupTestCases: null,
     groupTestSteps: null,
     alltestCases: null,
@@ -120,9 +120,6 @@ const groupSlice = createSlice({
         state.loading = false;
         state.updateResponse = null;
       },
-      state.loading = true;
-      state.responsePost = null;
-    },
     [groupActionCreator.updateGroup.fulfilled]: (state, action) => {
       state.loading = false;
       state.responsePost = action.payload;
