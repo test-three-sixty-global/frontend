@@ -171,6 +171,7 @@ const Tests = () => {
                         {/* <th>Steps</th> */}
                         <th>Executed by</th>
                         <th>Date executed</th>
+                        <th>Status</th>
                         <th>Schedule</th>
                         <th>Actions</th>
                       </tr>
@@ -188,6 +189,9 @@ const Tests = () => {
                               <td>{item.emailListName}</td>
                               {/* <td>{item.emailListName}</td> */}
                               <td>{item.dateModified}</td>
+                              <td style={{color: item.status === "Pass" ? "green" : "red"}}>
+                                {item.lastRunStatus ? item.lastRunStatus : "N/A"}
+                              </td>
                               <td onClick={() => setCrone(true)}>
                                 <AccessTimeIcon />
                               </td>

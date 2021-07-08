@@ -125,10 +125,10 @@ const Site = () => {
             <CTabs>
               <CNav variant="tabs">
                 <CNavItem onClick={(e) => setActiveTab(0)}>
-                  <CNavLink>Site</CNavLink>
+                  <CNavLink>Project</CNavLink>
                 </CNavItem>
                 <CNavItem onClick={(e) => setActiveTab(1)}>
-                  <CNavLink>Create Site</CNavLink>
+                  <CNavLink>Create Project</CNavLink>
                 </CNavItem>
               </CNav>
               <CTabContent>
@@ -152,7 +152,7 @@ const Site = () => {
                   <table className="table">
                     <thead>
                       <tr>
-                        <th>Site Name</th>
+                        <th>Project Name</th>
                         <th>Time Zone</th>
                         <th>Date Created</th>
                         <th>Date Modified</th>
