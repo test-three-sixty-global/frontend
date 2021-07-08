@@ -12,7 +12,7 @@ import {
   CTabs,
   CCardHeader,
   CLabel,
-  CSelect
+  CSelect,
 } from "@coreui/react";
 import usersData from "../users/TestsData";
 
@@ -21,10 +21,13 @@ import EditIcon from "@material-ui/icons/Edit";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import { Container, TextField, Button } from "@material-ui/core";
+import { Container, TextField, Button, Modal } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "../widgets/ui/loader";
 import * as GroupActionCreator from "../../redux/actionsCreator/groupActionCreator";
+import { SettingsCellRounded } from "@material-ui/icons";
+import { CroneLists } from "../crone/crone";
+import { ModalBody } from "reactstrap";
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -33,14 +36,13 @@ const Groups = () => {
   const [style, setStyle] = useState("none");
   const [item, setItem] = useState([]);
   const [updateId, setUpdateId] = useState();
-
-
+  const [crone, setCrone] = useState(false);
 
   const [formValues, setFormValues] = useState({
     siteGroupName: "",
     emailAddressListId: 0,
     smsAlertListId: 0,
-    siteId: 0
+    siteId: 0,
   });
 
   useEffect(() => {
@@ -54,40 +56,41 @@ const Groups = () => {
         projectName: "",
         testCaseName: "",
         emailList: "",
-        smsListName: ""
-      }
+        smsListName: "",
+      },
     };
-    activeTab === 3 || activeTab === 4  && dispatch(GroupActionCreator.getGroupInitialData());
+    activeTab === 3 ||
+      (activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData()));
     activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
+    activeTab === 1 && dispatch(GroupActionCreator.getAllTestCases());
   }, [activeTab]);
 
+  let response = useSelector((state) => state.groupReducer.response);
+  let responsePost = useSelector((state) => state.groupReducer.responsePost);
+  const loading = useSelector((state) => state.groupReducer.loading);
 
-  let response = useSelector(state => state.groupReducer.response);
-  let responsePost = useSelector(state => state.groupReducer.responsePost);
-  const loading = useSelector(state => state.groupReducer.loading);
-
-  const createGroup = e => {
+  const createGroup = (e) => {
     e.preventDefault();
     dispatch(GroupActionCreator.postGroup(formValues));
   };
-  const editGroup = e => {
+  const editGroup = (e) => {
     e.preventDefault();
     let form = {
       siteGroupName: formValues.siteGroupName,
       emailAddressListId: formValues.emailAddressListId,
       smsAlertListId: formValues.smsAlertListId,
-      siteId: formValues.siteId
-    }
+      siteId: formValues.siteId,
+    };
     let data = {
       formValues: form,
-      id: updateId
-    }
+      id: updateId,
+    };
     dispatch(GroupActionCreator.updateGroup(data));
   };
 
-  const set = name => {
+  const set = (name) => {
     return ({ target: { value } }) => {
-      setFormValues(oldValues => ({ ...oldValues, [name]: value }));
+      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
     };
   };
 
@@ -100,7 +103,7 @@ const Groups = () => {
       dateModified: "2021-05-26T15:01:38.000+00:00",
       createdBy: 1,
       modifiedBy: 1,
-      organizationId: 1
+      organizationId: 1,
     },
     {
       emailListId: 3,
@@ -110,94 +113,133 @@ const Groups = () => {
       dateModified: "2021-05-26T14:46:27.000+00:00",
       createdBy: 1,
       modifiedBy: 1,
-      organizationId: 1
-    }
+      organizationId: 1,
+    },
   ]);
   const [test, setTest] = useState([
     {
       testName: "Name 1",
-      order: "1"
+      order: "1",
     },
     {
       testName: "Name 2",
-      order: "2"
+      order: "2",
     },
     {
       testName: "Name 3",
-      order: "3"
+      order: "3",
     },
     {
       testName: "Name 4",
-      order: "4"
-    }
+      order: "4",
+    },
   ]);
   const [testSteps, setTestSteps] = useState([
     {
       steps: "open | https://www.tonerprice.com/ | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "click | link=Log in | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "type | id=email | jayantar@test.net",
-      override: "type | id=email | abcdde@test.net"
+      override: "type | id=email | abcdde@test.net",
     },
     {
       steps: "click | id=pass | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "type | id=pass | 123456",
-      override: "type | id=pass | abcdefg"
+      override: "type | id=pass | abcdefg",
     },
     {
       steps: "click | //button[@id='send2']/span/span | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "click | //p/strong | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "click | //p/strong | ",
-      override: "-"
+      override: "-",
     },
     {
       steps: "verifyText | //p/strong | Hello, Jayantar Roy!",
-      override: "-"
-    }
+      override: "-",
+    },
   ]);
+
+  const getGroupTestSteps = (id) => {
+    dispatch(GroupActionCreator.getGroupTestSteps(id));
+    setActiveTab(2);
+  };
+
+  const getGroupTestCases = (id) => {
+    dispatch(GroupActionCreator.getGroupTestCases(id));
+    setActiveTab(1);
+  };
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
+        <Modal
+          open={crone}
+          xs="6"
+          onClose={() => setCrone(false)}
+          style={{ widows: "50%" }}
+        >
+          <ModalBody>
+            <CroneLists />
+          </ModalBody>
+        </Modal>
         <CCard>
-          {/* <CCardHeader>
-            Index indentifiers
-            <DocsLink name="CTabs"/>
-          </CCardHeader> */}
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem onClick={e => setActiveTab(0)}>
-                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 0}>Groups</CNavLink>
+                <CNavItem onClick={(e) => setActiveTab(0)}>
+                  <CNavLink
+                    style={{ fontWeight: "bolder" }}
+                    active={activeTab === 0}
+                  >
+                    Groups
+                  </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(1)}>
-                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 1}>Test</CNavLink>
+                <CNavItem onClick={(e) => setActiveTab(1)}>
+                  <CNavLink
+                    style={{ fontWeight: "bolder" }}
+                    active={activeTab === 1}
+                    onClick={(e) => setActiveTab(1)}
+                  >
+                    Test
+                  </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(2)}>
-                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 2}>
+                <CNavItem onClick={(e) => setActiveTab(2)}>
+                  <CNavLink
+                    style={{ fontWeight: "bolder" }}
+                    active={activeTab === 2}
+                  >
                     Tests Steps
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(3)}>
-                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 3}>
+                <CNavItem onClick={(e) => setActiveTab(3)}>
+                  <CNavLink
+                    style={{ fontWeight: "bolder" }}
+                    active={activeTab === 3}
+                  >
                     Create Group
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(4)} style={{ display: style }}>
-                  <CNavLink style={{ fontWeight: "bolder" }} active={activeTab === 4}>
+                <CNavItem
+                  onClick={(e) => setActiveTab(4)}
+                  style={{ display: style }}
+                >
+                  <CNavLink
+                    style={{ fontWeight: "bolder" }}
+                    active={activeTab === 4}
+                  >
                     Edit Group
                   </CNavLink>
                 </CNavItem>
@@ -209,49 +251,61 @@ const Groups = () => {
                       <tr>
                         <th>Group Name</th>
                         <th>Tests</th>
+                        <th>Test Steps</th>
                         <th>Schedule</th>
-                        {/* <th>Date Modified</th> */}
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {responsePost && responsePost.map((item, key) => {
-                        return (
-                          <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
-                            <td>
-                              <a href="/emailLists">{item.siteGroupName}</a>
-                            </td>
-                            <td>
-                              <a href="/groups">Tests</a>
-                            </td>
-                            <td>
-                              <AccessTimeIcon />
-                            </td>
-                            {/* <td>{item.dateModified}</td> */}
-                            <td>
-                              <DeleteOutlineIcon /> <EditIcon onClick={() => {
-                                setStyle("block")
-                                setActiveTab(4)
-                                setItem(item)
-                                setUpdateId(item.siteGroupId)
-                                setFormValues(item)
-                                
-                                }} />
-                            </td>
-                          </tr>
-                        );
-                      })}
+                      {responsePost &&
+                        responsePost.map((item, key) => {
+                          return (
+                            <tr key={key}>
+                              <td>
+                                <a href="/emailLists">{item.siteGroupName}</a>
+                              </td>
+                              <td
+                                style={{ color: "blue", cursor: "pointer" }}
+                                onClick={(e) =>
+                                  getGroupTestCases(item.siteGroupId)
+                                }
+                              >
+                                Tests
+                              </td>
+                              <td
+                                style={{ color: "blue", cursor: "pointer" }}
+                                onClick={(e) =>
+                                  getGroupTestSteps(item.siteGroupId)
+                                }
+                              >
+                                Test Steps
+                              </td>
+                              <td onClick={() => setCrone(true)}>
+                                <AccessTimeIcon />
+                              </td>
+                              <td>
+                                <DeleteOutlineIcon />{" "}
+                                <EditIcon
+                                  onClick={() => {
+                                    setStyle("block");
+                                    setActiveTab(4);
+                                    setItem(item);
+                                    setUpdateId(item.siteGroupId);
+                                    setFormValues(item);
+                                  }}
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </CTabPane>
-                <CTabPane visible={activeTab === 1}>
+                <CTabPane visible={activeTab === 1} value={1}>
                   <table className="table">
                     <thead>
                       <tr>
                         <th>Test Name</th>
-                        <th>Order</th>
-                        <th>Actions</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -259,17 +313,15 @@ const Groups = () => {
                       {test.map((item, key) => {
                         return (
                           <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
                             <td>
                               <a href="/emailLists">{item.testName}</a>
                             </td>
-                            <td>{item.order}</td>
-                            <td>
+                            {/* <td>
                               <DeleteOutlineIcon /> <EditIcon />
                             </td>
                             <td>
                               <ArrowUpwardIcon /> <ArrowDownwardIcon />
-                            </td>
+                            </td> */}
                           </tr>
                         );
                       })}
@@ -289,7 +341,6 @@ const Groups = () => {
                       {testSteps.map((item, key) => {
                         return (
                           <tr key={key}>
-                            {/* {console.log(item.emailListName)} */}
                             <td>
                               <a href="/groups">{item.steps}</a>
                             </td>
@@ -307,7 +358,7 @@ const Groups = () => {
                       {/* {console.log("response",response)} */}
                       {!loading ? (
                         response && (
-                          <form onSubmit={data => createGroup(data)}>
+                          <form onSubmit={(data) => createGroup(data)}>
                             <TextField
                               variant="outlined"
                               margin="normal"
@@ -329,7 +380,7 @@ const Groups = () => {
                                 onChange={set("emailAddressListId")}
                               >
                                 <option value="0">Please select email</option>
-                                {response.emailList.map(item => {
+                                {response.emailList.map((item) => {
                                   return (
                                     <option value={item.emailListId}>
                                       {item.emailListName}
@@ -347,7 +398,7 @@ const Groups = () => {
                                 onChange={set("smsAlertListId")}
                               >
                                 <option value="0">Please select sms</option>
-                                {response.smsList.map(item => {
+                                {response.smsList.map((item) => {
                                   return (
                                     <option value={item.smsAlertListId}>
                                       {item.smsListName}
@@ -365,7 +416,7 @@ const Groups = () => {
                                 onChange={set("siteId")}
                               >
                                 <option value="0">Please select site</option>
-                                {response.siteList.map(item => {
+                                {response.siteList.map((item) => {
                                   return (
                                     <option value={item.siteId}>
                                       {item.siteName}
@@ -395,13 +446,13 @@ const Groups = () => {
                   </Container>
                 </CTabPane>
                 <CTabPane visible={activeTab === 4}>
-                <Container component="main" maxWidth="xs">
+                  <Container component="main" maxWidth="xs">
                     <div>
                       {/* {console.log("response",response)} */}
                       {!loading ? (
                         response && (
-                          <form onSubmit={data => editGroup(data)}>
-                          {console.log(item)}
+                          <form onSubmit={(data) => editGroup(data)}>
+                            {console.log(item)}
                             <TextField
                               variant="outlined"
                               margin="normal"
@@ -411,7 +462,11 @@ const Groups = () => {
                               label="Group Name"
                               name="groupName"
                               autoFocus
-                              value={ formValues.siteGroupName ? formValues.siteGroupName : item.siteGroupName}
+                              value={
+                                formValues.siteGroupName
+                                  ? formValues.siteGroupName
+                                  : item.siteGroupName
+                              }
                               onChange={set("siteGroupName")}
                             />
                             <div className="form-padding">
@@ -422,8 +477,10 @@ const Groups = () => {
                                 id="SelectLm"
                                 onChange={set("emailAddressListId")}
                               >
-                                <option value={item.emailAddressListId}>{item.emailListName}</option>
-                                {response.emailList.map(item => {
+                                <option value={item.emailAddressListId}>
+                                  {item.emailListName}
+                                </option>
+                                {response.emailList.map((item) => {
                                   return (
                                     <option value={item.emailListId}>
                                       {item.emailListName}
@@ -440,8 +497,10 @@ const Groups = () => {
                                 id="SelectLm"
                                 onChange={set("smsAlertListId")}
                               >
-                                <option value={item.smsAlertListId}>{item.smsListName}</option>
-                                {response.smsList.map(item => {
+                                <option value={item.smsAlertListId}>
+                                  {item.smsListName}
+                                </option>
+                                {response.smsList.map((item) => {
                                   return (
                                     <option value={item.smsAlertListId}>
                                       {item.smsListName}
@@ -458,8 +517,10 @@ const Groups = () => {
                                 id="SelectLm"
                                 onChange={set("siteId")}
                               >
-                                <option value={item.siteId}>{item.siteName}</option>
-                                {response.siteList.map(item => {
+                                <option value={item.siteId}>
+                                  {item.siteName}
+                                </option>
+                                {response.siteList.map((item) => {
                                   return (
                                     <option value={item.siteId}>
                                       {item.siteName}
@@ -486,16 +547,16 @@ const Groups = () => {
                               color="secondary"
                               // style={{paddingLeft: "10px", paddingRight: "10px"}}
                               onClick={() => {
-                                setItem([])
-                                setActiveTab(0)
-                                setStyle("none")
+                                setItem([]);
+                                setActiveTab(0);
+                                setStyle("none");
                                 setFormValues({
-                                siteGroupName: "",
-                                emailAddressListId: 0,
-                                smsAlertListId: 0,
-                                siteId: 0
-                              })}
-                            }
+                                  siteGroupName: "",
+                                  emailAddressListId: 0,
+                                  smsAlertListId: 0,
+                                  siteId: 0,
+                                });
+                              }}
                             >
                               Cancel
                             </Button>

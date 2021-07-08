@@ -23,8 +23,12 @@ export const apiUrl = {
   getGroupInitialData: () => "groups/initial/data",
   postGroup: () => "groups",
   postGroupList: () => "groups/paginated",
-  updateGroup: (id) => `groups/${id}`
+  updateGroup: (id) => `groups/${id}`,
   getsiteInitialData: () => `/sites/initial/data`,
   deleteEmail: (id) => `/emaillist/${id}`,
   updateEmail: (id) => `/emaillist/${id}`,
+  getGroupTestCases: (id) => `/groups/${id}/testcases`,
+  getGroupTestStep: (id) => `/groups/${id}/testcasesteps`,
+  getallTestCases: () => `/testcases`,
+  getAllTestSteps: () => ``,
 };

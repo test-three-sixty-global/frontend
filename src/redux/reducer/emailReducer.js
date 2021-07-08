@@ -7,7 +7,7 @@ const authSlice = createSlice({
     response: null,
     loading: false,
     postResponse: null,
-    status: ""
+    status: "",
   },
   reducers: {},
   extraReducers: {
@@ -32,10 +32,10 @@ const authSlice = createSlice({
       state.postResponse = null;
     },
     [emailActionCreator.postEmail.fulfilled]: (state, action) => {
-      console.log(action)
+      console.log(action);
       state.loading = false;
       state.postResponse = action.payload;
-      state.status = action.payload.status
+      state.status = action.payload?.status;
     },
     [emailActionCreator.postEmail.rejected]: (state) => {
       state.loading = false;

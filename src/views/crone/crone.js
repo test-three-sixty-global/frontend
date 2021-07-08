@@ -1,52 +1,24 @@
-import React, { lazy, useState } from "react";
+import React from "react";
 import {
   CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CCard,
   CCardBody,
   CTabs,
-  CCardHeader,
-  CInput,
   CFormGroup,
   CSelect,
   CLabel,
   CInputRadio,
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import EditIcon from "@material-ui/icons/Edit";
-import { Container, TextField, Button, Input } from "@material-ui/core";
+import { Input } from "@material-ui/core";
 export const CroneLists = () => {
-  const [array, setArray] = useState([
-    {
-      smsAlertListId: 2,
-      smsListName: "SMs list Name 2",
-      smsList: "0300937338, 03343551968",
-      dateCreated: "2021-05-26T21:20:08.000+00:00",
-      dateModified: "2021-05-26T21:29:12.000+00:00",
-      createdBy: 1,
-      modifiedBy: 1,
-      organizationId: null,
-    },
-    {
-      smsAlertListId: 1,
-      smsListName: "SMs list Name",
-      smsList: "03009373338",
-      dateCreated: "2021-05-23T01:48:26.000+00:00",
-      dateModified: "2021-05-23T01:48:34.000+00:00",
-      createdBy: null,
-      modifiedBy: null,
-      organizationId: 1,
-    },
-  ]);
   return (
     <>
-      <CCol xs="12" md="12" className="mb-4">
+      <CCol xs="6" md="6" className="mb-4 mx-auto">
         <CCard>
           <CCardBody>
             <CTabs>
