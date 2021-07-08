@@ -30,7 +30,7 @@ import * as TestActionCreator from "../../redux/actionsCreator/testActionCreator
 import * as GroupActionCreator from "../../redux/actionsCreator/groupActionCreator";
 import { Spinner } from "../widgets/ui/loader";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import { ModalBody } from "reactstrap";
+import { ModalBody, ModalFooter } from "reactstrap";
 import { CroneLists } from "../crone/crone";
 
 const Tests = () => {
@@ -136,7 +136,7 @@ const Tests = () => {
       <CCol xs="12" md="12" className="mb-4">
         <Modal open={crone} onClose={() => setCrone(false)}>
           <ModalBody>
-            <CroneLists />
+            <CroneLists setCrone={setCrone} />
           </ModalBody>
         </Modal>
         <CCard>

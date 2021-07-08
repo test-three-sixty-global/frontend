@@ -216,7 +216,7 @@ const Groups = () => {
       <CCol xs="12" md="12" className="mb-4">
         <Modal open={crone} onClose={() => setCrone(false)}>
           <ModalBody>
-            <CroneLists />
+            <CroneLists setCrone={setCrone} />
           </ModalBody>
         </Modal>
         <CCard>

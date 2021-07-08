@@ -13,9 +13,10 @@ import {
   CSelect,
   CLabel,
   CInputRadio,
+  CCardFooter,
 } from "@coreui/react";
-import { Input } from "@material-ui/core";
-export const CroneLists = () => {
+import { Button, Input } from "@material-ui/core";
+export const CroneLists = (props) => {
   return (
     <>
       <CCol xs="6" md="6" className="mb-4 mx-auto">
@@ -395,6 +396,22 @@ export const CroneLists = () => {
               </CTabContent>
             </CTabs>
           </CCardBody>
+          <CCardFooter>
+            <div style={{ float: "right" }}>
+              <Button
+                className="bg-success p-2 mx-2 text-light"
+                onClick={() => props.setCrone(false)}
+              >
+                Save
+              </Button>
+              <Button
+                className="bg-danger p-2 mx-2 text-light"
+                onClick={() => props.setCrone(false)}
+              >
+                Close
+              </Button>
+            </div>
+          </CCardFooter>
         </CCard>
       </CCol>
     </>
