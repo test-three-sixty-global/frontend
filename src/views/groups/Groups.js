@@ -160,20 +160,36 @@ const Groups = () => {
   ]);
   const [test, setTest] = useState([
     {
-      testName: "Name 1",
+      testName: "Login",
       order: "1",
+      dateCreated: "2021-02-26T14:45:33.000+00:00",
+      createdby: "Wasif",
+      lastExecuted: "Gul",
+      status: "Pass"
     },
     {
-      testName: "Name 2",
+      testName: "Login with username",
       order: "2",
+      dateCreated: "2021-05-26T14:45:33.000+00:00",
+      createdby: "Nauman",
+      lastExecuted: "Nauman",
+      status: "Pass"
     },
     {
-      testName: "Name 3",
+      testName: "Login without password",
       order: "3",
+      dateCreated: "2021-01-26T14:22:33.000+00:00",
+      createdby: "Gul",
+      lastExecuted: "Rehan",
+      status: "Fail"
     },
     {
-      testName: "Name 4",
+      testName: "Login with wrong username",
       order: "4",
+      dateCreated: "2021-04-26T14:45:33.000+00:00",
+      createdby: "Rehan",
+      lastExecuted: "Rehan",
+      status: "Fail"
     },
   ]);
   const [testSteps, setTestSteps] = useState([
@@ -288,6 +304,7 @@ const Groups = () => {
                         <th>Group Name</th>
                         <th>Tests</th>
                         <th>Last execution date</th>
+                        <th>Status</th>
 
                         <th>Schedule</th>
                         <th>Actions</th>
@@ -305,6 +322,10 @@ const Groups = () => {
                                 <a href="/groups">View</a>
                               </td>
                               <td>{item.dateModified}</td>
+                              <td> 
+                                <span style={{color: "green"}}>Pass = 2</span>, 
+                                <span style={{color: "red"}}>fail = 2</span>
+                              </td>
                               <td onClick={() => setCrone(true)}>
                                 <AccessTimeIcon />
                               </td>
@@ -399,6 +420,11 @@ const Groups = () => {
                     <thead>
                       <tr>
                         <th>Test Name</th>
+                        <th>Created date</th>
+                        <th>Created by</th>
+                        <th>Last executed</th>
+                        <th>Status</th>
+                        <th>Action</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -409,7 +435,17 @@ const Groups = () => {
                             <td>
                               <a href="/emailLists">{item.testName}</a>
                             </td>
-                         
+
+                            <td>{item.dateCreated}</td>
+                            <td>{item.createdby}</td>
+                            <td>{item.lastExecuted}</td>
+                            <td style={{color: item.status === "Pass" ? "green" : "red"}}>{item.status}</td>
+                            <td>
+                             <PlayArrowIcon style={{color: "green"}} /> <DeleteOutlineIcon /> 
+                            </td>
+                            <td>
+                              <ArrowUpwardIcon /> <ArrowDownwardIcon />
+                            </td> 
                           </tr>
                         );
                       })}
