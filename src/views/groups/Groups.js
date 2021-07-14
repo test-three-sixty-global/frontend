@@ -15,6 +15,7 @@ import {
   CSelect,
 } from "@coreui/react";
 import usersData from "../users/TestsData";
+import * as testActionsCreator from "../../redux/actionsCreator/testActionCreator";
 
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -64,12 +65,24 @@ const Groups = () => {
     activeTab === 3 ||
       (activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData()));
     activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
-    activeTab === 1 && dispatch(GroupActionCreator.getAllTestCases());
+    if (activeTab === 1) {
+      let data = {
+        pageNo: 0,
+        pageSize: 20,
+        sortBy: "",
+        sortDirection: "",
+        searchParams: { testName: "" },
+      };
+
+      dispatch(testActionsCreator.postTestList(data));
+      // dispatch(GroupActionCreator.getAllTestCases());
+    }
   }, [activeTab]);
 
   let response = useSelector((state) => state.groupReducer.response);
   let responsePost = useSelector((state) => state.groupReducer.responsePost);
   const loading = useSelector((state) => state.groupReducer.loading);
+  let testResponse = useSelector((state) => state.testReducer.responsePost);
 
   const createGroup = (e) => {
     e.preventDefault();
@@ -285,7 +298,6 @@ const Groups = () => {
                         responsePost.map((item, key) => {
                           return (
                             <tr key={key}>
-                              {/* {console.log(item.emailListName)} */}
                               <td>
                                 <a href="/emailLists">{item.siteGroupName}</a>
                               </td>
@@ -296,7 +308,6 @@ const Groups = () => {
                               <td onClick={() => setCrone(true)}>
                                 <AccessTimeIcon />
                               </td>
-                              {/* <td>{item.dateModified}</td> */}
                               <td style={{ width: "55%" }}>
                                 <div className="row">
                                   <div className="col-md-2">
@@ -383,7 +394,7 @@ const Groups = () => {
                     </tbody>
                   </table>
                 </CTabPane>
-                <CTabPane visible={activeTab === 1} value={1}>
+                {/* <CTabPane visible={activeTab === 1} value={1}>
                   <table className="table">
                     <thead>
                       <tr>
@@ -398,15 +409,101 @@ const Groups = () => {
                             <td>
                               <a href="/emailLists">{item.testName}</a>
                             </td>
-                            {/* <td>
-                              <DeleteOutlineIcon /> <EditIcon />
-                            </td>
-                            <td>
-                              <ArrowUpwardIcon /> <ArrowDownwardIcon />
-                            </td> */}
+                         
                           </tr>
                         );
                       })}
+                    </tbody>
+                  </table>
+                </CTabPane> */}
+                <CTabPane visible={activeTab == 1}>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Test Name</th>
+                        {/* <th>Steps</th> */}
+                        <th>Executed by</th>
+                        <th>Date executed</th>
+                        <th>Schedule</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {console.log(responsePost)}
+                      {testResponse &&
+                        testResponse.map((item, key) => {
+                          return (
+                            <tr key={key}>
+                              {/* {console.log(item.emailListName)} */}
+                              <td>
+                                <a href="/tests">{item.testName}</a>
+                              </td>
+                              <td>{item.emailListName}</td>
+                              {/* <td>{item.emailListName}</td> */}
+                              <td>{item.dateModified}</td>
+                              <td onClick={() => setCrone(true)}>
+                                <AccessTimeIcon />
+                              </td>
+
+                              <td style={{ width: "55%" }}>
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <CSelect
+                                      custom
+                                      size="sm"
+                                      name="selectScrshot"
+                                      id="SelectLm"
+                                      onChange={(e) =>
+                                        updateScreenshot(
+                                          e.target.value,
+                                          item.testCaseId
+                                        )
+                                      }
+                                    >
+                                      <option value="0">Scr Shot</option>
+                                      <option value="fail">Fail</option>
+                                      <option value="eachstep">
+                                        Each step
+                                      </option>
+                                      <option value="never">Never</option>
+                                    </CSelect>
+                                  </div>
+                                  <div className="col-md-3">
+                                    <CSelect
+                                      custom
+                                      size="sm"
+                                      name="selectScrshot"
+                                      id="SelectLm"
+                                      onChange={(e) =>
+                                        updateExec(
+                                          e.target.value,
+                                          item.testCaseId
+                                        )
+                                      }
+                                    >
+                                      <option value="0">Exec mode</option>
+                                      <option value="none">None</option>
+                                      <option value="sequential">
+                                        Sequential
+                                      </option>
+                                      <option value="concurrent">
+                                        Concurrent
+                                      </option>
+                                    </CSelect>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <PlayArrowIcon style={{ color: "green" }} />{" "}
+                                    &nbsp;&nbsp;
+                                    <EditIcon /> &nbsp;
+                                    <DeleteOutlineIcon
+                                      style={{ color: "red" }}
+                                    />
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </CTabPane>
