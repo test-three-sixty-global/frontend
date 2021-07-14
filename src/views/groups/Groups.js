@@ -31,6 +31,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import { SettingsCellRounded } from "@material-ui/icons";
 import { CroneLists } from "../crone/crone";
 import { ModalBody } from "reactstrap";
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -325,7 +326,7 @@ const Groups = () => {
                                 <a href="/emailLists">{item.siteGroupName}</a>
                               </td>
                               <td>
-                                <a href="/groups">View</a>
+                                <a href="#/groups">View</a>
                               </td>
                               <td>{item.dateModified}</td>
                               <td> 
@@ -533,10 +534,25 @@ const Groups = () => {
                                       </option>
                                     </CSelect>
                                   </div>
-                                  <div className="col-md-2">
+                                  <div className="col-md-1">
+                                    <input
+                                      style={{ width: "100%" }}
+                                      type="number"
+                                      value={frequency}
+                                      onChange={(e) =>
+                                        updateFrequency(
+                                          e.target.value,
+                                          item.siteGroupId,
+                                          key
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col-md-3">
                                     <PlayArrowIcon style={{ color: "green" }} />{" "}
                                     &nbsp;&nbsp;
                                     <EditIcon /> &nbsp;
+                                    <FileCopyIcon/>
                                     <DeleteOutlineIcon
                                       style={{ color: "red" }}
                                     />
