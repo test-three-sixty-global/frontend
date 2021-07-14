@@ -19,7 +19,7 @@ export const postGroup = createAsyncThunk("group/post", async (data = {}) => {
   groupData.path = apiUrl.postGroup();
   groupData.csrf = authHeader();
   const response = await Api.post(groupData);
-  return response.data.payload;
+  return response.data;
 });
 export const postGroupList = createAsyncThunk(
   "groupList/post",

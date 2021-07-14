@@ -12,6 +12,8 @@ const groupSlice = createSlice({
     GroupTestCases: null,
     groupTestSteps: null,
     alltestCases: null,
+    postGroup: null,
+    postGroupStatus: ""
   },
   reducers: {},
   extraReducers: {
@@ -33,16 +35,16 @@ const groupSlice = createSlice({
     // postGroup
     [groupActionCreator.postGroup.pending]: (state) => {
       state.loading = true;
-      state.responsePost = null;
+      state.postGroup = null;
     },
     [groupActionCreator.postGroup.fulfilled]: (state, action) => {
       state.loading = false;
-      state.responsePost = action.payload;
-      // state.status = action.payload.status
+      state.postGroup = action.payload;
+      state.postGroupStatus = action.payload.status
     },
     [groupActionCreator.postGroup.rejected]: (state) => {
       state.loading = false;
-      state.responsePost = null;
+      state.postGroup = null;
     },
 
     // postGroupList
