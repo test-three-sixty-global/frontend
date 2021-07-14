@@ -50,15 +50,15 @@ const _nav = [
       // text: 'NEW',
     },
   },
-  // {
-  //   _tag: 'CSidebarNavItem',
-  //   name: 'Tests',
-  //   to: '/tests',
-  //   icon: <NotesIcon className="c-sidebar-nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //   }
-  // },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Tests",
+    to: "/tests",
+    icon: <NotesIcon className="c-sidebar-nav-icon" />,
+    badge: {
+      color: "info",
+    },
+  },
   {
     _tag: "CSidebarNavItem",
     name: "Email Lists",
