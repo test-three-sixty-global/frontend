@@ -1,84 +1,83 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
-import BusinessIcon from '@material-ui/icons/Business';
-import GroupIcon from '@material-ui/icons/Group';
-import NotesIcon from '@material-ui/icons/Notes';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import TextsmsIcon from '@material-ui/icons/Textsms';
-import PersonIcon from '@material-ui/icons/Person';
-import HttpsIcon from '@material-ui/icons/Https';
+import React from "react";
+import CIcon from "@coreui/icons-react";
+import BusinessIcon from "@material-ui/icons/Business";
+import GroupIcon from "@material-ui/icons/Group";
+import NotesIcon from "@material-ui/icons/Notes";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import TextsmsIcon from "@material-ui/icons/Textsms";
+import PersonIcon from "@material-ui/icons/Person";
+import HttpsIcon from "@material-ui/icons/Https";
 // import { AccessAlarm, BusinessIcon } from '@material-ui/icons';
 
-const _nav =  [
+const _nav = [
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Dashboard',
-    to: '/dashboard',
-    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+    _tag: "CSidebarNavItem",
+    name: "Dashboard",
+    to: "/dashboard",
+    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
     badge: {
-      color: 'info',
+      color: "info",
       // text: 'NEW',
-    }
+    },
   },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Organization',
-    to: '/organization',
-    icon: <BusinessIcon className="c-sidebar-nav-icon"/>,
+    _tag: "CSidebarNavItem",
+    name: "Organization",
+    to: "/organization",
+    icon: <BusinessIcon className="c-sidebar-nav-icon" />,
     badge: {
-      color: 'info',
+      color: "info",
       // text: 'NEW',
-    }
+    },
   },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Project',
-    to: '/site',
-    icon: 'cil-user',
+    _tag: "CSidebarNavItem",
+    name: "Project",
+    to: "/site",
+    icon: "cil-user",
     badge: {
-      color: 'info',
+      color: "info",
       // text: 'NEW',
-    }
+    },
   },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Groups',
-    to: '/groups',
+    _tag: "CSidebarNavItem",
+    name: "Groups",
+    to: "/groups",
     icon: <GroupIcon className="c-sidebar-nav-icon" />,
     badge: {
-      color: 'info',
+      color: "info",
       // text: 'NEW',
-    }
+    },
   },
+  // {
+  //   _tag: 'CSidebarNavItem',
+  //   name: 'Tests',
+  //   to: '/tests',
+  //   icon: <NotesIcon className="c-sidebar-nav-icon" />,
+  //   badge: {
+  //     color: 'info',
+  //   }
+  // },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Tests',
-    to: '/tests',
-    icon: <NotesIcon className="c-sidebar-nav-icon" />,
-    badge: {
-      color: 'info',
-      // text: 'NEW',
-    }
-  },
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'Email Lists',
-    to: '/emailLists',
+    _tag: "CSidebarNavItem",
+    name: "Email Lists",
+    to: "/emailLists",
     icon: <DraftsIcon className="c-sidebar-nav-icon" />,
     badge: {
-      color: 'info',
+      color: "info",
       // text: 'NEW',
-    }
+    },
   },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'SMS Lists',
-    to: '/smsLists',
+    _tag: "CSidebarNavItem",
+    name: "SMS Lists",
+    to: "/smsLists",
     icon: <TextsmsIcon className="c-sidebar-nav-icon" />,
     badge: {
-      color: 'info',
+      color: "info",
       // text: 'NEW',
-    }
+    },
   },
   // {
   //   _tag: 'CSidebarNavItem',
@@ -91,24 +90,24 @@ const _nav =  [
   //   }
   // },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'User',
-    to: '/user',
+    _tag: "CSidebarNavItem",
+    name: "User",
+    to: "/user",
     icon: <PersonIcon className="c-sidebar-nav-icon" />,
     badge: {
-      color: 'info',
+      color: "info",
       // text: 'NEW',
-    }
+    },
   },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Roles',
-    to: '/roles',
+    _tag: "CSidebarNavItem",
+    name: "Roles",
+    to: "/roles",
     icon: <HttpsIcon className="c-sidebar-nav-icon" />,
     badge: {
-      color: 'info',
+      color: "info",
       // text: 'NEW',
-    }
+    },
   },
 
   // {
@@ -406,6 +405,6 @@ const _nav =  [
   //   _tag: 'CSidebarNavDivider',
   //   className: 'm-2'
   // }
-]
+];
 
-export default _nav
+export default _nav;

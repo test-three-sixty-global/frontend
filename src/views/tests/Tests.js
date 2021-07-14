@@ -59,7 +59,7 @@ const Tests = () => {
     // activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
   }, [activeTab]);
 
-  let response = useSelector((state) => state.groupReducer.response);
+  let response = useSelector((state) => state.groupReducer.responsePost);
   let responsePost = useSelector((state) => state.testReducer.responsePost);
   let responseCreate = useSelector((state) => state.testReducer.responseCreate);
   const loading = useSelector((state) => state.groupReducer.loading);
