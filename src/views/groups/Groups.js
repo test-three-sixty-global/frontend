@@ -13,6 +13,7 @@ import {
   CCardHeader,
   CLabel,
   CSelect,
+  CAlert
 } from "@coreui/react";
 import usersData from "../users/TestsData";
 
@@ -34,6 +35,7 @@ const Groups = () => {
   const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState(0);
+  const [visible, setVisible] = React.useState(5)
   const [style, setStyle] = useState("none");
   const [item, setItem] = useState([]);
   const [updateId, setUpdateId] = useState();
@@ -61,8 +63,10 @@ const Groups = () => {
         smsListName: "",
       },
     };
-    activeTab === 3 ||
-      (activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData()));
+    activeTab === 3 && dispatch(GroupActionCreator.getGroupInitialData())
+    activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData())
+    // activeTab === 3 ||
+    //   (activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData()));
     activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
     activeTab === 1 && dispatch(GroupActionCreator.getAllTestCases());
   }, [activeTab]);
@@ -70,6 +74,8 @@ const Groups = () => {
   let response = useSelector((state) => state.groupReducer.response);
   let responsePost = useSelector((state) => state.groupReducer.responsePost);
   const loading = useSelector((state) => state.groupReducer.loading);
+  const postGroup = useSelector((state) => state.groupReducer.postGroup);
+  const postGroupStatus = useSelector((state) => state.groupReducer.postGroupStatus);
 
   const createGroup = (e) => {
     e.preventDefault();
@@ -284,8 +290,8 @@ const Groups = () => {
                 </CNavItem>
               </CNav>
               <CTabContent>
-                <CTabPane visible={activeTab === 0}>
-                  <table className="table">
+                <CTabPane visible={activeTab === 0} aria-selected={activeTab === 0} aria-selected={activeTab !== 1}>
+                  {activeTab === 0 && <table className="table">
                     <thead>
                       <tr>
                         <th>Group Name</th>
@@ -402,7 +408,7 @@ const Groups = () => {
                           );
                         })}
                     </tbody>
-                  </table>
+                  </table>}
                 </CTabPane>
                 <CTabPane visible={activeTab === 1} value={1}>
                   <table className="table">
@@ -464,10 +470,13 @@ const Groups = () => {
                     </tbody>
                   </table>
                 </CTabPane>
-                <CTabPane visible={activeTab === 3}>
+                <CTabPane>
                   <Container component="main" maxWidth="xs">
                     <div>
-                      {/* {console.log("response",response)} */}
+                    {postGroupStatus === "OK" &&
+                      <CAlert color="success" style={{marginTop: "15px"}} show={visible} closeButton>
+                        Success
+                      </CAlert>}
                       {!loading ? (
                         response && (
                           <form onSubmit={(data) => createGroup(data)}>
@@ -480,7 +489,7 @@ const Groups = () => {
                               label="Group Name"
                               name="groupName"
                               autoFocus
-                              value={formValues.siteGroupName}
+                              value={postGroupStatus === "OK" ? "" :formValues.siteGroupName}
                               onChange={set("siteGroupName")}
                             />
                             <div className="form-padding">
@@ -557,14 +566,13 @@ const Groups = () => {
                     </div>
                   </Container>
                 </CTabPane>
-                <CTabPane visible={activeTab === 4}>
+                <CTabPane visible={activeTab === 4} aria-selected={activeTab === 4} aria-selected={activeTab !== 4}>
                   <Container component="main" maxWidth="xs">
-                    <div>
+                   { activeTab === 4 && <div>
                       {/* {console.log("response",response)} */}
                       {!loading ? (
                         response && (
                           <form onSubmit={(data) => editGroup(data)}>
-                            {console.log(item)}
                             <TextField
                               variant="outlined"
                               margin="normal"
@@ -589,7 +597,7 @@ const Groups = () => {
                                 id="SelectLm"
                                 onChange={set("emailAddressListId")}
                               >
-                                <option value={item.emailAddressListId}>
+                                <option value={item.emailAddressListId} key={item.emailAddressListId}>
                                   {item.emailListName}
                                 </option>
                                 {response.emailList.map((item) => {
@@ -606,7 +614,7 @@ const Groups = () => {
                                 custom
                                 size="md"
                                 name="selectSms"
-                                id="SelectLm"
+                                id="SelectLm1"
                                 onChange={set("smsAlertListId")}
                               >
                                 <option value={item.smsAlertListId}>
@@ -614,7 +622,7 @@ const Groups = () => {
                                 </option>
                                 {response.smsList.map((item) => {
                                   return (
-                                    <option value={item.smsAlertListId}>
+                                    <option value={item.smsAlertListId} key={item.smsAlertListId}>
                                       {item.smsListName}
                                     </option>
                                   );
@@ -626,7 +634,7 @@ const Groups = () => {
                                 custom
                                 size="md"
                                 name="selectSite"
-                                id="SelectLm"
+                                id="SelectLm2"
                                 onChange={set("siteId")}
                               >
                                 <option value={item.siteId}>
@@ -634,7 +642,7 @@ const Groups = () => {
                                 </option>
                                 {response.siteList.map((item) => {
                                   return (
-                                    <option value={item.siteId}>
+                                    <option value={item.siteId} key={item.siteId}>
                                       {item.siteName}
                                     </option>
                                   );
@@ -681,7 +689,7 @@ const Groups = () => {
                           </td>
                         </tr>
                       )}
-                    </div>
+                    </div>}
                   </Container>
                 </CTabPane>
               </CTabContent>
