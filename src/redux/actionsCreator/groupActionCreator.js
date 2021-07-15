@@ -127,3 +127,29 @@ export const getAllTestSteps = createAsyncThunk(
     return response.data.payload;
   }
 );
+
+//get Allgroups
+
+export const getAllGroups = createAsyncThunk(
+  "group/getAllGroups",
+  async (data = {}) => {
+    let getAllGroups = {};
+    getAllGroups.path = apiUrl.getAllGroups();
+    getAllGroups.csrf = authHeader();
+    const response = await Api.fetch(getAllGroups);
+    return response.data.payload;
+  }
+);
+//clone test
+
+export const cloneTest = createAsyncThunk(
+  "group/cloneTest",
+  async (data = {}) => {
+    let cloneTest = {};
+    cloneTest.data = data;
+    cloneTest.path = apiUrl.cloneTest(data);
+    cloneTest.csrf = authHeader();
+    const response = await Api.post(cloneTest);
+    return response.data;
+  }
+);

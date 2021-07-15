@@ -37,5 +37,7 @@ export const apiUrl = {
   getGroupTestCases: (id) => `/groups/${id}/testcases`,
   getGroupTestStep: (id) => `/groups/${id}/testcasesteps`,
   getallTestCases: () => `/testcases`,
-  projectImediatelyPlay: () => `/play/immediate/groups/${id}`,
+  projectImediatelyPlay: (id) => `/play/immediate/groups/${id}`,
+  getAllGroups: () => `/groups`,
+  cloneTest: () => `/groups/testcase/clone`
 };
