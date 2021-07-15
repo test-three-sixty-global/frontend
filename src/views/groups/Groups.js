@@ -40,6 +40,8 @@ import { SettingsCellRounded } from "@material-ui/icons";
 import { CroneLists } from "../crone/crone";
 import { ModalBody } from "reactstrap";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import DownloadIcon from '@material-ui/icons/GetApp';
+import UploadIcon from '@material-ui/icons/Publish';
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -600,7 +602,7 @@ const Groups = () => {
                                         }
                                       />
                                     </div>
-                                    <div className="col-md-3">
+                                    <div className="col-md-4">
                                       <PlayArrowIcon
                                         style={{ color: "green" }}
                                       />{" "}
@@ -613,6 +615,8 @@ const Groups = () => {
                                       <DeleteOutlineIcon
                                         style={{ color: "red" }}
                                       />
+                                      <DownloadIcon/>
+                                      <UploadIcon/>
                                     </div>
                                   </div>
                                 </td>
