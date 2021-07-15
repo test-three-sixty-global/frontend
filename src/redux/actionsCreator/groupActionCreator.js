@@ -1,7 +1,12 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import Api from "../../services/httpService";
 import { apiUrl } from "src/constants/apiUrl";
 import { authHeader } from "../../constants/authHeader";
+import { baseUrl } from "../../constants/baseUrl";
+import { SuperService } from "../../services/superService";
+import { testBaseUrl } from "../../constants/baseUrl";
+
+const testApi = new SuperService(testBaseUrl);
+const Api = new SuperService(baseUrl);
 
 export const getGroupInitialData = createAsyncThunk(
   "group/getInitial",
@@ -107,6 +112,7 @@ export const getGroupTestSteps = createAsyncThunk(
 export const getAllTestCases = createAsyncThunk(
   "group/getAllTestCases",
   async (data = {}) => {
+    const API = new SuperService(baseUrl);
     let groupInitialData = {};
     groupInitialData.path = apiUrl.getallTestCases();
     groupInitialData.csrf = authHeader();
@@ -124,6 +130,19 @@ export const getAllTestSteps = createAsyncThunk(
     groupInitialData.path = apiUrl.getallTestCases();
     groupInitialData.csrf = authHeader();
     const response = await Api.fetch(groupInitialData);
+    return response.data.payload;
+  }
+);
+
+//start grouptest imediately
+
+export const projectGroupImediatelyPlay = createAsyncThunk(
+  "group/projectGroupImediatelyPlay",
+  async (data = {}) => {
+    let groupInitialData = {};
+    groupInitialData.path = apiUrl.projectImediatelyPlay(data);
+    groupInitialData.csrf = authHeader();
+    const response = await testApi.put(groupInitialData);
     return response.data.payload;
   }
 );

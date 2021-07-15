@@ -414,8 +414,15 @@ const Groups = () => {
                                     </div>
                                     <div className="col-md-2">
                                       <PlayArrowIcon
+                                        onClick={() =>
+                                          dispatch(
+                                            GroupActionCreator.projectGroupImediatelyPlay(
+                                              item.siteGroupId
+                                            )
+                                          )
+                                        }
                                         style={{ color: "green" }}
-                                      />{" "}
+                                      />
                                       &nbsp;&nbsp;
                                       <EditIcon
                                         onClick={() => {
