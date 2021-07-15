@@ -13,7 +13,7 @@ import {
   CCardHeader,
   CLabel,
   CSelect,
-  CAlert,
+  CAlert
 } from "@coreui/react";
 
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
@@ -21,7 +21,17 @@ import EditIcon from "@material-ui/icons/Edit";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import { Container, TextField, Button, Modal } from "@material-ui/core";
+import {
+  Container,
+  TextField,
+  Button,
+  Modal,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "../widgets/ui/loader";
 import * as GroupActionCreator from "../../redux/actionsCreator/groupActionCreator";
@@ -30,6 +40,8 @@ import { SettingsCellRounded } from "@material-ui/icons";
 import { CroneLists } from "../crone/crone";
 import { ModalBody } from "reactstrap";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import DownloadIcon from '@material-ui/icons/GetApp';
+import UploadIcon from '@material-ui/icons/Publish';
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -41,12 +53,16 @@ const Groups = () => {
   const [updateId, setUpdateId] = useState();
   const [frequency, setFrequency] = useState(1);
   const [crone, setCrone] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [testName, setTestName] = useState('');
+  const [cloneGroup, setCloneGroup] = useState('');
+  const [testId, setTestId] = useState('');
 
   const [formValues, setFormValues] = useState({
     siteGroupName: "",
     emailAddressListId: 0,
     smsAlertListId: 0,
-    siteId: 0,
+    siteId: 0
   });
 
   useEffect(() => {
@@ -59,8 +75,8 @@ const Groups = () => {
         projectName: "",
         testCaseName: "",
         emailList: "",
-        smsListName: "",
-      },
+        smsListName: ""
+      }
     };
     activeTab === 3 && dispatch(GroupActionCreator.getGroupInitialData());
     activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData());
@@ -69,54 +85,53 @@ const Groups = () => {
     activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
   }, [activeTab]);
 
-  let response = useSelector((state) => state.groupReducer.response);
-  let responsePost = useSelector((state) => state.groupReducer.responsePost);
-  const loading = useSelector((state) => state.groupReducer.loading);
-  let testResponse = useSelector((state) => state.testReducer.responsePost);
-  const postGroup = useSelector((state) => state.groupReducer.postGroup);
-  const groupTestCases = useSelector(
-    (state) => state.groupReducer.groupTestCases
-  );
+  let response = useSelector(state => state.groupReducer.response);
+  let responsePost = useSelector(state => state.groupReducer.responsePost);
+  const loading = useSelector(state => state.groupReducer.loading);
+  let testResponse = useSelector(state => state.testReducer.responsePost);
+  const getAllGroups = useSelector(state => state.groupReducer.getAllGroups);
+  const groupTestCases = useSelector(state => state.groupReducer.GroupTestCases);
+  const cloneTest = useSelector(state => state.groupReducer.cloneTest);
   const postGroupStatus = useSelector(
-    (state) => state.groupReducer.postGroupStatus
+    state => state.groupReducer.postGroupStatus
   );
 
-  const createGroup = (e) => {
+  const createGroup = e => {
     e.preventDefault();
     dispatch(GroupActionCreator.postGroup(formValues));
   };
-  const editGroup = (e) => {
+  const editGroup = e => {
     e.preventDefault();
     let form = {
       siteGroupName: formValues.siteGroupName,
       emailAddressListId: formValues.emailAddressListId,
       smsAlertListId: formValues.smsAlertListId,
-      siteId: formValues.siteId,
+      siteId: formValues.siteId
     };
     let data = {
       formValues: form,
-      id: updateId,
+      id: updateId
     };
     dispatch(GroupActionCreator.updateGroup(data));
   };
 
-  const set = (name) => {
+  const set = name => {
     return ({ target: { value } }) => {
-      setFormValues((oldValues) => ({ ...oldValues, [name]: value }));
+      setFormValues(oldValues => ({ ...oldValues, [name]: value }));
     };
   };
 
   const updateScreenshot = (value, id) => {
     let data = {
       data: { screenShotOption: value },
-      id: id,
+      id: id
     };
     dispatch(GroupActionCreator.updateGroupScreenshot(data));
   };
   const updateExec = (value, id) => {
     let data = {
       data: { executionType: value },
-      id: id,
+      id: id
     };
     dispatch(GroupActionCreator.updateGroupExec(data));
   };
@@ -125,112 +140,74 @@ const Groups = () => {
       setFrequency();
       let data = {
         data: { frequency: value },
-        id: id,
+        id: id
       };
       dispatch(GroupActionCreator.updateGroupFrequency(data));
     }
   };
-  const [array, setArray] = useState([
-    {
-      emailListId: 2,
-      emailListName: "Test Postman ",
-      emailList: "a@a.com;b@b.com;c@c.com",
-      dateCreated: "2021-05-26T14:30:10.000+00:00",
-      dateModified: "2021-05-26T15:01:38.000+00:00",
-      createdBy: 1,
-      modifiedBy: 1,
-      organizationId: 1,
-    },
-    {
-      emailListId: 3,
-      emailListName: "Test Postman 2",
-      emailList: "a@a.com;b@b.com",
-      dateCreated: "2021-05-26T14:45:33.000+00:00",
-      dateModified: "2021-05-26T14:46:27.000+00:00",
-      createdBy: 1,
-      modifiedBy: 1,
-      organizationId: 1,
-    },
-  ]);
-  const [test, setTest] = useState([
-    {
-      testName: "Login",
-      order: "1",
-      dateCreated: "2021-02-26T14:45:33.000+00:00",
-      createdby: "Wasif",
-      lastExecuted: "Gul",
-      status: "Pass",
-    },
-    {
-      testName: "Login with username",
-      order: "2",
-      dateCreated: "2021-05-26T14:45:33.000+00:00",
-      createdby: "Nauman",
-      lastExecuted: "Nauman",
-      status: "Pass",
-    },
-    {
-      testName: "Login without password",
-      order: "3",
-      dateCreated: "2021-01-26T14:22:33.000+00:00",
-      createdby: "Gul",
-      lastExecuted: "Rehan",
-      status: "Fail",
-    },
-    {
-      testName: "Login with wrong username",
-      order: "4",
-      dateCreated: "2021-04-26T14:45:33.000+00:00",
-      createdby: "Rehan",
-      lastExecuted: "Rehan",
-      status: "Fail",
-    },
-  ]);
+
+  useEffect(() => {
+    openDialog && dispatch(GroupActionCreator.getAllGroups())
+  }, [openDialog])
+
+  useEffect(() => {
+    cloneTest?.status && setOpenDialog(false)
+  }, [cloneTest])
+
+  const cloneTestCase = () => {
+    const data = {
+      siteGroupId: cloneGroup,
+      testName: testName,
+      testCaseId: testId
+    }
+    dispatch(GroupActionCreator.cloneTest(data))
+  }
+
   const [testSteps, setTestSteps] = useState([
     {
       steps: "open | https://www.tonerprice.com/ | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "click | link=Log in | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "type | id=email | jayantar@test.net",
-      override: "type | id=email | abcdde@test.net",
+      override: "type | id=email | abcdde@test.net"
     },
     {
       steps: "click | id=pass | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "type | id=pass | 123456",
-      override: "type | id=pass | abcdefg",
+      override: "type | id=pass | abcdefg"
     },
     {
       steps: "click | //button[@id='send2']/span/span | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "click | //p/strong | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "click | //p/strong | ",
-      override: "-",
+      override: "-"
     },
     {
       steps: "verifyText | //p/strong | Hello, Jayantar Roy!",
-      override: "-",
-    },
+      override: "-"
+    }
   ]);
 
-  const getGroupTestSteps = (id) => {
+  const getGroupTestSteps = id => {
     dispatch(GroupActionCreator.getGroupTestSteps(id));
     setActiveTab(2);
   };
 
-  const getGroupTestCases = (id) => {
+  const getGroupTestCases = id => {
     dispatch(GroupActionCreator.getGroupTestCases(id));
     setActiveTab(1);
   };
@@ -246,7 +223,7 @@ const Groups = () => {
           <CCardBody>
             <CTabs>
               <CNav variant="tabs">
-                <CNavItem onClick={(e) => setActiveTab(0)}>
+                <CNavItem onClick={e => setActiveTab(0)}>
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 0}
@@ -256,7 +233,7 @@ const Groups = () => {
                 </CNavItem>
                 <CNavItem
                   className={activeTab === 1 ? "" : "d-none"}
-                  onClick={(e) => setActiveTab(1)}
+                  onClick={e => setActiveTab(1)}
                 >
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
@@ -265,7 +242,7 @@ const Groups = () => {
                     Test
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={(e) => setActiveTab(2)}>
+                <CNavItem onClick={e => setActiveTab(2)}>
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 2}
@@ -273,7 +250,7 @@ const Groups = () => {
                     Tests Steps
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={(e) => setActiveTab(3)}>
+                <CNavItem onClick={e => setActiveTab(3)}>
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 3}
@@ -282,7 +259,7 @@ const Groups = () => {
                   </CNavLink>
                 </CNavItem>
                 <CNavItem
-                  onClick={(e) => setActiveTab(4)}
+                  onClick={e => setActiveTab(4)}
                   style={{ display: style }}
                 >
                   <CNavLink
@@ -320,7 +297,7 @@ const Groups = () => {
                                 <td
                                   style={{
                                     color: "#1088BB",
-                                    cursor: "pointer",
+                                    cursor: "pointer"
                                   }}
                                 >
                                   {item.siteGroupName}
@@ -328,7 +305,7 @@ const Groups = () => {
                                 <td
                                   style={{
                                     color: "#1088BB",
-                                    cursor: "pointer",
+                                    cursor: "pointer"
                                   }}
                                   onClick={() => {
                                     dispatch(
@@ -360,7 +337,7 @@ const Groups = () => {
                                         size="sm"
                                         name="selectScrshot"
                                         id="SelectLm"
-                                        onChange={(e) =>
+                                        onChange={e =>
                                           updateScreenshot(
                                             e.target.value,
                                             item.siteGroupId
@@ -381,7 +358,7 @@ const Groups = () => {
                                         size="sm"
                                         name="selectScrshot"
                                         id="SelectLm"
-                                        onChange={(e) =>
+                                        onChange={e =>
                                           updateExec(
                                             e.target.value,
                                             item.siteGroupId
@@ -403,7 +380,7 @@ const Groups = () => {
                                         style={{ width: "100%" }}
                                         type="number"
                                         value={frequency}
-                                        onChange={(e) =>
+                                        onChange={e =>
                                           updateFrequency(
                                             e.target.value,
                                             item.siteGroupId,
@@ -447,11 +424,107 @@ const Groups = () => {
                     </table>
                   )}
                 </CTabPane>
+                {/* Group Listing End */}
+                {/* Test Tab */}
                 <CTabPane
                   visible={activeTab == 1}
                   className={activeTab === 1 ? " active fade show" : "d-none"}
                 >
+                  <div className="row">
+                    {/* Dialog */}
+                    <Dialog
+                      open={openDialog}
+                      onClose={() => setOpenDialog(false)}
+                      aria-labelledby="form-dialog-title"
+                    >
+                      <DialogTitle id="form-dialog-title">
+                        Clone test case
+                      </DialogTitle>
+                      <DialogContent>
+                        <div className="col-md-12">
+                         { responsePost && <form
+                            style={{ minHeight: "30vh" }}
+                          >
+                            <CSelect
+                              custom
+                              size="md"
+                              name="selectScrshot"
+                              id="SelectLm"
+                              onChange={(e) => setCloneGroup(e.target.value)}
+                            >
+                              <option value="0">Select group</option>
+                              {responsePost && responsePost.length && responsePost.map(item => {
+                                  return (
+                                    <option
+                                      value={item.siteGroupId}
+                                      key={item.siteGroupId}
+                                    >
+                                      {item.siteGroupName}
+                                    </option>
+                                  );
+                                })}
+                            </CSelect>
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="testName"
+                              label="Test name"
+                              // type="email"
+                              variant="outlined"
+                              fullWidth
+                              style={{marginTop: "15px"}}
+                              autoComplete={false}
+                              value={testName}
+                              onChange={(e) => setTestName(e.target.value)}
+                            />
+                          </form>}
+                        </div>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button variant="contained" color="secondary" onClick={() => setOpenDialog(false)}>
+                          Cancel
+                        </Button>
+                        <Button variant="contained" color="primary" onClick={() => cloneTestCase()}>
+                          Clone
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                    {/* Dialog END */}
+
+                    <div
+                      className="ml-auto mr-3"
+                      style={{ marginTop: "10px", marginBottom: "10px" }}
+                    >
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => setActiveTab(0)}
+                      >
+                        Close
+                      </Button>
+                      {/* <Button
+                        size="small"
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => setOpenDialog(true)}
+                      >
+                        Test
+                      </Button> */}
+                    </div>
+                  </div>
+                  {cloneTest?.status === "OK" && (
+                        <CAlert
+                          color="success"
+                          style={{ marginTop: "15px" }}
+                          show={visible}
+                          closeButton
+                        >
+                          Test Clone successfuly
+                        </CAlert>
+                      )}
                   <table className="table">
+                 
                     <thead>
                       <tr>
                         <th>Test Name</th>
@@ -462,6 +535,7 @@ const Groups = () => {
                       </tr>
                     </thead>
                     <tbody>
+                      {console.log("groupTestCases",groupTestCases)}
                       {activeTab === 1 && groupTestCases?.length
                         ? groupTestCases.map((item, key) => {
                             return (
@@ -483,7 +557,7 @@ const Groups = () => {
                                         size="sm"
                                         name="selectScrshot"
                                         id="SelectLm"
-                                        onChange={(e) =>
+                                        onChange={e =>
                                           updateScreenshot(
                                             e.target.value,
                                             item.testCaseId
@@ -504,7 +578,7 @@ const Groups = () => {
                                         size="sm"
                                         name="selectScrshot"
                                         id="SelectLm"
-                                        onChange={(e) =>
+                                        onChange={e =>
                                           updateExec(
                                             e.target.value,
                                             item.testCaseId
@@ -526,7 +600,7 @@ const Groups = () => {
                                         style={{ width: "100%" }}
                                         type="number"
                                         value={frequency}
-                                        onChange={(e) =>
+                                        onChange={e =>
                                           updateFrequency(
                                             e.target.value,
                                             item.siteGroupId,
@@ -535,16 +609,21 @@ const Groups = () => {
                                         }
                                       />
                                     </div>
-                                    <div className="col-md-3">
+                                    <div className="col-md-4">
                                       <PlayArrowIcon
                                         style={{ color: "green" }}
                                       />{" "}
                                       &nbsp;&nbsp;
                                       <EditIcon /> &nbsp;
-                                      <FileCopyIcon />
+                                      <FileCopyIcon onClick={() => {
+                                        setOpenDialog(true)
+                                        setTestId(item.siteGroupTestId)
+                                        }} />
                                       <DeleteOutlineIcon
                                         style={{ color: "red" }}
                                       />
+                                      <DownloadIcon/>
+                                      <UploadIcon/>
                                     </div>
                                   </div>
                                 </td>
@@ -610,7 +689,7 @@ const Groups = () => {
                       )}
                       {!loading ? (
                         response && (
-                          <form onSubmit={(data) => createGroup(data)}>
+                          <form onSubmit={data => createGroup(data)}>
                             <TextField
                               variant="outlined"
                               margin="normal"
@@ -635,7 +714,7 @@ const Groups = () => {
                                 onChange={set("emailAddressListId")}
                               >
                                 <option value="0">Please select email</option>
-                                {response.emailList.map((item) => {
+                                {response.emailList.map(item => {
                                   return (
                                     <option value={item.emailListId}>
                                       {item.emailListName}
@@ -653,7 +732,7 @@ const Groups = () => {
                                 onChange={set("smsAlertListId")}
                               >
                                 <option value="0">Please select sms</option>
-                                {response.smsList.map((item) => {
+                                {response.smsList.map(item => {
                                   return (
                                     <option value={item.smsAlertListId}>
                                       {item.smsListName}
@@ -671,7 +750,7 @@ const Groups = () => {
                                 onChange={set("siteId")}
                               >
                                 <option value="0">Please select site</option>
-                                {response.siteList.map((item) => {
+                                {response.siteList.map(item => {
                                   return (
                                     <option value={item.siteId}>
                                       {item.siteName}
@@ -710,7 +789,7 @@ const Groups = () => {
                     <div>
                       {!loading ? (
                         response && (
-                          <form onSubmit={(data) => editGroup(data)}>
+                          <form onSubmit={data => editGroup(data)}>
                             <TextField
                               variant="outlined"
                               margin="normal"
@@ -740,7 +819,7 @@ const Groups = () => {
                                 >
                                   {item.emailListName}
                                 </option>
-                                {response.emailList.map((item) => {
+                                {response.emailList.map(item => {
                                   return (
                                     <option value={item.emailListId}>
                                       {item.emailListName}
@@ -760,7 +839,7 @@ const Groups = () => {
                                 <option value={item.smsAlertListId}>
                                   {item.smsListName}
                                 </option>
-                                {response.smsList.map((item) => {
+                                {response.smsList.map(item => {
                                   return (
                                     <option
                                       value={item.smsAlertListId}
@@ -783,7 +862,7 @@ const Groups = () => {
                                 <option value={item.siteId}>
                                   {item.siteName}
                                 </option>
-                                {response.siteList.map((item) => {
+                                {response.siteList.map(item => {
                                   return (
                                     <option
                                       value={item.siteId}
@@ -816,7 +895,7 @@ const Groups = () => {
                                   siteGroupName: "",
                                   emailAddressListId: 0,
                                   smsAlertListId: 0,
-                                  siteId: 0,
+                                  siteId: 0
                                 });
                               }}
                             >

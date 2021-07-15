@@ -14,6 +14,8 @@ const groupSlice = createSlice({
     alltestCases: null,
     postGroup: null,
     postGroupStatus: "",
+    getAllGroups: null,
+    cloneTest: null
     projectGroupImediatelyPlayStatus: null,
   },
   reducers: {},
@@ -137,6 +139,7 @@ const groupSlice = createSlice({
       state.GroupTestCases = null;
     },
     [groupActionCreator.getGroupTestCases.fulfilled]: (state, action) => {
+      console.log(action)
       state.loading = false;
       state.GroupTestCases = action.payload;
       // state.status = action.payload.status
@@ -175,6 +178,36 @@ const groupSlice = createSlice({
       state.alltestCases = null;
     },
 
+
+    // get all groups
+    [groupActionCreator.getAllGroups.pending]: (state) => {
+      state.loading = true;
+      state.getAllGroups = null;
+    },
+    [groupActionCreator.getAllGroups.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.getAllGroups = action.payload;
+      // state.status = action.payload.status
+    },
+    [groupActionCreator.getAllGroups.rejected]: (state) => {
+      state.loading = false;
+      state.getAllGroups = null;
+    },
+    
+    // clone test
+    [groupActionCreator.cloneTest.pending]: (state) => {
+      state.loading = true;
+      state.cloneTest = null;
+    },
+    [groupActionCreator.cloneTest.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.loading = false;
+      state.cloneTest = action.payload;
+      // state.status = action.payload.status
+    },
+    [groupActionCreator.cloneTest.rejected]: (state) => {
+      state.loading = false;
+      state.cloneTest = null;
     // get group test step
     [groupActionCreator.projectGroupImediatelyPlay.pending]: (
       state,
