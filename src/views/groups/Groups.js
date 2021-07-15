@@ -13,7 +13,7 @@ import {
   CCardHeader,
   CLabel,
   CSelect,
-  CAlert
+  CAlert,
 } from "@coreui/react";
 import usersData from "../users/TestsData";
 import * as testActionsCreator from "../../redux/actionsCreator/testActionCreator";
@@ -31,13 +31,13 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import { SettingsCellRounded } from "@material-ui/icons";
 import { CroneLists } from "../crone/crone";
 import { ModalBody } from "reactstrap";
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 const Groups = () => {
   const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState(0);
-  const [visible, setVisible] = React.useState(5)
+  const [visible, setVisible] = React.useState(5);
   const [style, setStyle] = useState("none");
   const [item, setItem] = useState([]);
   const [updateId, setUpdateId] = useState();
@@ -65,8 +65,8 @@ const Groups = () => {
         smsListName: "",
       },
     };
-    activeTab === 3 && dispatch(GroupActionCreator.getGroupInitialData())
-    activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData())
+    activeTab === 3 && dispatch(GroupActionCreator.getGroupInitialData());
+    activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData());
     // activeTab === 3 ||
     //   (activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData()));
     activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
@@ -89,7 +89,9 @@ const Groups = () => {
   const loading = useSelector((state) => state.groupReducer.loading);
   let testResponse = useSelector((state) => state.testReducer.responsePost);
   const postGroup = useSelector((state) => state.groupReducer.postGroup);
-  const postGroupStatus = useSelector((state) => state.groupReducer.postGroupStatus);
+  const postGroupStatus = useSelector(
+    (state) => state.groupReducer.postGroupStatus
+  );
 
   const createGroup = (e) => {
     e.preventDefault();
@@ -172,7 +174,7 @@ const Groups = () => {
       dateCreated: "2021-02-26T14:45:33.000+00:00",
       createdby: "Wasif",
       lastExecuted: "Gul",
-      status: "Pass"
+      status: "Pass",
     },
     {
       testName: "Login with username",
@@ -180,7 +182,7 @@ const Groups = () => {
       dateCreated: "2021-05-26T14:45:33.000+00:00",
       createdby: "Nauman",
       lastExecuted: "Nauman",
-      status: "Pass"
+      status: "Pass",
     },
     {
       testName: "Login without password",
@@ -188,7 +190,7 @@ const Groups = () => {
       dateCreated: "2021-01-26T14:22:33.000+00:00",
       createdby: "Gul",
       lastExecuted: "Rehan",
-      status: "Fail"
+      status: "Fail",
     },
     {
       testName: "Login with wrong username",
@@ -196,7 +198,7 @@ const Groups = () => {
       dateCreated: "2021-04-26T14:45:33.000+00:00",
       createdby: "Rehan",
       lastExecuted: "Rehan",
-      status: "Fail"
+      status: "Fail",
     },
   ]);
   const [testSteps, setTestSteps] = useState([
@@ -304,123 +306,134 @@ const Groups = () => {
                 </CNavItem>
               </CNav>
               <CTabContent>
-                <CTabPane visible={activeTab === 0} aria-selected={activeTab === 0} aria-selected={activeTab !== 1}>
-                  {activeTab === 0 && <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Group Name</th>
-                        <th>Tests</th>
-                        <th>Last execution date</th>
-                        <th>Status</th>
+                <CTabPane
+                  visible={activeTab === 0}
+                  aria-selected={activeTab === 0}
+                  aria-selected={activeTab !== 1}
+                >
+                  {activeTab === 0 && (
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Group Name</th>
+                          <th>Tests</th>
+                          <th>Last execution date</th>
+                          <th>Status</th>
 
-                        <th>Schedule</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {responsePost &&
-                        responsePost.map((item, key) => {
-                          return (
-                            <tr key={key}>
-                              <td>
-                                <a href="/emailLists">{item.siteGroupName}</a>
-                              </td>
-                              <td>
-                                <a href="#/groups">View</a>
-                              </td>
-                              <td>{item.dateModified}</td>
-                              <td> 
-                                <span style={{color: "green"}}>Pass = 2</span>, 
-                                <span style={{color: "red"}}>fail = 2</span>
-                              </td>
-                              <td onClick={() => setCrone(true)}>
-                                <AccessTimeIcon />
-                              </td>
-                              <td style={{ width: "55%" }}>
-                                <div className="row">
-                                  <div className="col-md-2">
-                                    <CSelect
-                                      custom
-                                      size="sm"
-                                      name="selectScrshot"
-                                      id="SelectLm"
-                                      onChange={(e) =>
-                                        updateScreenshot(
-                                          e.target.value,
-                                          item.siteGroupId
-                                        )
-                                      }
-                                    >
-                                      <option value="0">Scr Shot</option>
-                                      <option value="fail">Fail</option>
-                                      <option value="eachstep">
-                                        Each step
-                                      </option>
-                                      <option value="never">Never</option>
-                                    </CSelect>
+                          <th>Schedule</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {responsePost &&
+                          responsePost.map((item, key) => {
+                            return (
+                              <tr key={key}>
+                                <td>
+                                  <a href="/emailLists">{item.siteGroupName}</a>
+                                </td>
+                                <td>
+                                  <a href="#/groups">View</a>
+                                </td>
+                                <td>{item.dateModified}</td>
+                                <td>
+                                  <span style={{ color: "green" }}>
+                                    Pass = 2
+                                  </span>
+                                  ,
+                                  <span style={{ color: "red" }}>fail = 2</span>
+                                </td>
+                                <td onClick={() => setCrone(true)}>
+                                  <AccessTimeIcon />
+                                </td>
+                                <td style={{ width: "55%" }}>
+                                  <div className="row">
+                                    <div className="col-md-2">
+                                      <CSelect
+                                        custom
+                                        size="sm"
+                                        name="selectScrshot"
+                                        id="SelectLm"
+                                        onChange={(e) =>
+                                          updateScreenshot(
+                                            e.target.value,
+                                            item.siteGroupId
+                                          )
+                                        }
+                                      >
+                                        <option value="0">Scr Shot</option>
+                                        <option value="fail">Fail</option>
+                                        <option value="eachstep">
+                                          Each step
+                                        </option>
+                                        <option value="never">Never</option>
+                                      </CSelect>
+                                    </div>
+                                    <div className="col-md-2">
+                                      <CSelect
+                                        custom
+                                        size="sm"
+                                        name="selectScrshot"
+                                        id="SelectLm"
+                                        onChange={(e) =>
+                                          updateExec(
+                                            e.target.value,
+                                            item.siteGroupId
+                                          )
+                                        }
+                                        // onChange={set("emailAddressListId")}
+                                      >
+                                        <option value="0">Exec mode</option>
+                                        <option value="none">None</option>
+                                        <option value="sequential">
+                                          Sequential
+                                        </option>
+                                        <option value="concurrent">
+                                          Concurrent
+                                        </option>
+                                      </CSelect>
+                                    </div>
+                                    <div className="col-md-1">
+                                      <input
+                                        style={{ width: "100%" }}
+                                        type="number"
+                                        value={frequency}
+                                        onChange={(e) =>
+                                          updateFrequency(
+                                            e.target.value,
+                                            item.siteGroupId,
+                                            key
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                    <div className="col-md-2">
+                                      <PlayArrowIcon
+                                        style={{ color: "green" }}
+                                      />{" "}
+                                      &nbsp;&nbsp;
+                                      <EditIcon
+                                        onClick={() => {
+                                          setStyle("block");
+                                          setActiveTab(4);
+                                          // setItem(item);
+                                          // setUpdateId(item.siteGroupId);
+                                          // setFormValues(item);
+                                        }}
+                                      />{" "}
+                                      &nbsp;
+                                      <DeleteOutlineIcon
+                                        style={{ color: "red" }}
+                                      />{" "}
+                                    </div>
                                   </div>
-                                  <div className="col-md-2">
-                                    <CSelect
-                                      custom
-                                      size="sm"
-                                      name="selectScrshot"
-                                      id="SelectLm"
-                                      onChange={(e) =>
-                                        updateExec(
-                                          e.target.value,
-                                          item.siteGroupId
-                                        )
-                                      }
-                                      // onChange={set("emailAddressListId")}
-                                    >
-                                      <option value="0">Exec mode</option>
-                                      <option value="none">None</option>
-                                      <option value="sequential">
-                                        Sequential
-                                      </option>
-                                      <option value="concurrent">
-                                        Concurrent
-                                      </option>
-                                    </CSelect>
-                                  </div>
-                                  <div className="col-md-1">
-                                    <input
-                                      style={{ width: "100%" }}
-                                      type="number"
-                                      value={frequency}
-                                      onChange={(e) =>
-                                        updateFrequency(
-                                          e.target.value,
-                                          item.siteGroupId,
-                                          key
-                                        )
-                                      }
-                                    />
-                                  </div>
-                                  <div className="col-md-2">
-                                    <PlayArrowIcon style={{ color: "green" }} />{" "}
-                                    &nbsp;&nbsp;
-                                    <EditIcon
-                                      onClick={() => {
-                                        setStyle("block");
-                                        setActiveTab(4);
-                                        setItem(item);
-                                        setUpdateId(item.siteGroupId);
-                                        setFormValues(item);
-                                      }}
-                                    />{" "}
-                                    &nbsp;
-                                    <DeleteOutlineIcon
-                                      style={{ color: "red" }}
-                                    />{" "}
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                  )}
                 </CTabPane>
                 {/* <CTabPane visible={activeTab === 1} value={1}>
                   <table className="table">
@@ -552,7 +565,7 @@ const Groups = () => {
                                     <PlayArrowIcon style={{ color: "green" }} />{" "}
                                     &nbsp;&nbsp;
                                     <EditIcon /> &nbsp;
-                                    <FileCopyIcon/>
+                                    <FileCopyIcon />
                                     <DeleteOutlineIcon
                                       style={{ color: "red" }}
                                     />
@@ -592,10 +605,16 @@ const Groups = () => {
                 <CTabPane>
                   <Container component="main" maxWidth="xs">
                     <div>
-                    {postGroupStatus === "OK" &&
-                      <CAlert color="success" style={{marginTop: "15px"}} show={visible} closeButton>
-                        Success
-                      </CAlert>}
+                      {postGroupStatus === "OK" && (
+                        <CAlert
+                          color="success"
+                          style={{ marginTop: "15px" }}
+                          show={visible}
+                          closeButton
+                        >
+                          Success
+                        </CAlert>
+                      )}
                       {!loading ? (
                         response && (
                           <form onSubmit={(data) => createGroup(data)}>
@@ -608,7 +627,11 @@ const Groups = () => {
                               label="Group Name"
                               name="groupName"
                               autoFocus
-                              value={postGroupStatus === "OK" ? "" :formValues.siteGroupName}
+                              value={
+                                postGroupStatus === "OK"
+                                  ? ""
+                                  : formValues.siteGroupName
+                              }
                               onChange={set("siteGroupName")}
                             />
                             <div className="form-padding">
@@ -685,9 +708,14 @@ const Groups = () => {
                     </div>
                   </Container>
                 </CTabPane>
-                <CTabPane visible={activeTab === 4} aria-selected={activeTab === 4} aria-selected={activeTab !== 4}>
+                <CTabPane
+                  visible={true}
+                  className={activeTab !== 4 ? "fade" : "active show"}
+                >
                   <Container component="main" maxWidth="xs">
-                   { activeTab === 4 && <div>
+                    <h1>HY</h1>
+
+                    <div>
                       {/* {console.log("response",response)} */}
                       {!loading ? (
                         response && (
@@ -716,7 +744,10 @@ const Groups = () => {
                                 id="SelectLm"
                                 onChange={set("emailAddressListId")}
                               >
-                                <option value={item.emailAddressListId} key={item.emailAddressListId}>
+                                <option
+                                  value={item.emailAddressListId}
+                                  key={item.emailAddressListId}
+                                >
                                   {item.emailListName}
                                 </option>
                                 {response.emailList.map((item) => {
@@ -741,7 +772,10 @@ const Groups = () => {
                                 </option>
                                 {response.smsList.map((item) => {
                                   return (
-                                    <option value={item.smsAlertListId} key={item.smsAlertListId}>
+                                    <option
+                                      value={item.smsAlertListId}
+                                      key={item.smsAlertListId}
+                                    >
                                       {item.smsListName}
                                     </option>
                                   );
@@ -761,7 +795,10 @@ const Groups = () => {
                                 </option>
                                 {response.siteList.map((item) => {
                                   return (
-                                    <option value={item.siteId} key={item.siteId}>
+                                    <option
+                                      value={item.siteId}
+                                      key={item.siteId}
+                                    >
                                       {item.siteName}
                                     </option>
                                   );
@@ -808,7 +845,7 @@ const Groups = () => {
                           </td>
                         </tr>
                       )}
-                    </div>}
+                    </div>
                   </Container>
                 </CTabPane>
               </CTabContent>

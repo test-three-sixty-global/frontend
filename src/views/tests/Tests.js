@@ -178,7 +178,7 @@ const Tests = () => {
                     </thead>
                     <tbody>
                       {console.log(responsePost)}
-                      {responsePost &&
+                      {responsePost?.length &&
                         responsePost.map((item, key) => {
                           return (
                             <tr key={key}>
@@ -189,8 +189,15 @@ const Tests = () => {
                               <td>{item.emailListName}</td>
                               {/* <td>{item.emailListName}</td> */}
                               <td>{item.dateModified}</td>
-                              <td style={{color: item.status === "Pass" ? "green" : "red"}}>
-                                {item.lastRunStatus ? item.lastRunStatus : "N/A"}
+                              <td
+                                style={{
+                                  color:
+                                    item.status === "Pass" ? "green" : "red",
+                                }}
+                              >
+                                {item.lastRunStatus
+                                  ? item.lastRunStatus
+                                  : "N/A"}
                               </td>
                               <td onClick={() => setCrone(true)}>
                                 <AccessTimeIcon />
