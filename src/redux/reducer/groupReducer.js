@@ -15,7 +15,7 @@ const groupSlice = createSlice({
     postGroup: null,
     postGroupStatus: "",
     getAllGroups: null,
-    cloneTest: null
+    cloneTest: null,
     projectGroupImediatelyPlayStatus: null,
   },
   reducers: {},
@@ -208,6 +208,7 @@ const groupSlice = createSlice({
     [groupActionCreator.cloneTest.rejected]: (state) => {
       state.loading = false;
       state.cloneTest = null;
+    },
     // get group test step
     [groupActionCreator.projectGroupImediatelyPlay.pending]: (
       state,
