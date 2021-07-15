@@ -1,7 +1,10 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import Api from "../../services/httpService";
 import { apiUrl } from "src/constants/apiUrl";
 import { authHeader } from "../../constants/authHeader";
+import { baseUrl } from "../../constants/baseUrl";
+import { SuperService } from "../../services/superService";
+
+const Api = new SuperService(baseUrl);
 
 export const getSms = createAsyncThunk("sms/get", async (data = {}) => {
   let smsData = {};

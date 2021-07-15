@@ -16,6 +16,7 @@ const groupSlice = createSlice({
     postGroupStatus: "",
     getAllGroups: null,
     cloneTest: null
+    projectGroupImediatelyPlayStatus: null,
   },
   reducers: {},
   extraReducers: {
@@ -42,7 +43,7 @@ const groupSlice = createSlice({
     [groupActionCreator.postGroup.fulfilled]: (state, action) => {
       state.loading = false;
       state.postGroup = action.payload;
-      state.postGroupStatus = action.payload.status
+      state.postGroupStatus = action.payload.status;
     },
     [groupActionCreator.postGroup.rejected]: (state) => {
       state.loading = false;
@@ -66,64 +67,62 @@ const groupSlice = createSlice({
 
     // updateGroupList
     [groupActionCreator.updateGroup.pending]: (state) => {
-        state.loading = true;
-        state.responsePost = null;
-      },
-      [groupActionCreator.updateGroup.fulfilled]: (state, action) => {
-        state.loading = false;
-        state.responsePost = action.payload;
-        // state.status = action.payload.status
-      },
-      [groupActionCreator.updateGroup.rejected]: (state) => {
-        state.loading = false;
-        state.responsePost = null;
-      },
+      state.loading = true;
+      state.responsePost = null;
+    },
+    [groupActionCreator.updateGroup.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.responsePost = action.payload;
+      // state.status = action.payload.status
+    },
+    [groupActionCreator.updateGroup.rejected]: (state) => {
+      state.loading = false;
+      state.responsePost = null;
+    },
     // updateGroupScreenshot
     [groupActionCreator.updateGroupScreenshot.pending]: (state) => {
-        state.loading = true;
-        state.updateResponse = null;
-      },
-      [groupActionCreator.updateGroupScreenshot.fulfilled]: (state, action) => {
-        state.loading = false;
-        state.updateResponse = action.payload;
-        // state.status = action.payload.status
-      },
-      [groupActionCreator.updateGroupScreenshot.rejected]: (state) => {
-        state.loading = false;
-        state.updateResponse = null;
-      },
-
+      state.loading = true;
+      state.updateResponse = null;
+    },
+    [groupActionCreator.updateGroupScreenshot.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.updateResponse = action.payload;
+      // state.status = action.payload.status
+    },
+    [groupActionCreator.updateGroupScreenshot.rejected]: (state) => {
+      state.loading = false;
+      state.updateResponse = null;
+    },
 
     // updateGroupExec
     [groupActionCreator.updateGroupExec.pending]: (state) => {
-        state.loading = true;
-        state.updateResponse = null;
-      },
-      [groupActionCreator.updateGroupExec.fulfilled]: (state, action) => {
-        state.loading = false;
-        state.updateResponse = action.payload;
-        // state.status = action.payload.status
-      },
-      [groupActionCreator.updateGroupExec.rejected]: (state) => {
-        state.loading = false;
-        state.updateResponse = null;
-      },
-
+      state.loading = true;
+      state.updateResponse = null;
+    },
+    [groupActionCreator.updateGroupExec.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.updateResponse = action.payload;
+      // state.status = action.payload.status
+    },
+    [groupActionCreator.updateGroupExec.rejected]: (state) => {
+      state.loading = false;
+      state.updateResponse = null;
+    },
 
     // updateGroupFrequency
     [groupActionCreator.updateGroupFrequency.pending]: (state) => {
-        state.loading = true;
-        state.updateResponse = null;
-      },
-      [groupActionCreator.updateGroupFrequency.fulfilled]: (state, action) => {
-        state.loading = false;
-        state.updateResponse = action.payload;
-        // state.status = action.payload.status
-      },
-      [groupActionCreator.updateGroupFrequency.rejected]: (state) => {
-        state.loading = false;
-        state.updateResponse = null;
-      },
+      state.loading = true;
+      state.updateResponse = null;
+    },
+    [groupActionCreator.updateGroupFrequency.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.updateResponse = action.payload;
+      // state.status = action.payload.status
+    },
+    [groupActionCreator.updateGroupFrequency.rejected]: (state) => {
+      state.loading = false;
+      state.updateResponse = null;
+    },
     [groupActionCreator.updateGroup.fulfilled]: (state, action) => {
       state.loading = false;
       state.responsePost = action.payload;
@@ -173,7 +172,6 @@ const groupSlice = createSlice({
     [groupActionCreator.getAllTestCases.fulfilled]: (state, action) => {
       state.loading = false;
       state.alltestCases = action.payload;
-      // state.status = action.payload.status
     },
     [groupActionCreator.getAllTestCases.rejected]: (state) => {
       state.loading = false;
@@ -210,6 +208,24 @@ const groupSlice = createSlice({
     [groupActionCreator.cloneTest.rejected]: (state) => {
       state.loading = false;
       state.cloneTest = null;
+    // get group test step
+    [groupActionCreator.projectGroupImediatelyPlay.pending]: (
+      state,
+      action
+    ) => {
+      state.projectGroupImediatelyPlayStatus = action.payload;
+    },
+    [groupActionCreator.projectGroupImediatelyPlay.fulfilled]: (
+      state,
+      action
+    ) => {
+      state.projectGroupImediatelyPlayStatus = action.payload;
+    },
+    [groupActionCreator.projectGroupImediatelyPlay.rejected]: (
+      state,
+      action
+    ) => {
+      state.projectGroupImediatelyPlayStatus = null;
     },
   },
 });

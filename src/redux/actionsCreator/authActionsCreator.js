@@ -1,6 +1,9 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import Api from "../../services/httpService";
 import { apiUrl } from "src/constants/apiUrl";
+import { baseUrl } from "../../constants/baseUrl";
+import { SuperService } from "../../services/superService";
+
+const Api = new SuperService(baseUrl);
 
 export const login = createAsyncThunk("auth/login", async (data = {}) => {
   let loginData = {};
