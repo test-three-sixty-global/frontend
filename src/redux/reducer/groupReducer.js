@@ -17,6 +17,7 @@ const groupSlice = createSlice({
     getAllGroups: null,
     cloneTest: null,
     projectGroupImediatelyPlayStatus: null,
+    testcaseImediatelyPlayStatus: null,
   },
   reducers: {},
   extraReducers: {
@@ -139,7 +140,7 @@ const groupSlice = createSlice({
       state.GroupTestCases = null;
     },
     [groupActionCreator.getGroupTestCases.fulfilled]: (state, action) => {
-      console.log(action)
+      console.log(action);
       state.loading = false;
       state.GroupTestCases = action.payload;
       // state.status = action.payload.status
@@ -178,7 +179,6 @@ const groupSlice = createSlice({
       state.alltestCases = null;
     },
 
-
     // get all groups
     [groupActionCreator.getAllGroups.pending]: (state) => {
       state.loading = true;
@@ -193,14 +193,14 @@ const groupSlice = createSlice({
       state.loading = false;
       state.getAllGroups = null;
     },
-    
+
     // clone test
     [groupActionCreator.cloneTest.pending]: (state) => {
       state.loading = true;
       state.cloneTest = null;
     },
     [groupActionCreator.cloneTest.fulfilled]: (state, action) => {
-      console.log(action.payload)
+      console.log(action.payload);
       state.loading = false;
       state.cloneTest = action.payload;
       // state.status = action.payload.status
@@ -209,12 +209,14 @@ const groupSlice = createSlice({
       state.loading = false;
       state.cloneTest = null;
     },
-    // get group test step
+
+    // play all test cases of group imediately
+
     [groupActionCreator.projectGroupImediatelyPlay.pending]: (
       state,
       action
     ) => {
-      state.projectGroupImediatelyPlayStatus = action.payload;
+      state.projectGroupImediatelyPlayStatus = null;
     },
     [groupActionCreator.projectGroupImediatelyPlay.fulfilled]: (
       state,
@@ -227,6 +229,18 @@ const groupSlice = createSlice({
       action
     ) => {
       state.projectGroupImediatelyPlayStatus = null;
+    },
+
+    // play selected test case of group imediately
+
+    [groupActionCreator.testcaseImediatelyPlay.pending]: (state, action) => {
+      state.testcaseImediatelyPlayStatus = null;
+    },
+    [groupActionCreator.testcaseImediatelyPlay.fulfilled]: (state, action) => {
+      state.testcaseImediatelyPlayStatus = action.payload;
+    },
+    [groupActionCreator.testcaseImediatelyPlay.rejected]: (state, action) => {
+      state.testcaseImediatelyPlayStatus = null;
     },
   },
 });
