@@ -96,6 +96,7 @@ const Groups = () => {
   const getAllGroups = useSelector(state => state.groupReducer.getAllGroups);
   const groupTestCases = useSelector(state => state.groupReducer.GroupTestCases);
   const cloneTest = useSelector(state => state.groupReducer.cloneTest);
+  const groupTestSteps = useSelector(state => state.groupReducer.groupTestSteps);
   const postGroupStatus = useSelector(
     state => state.groupReducer.postGroupStatus
   );
@@ -799,7 +800,7 @@ const Groups = () => {
                                 id="SelectLm"
                                 onChange={set("siteId")}
                               >
-                                <option value="0">Please select site</option>
+                                <option value="0">Please select project</option>
                                 {response.siteList.map(item => {
                                   return (
                                     <option value={item.siteId}>
