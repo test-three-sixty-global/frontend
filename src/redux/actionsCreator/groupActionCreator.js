@@ -1,4 +1,4 @@
-import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { apiUrl } from "src/constants/apiUrl";
 import { authHeader } from "../../constants/authHeader";
 import { baseUrl } from "../../constants/baseUrl";
@@ -168,6 +168,20 @@ export const projectGroupImediatelyPlay = createAsyncThunk(
     groupInitialData.path = apiUrl.projectImediatelyPlay(data);
     groupInitialData.csrf = authHeader();
     const response = await testApi.put(groupInitialData);
-    return response.data.payload;
+    return response.data;
+  }
+);
+//start test case  imediately
+
+export const testcaseImediatelyPlay = createAsyncThunk(
+  "group/testcaseImediatelyPlay",
+  async (data = {}) => {
+    let groupInitialData = {};
+    debugger;
+    groupInitialData.path = apiUrl.testcaseImediatelyPlay(data);
+    groupInitialData.csrf = authHeader();
+    debugger;
+    const response = await testApi.put(groupInitialData);
+    return response.data;
   }
 );
