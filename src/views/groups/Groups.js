@@ -124,28 +124,45 @@ const Groups = () => {
     };
   };
 
-  const updateScreenshot = (value, id) => {
+  const updateScreenshot = (value, id, type) => {
     let data = {
       data: { screenShotOption: value },
       id: id,
     };
-    dispatch(GroupActionCreator.updateGroupScreenshot(data));
+
+    if (type === "GROUP") {
+      dispatch(GroupActionCreator.updateGroupScreenshot(data));
+    }
+    if (type === "TEST") {
+      dispatch(GroupActionCreator.updateTestcaseScreenshot(data));
+    }
   };
-  const updateExec = (value, id) => {
+  const updateExec = (value, id, type) => {
     let data = {
       data: { executionType: value },
       id: id,
     };
-    dispatch(GroupActionCreator.updateGroupExec(data));
+
+    if (type === "GROUP") {
+      dispatch(GroupActionCreator.updateGroupExec(data));
+    }
+    if (type === "TEST") {
+      dispatch(GroupActionCreator.updateTestExec(data));
+    }
   };
-  const updateFrequency = (value, id) => {
+  const updateFrequency = (value, id, type) => {
     if (value) {
       setFrequency();
       let data = {
         data: { frequency: value },
         id: id,
       };
-      dispatch(GroupActionCreator.updateGroupFrequency(data));
+      if (type === "GROUP") {
+        dispatch(GroupActionCreator.updateGroupFrequency(data));
+      }
+      if (type === "TEST") {
+        dispatch(GroupActionCreator.updateTestExecFreq(data));
+      }
     }
   };
 
@@ -349,7 +366,8 @@ const Groups = () => {
                                         onChange={(e) =>
                                           updateScreenshot(
                                             e.target.value,
-                                            item.siteGroupId
+                                            item.siteGroupId,
+                                            "GROUP"
                                           )
                                         }
                                       >
@@ -370,7 +388,8 @@ const Groups = () => {
                                         onChange={(e) =>
                                           updateExec(
                                             e.target.value,
-                                            item.siteGroupId
+                                            item.siteGroupId,
+                                            "GROUP"
                                           )
                                         }
                                       >
@@ -393,7 +412,8 @@ const Groups = () => {
                                           updateFrequency(
                                             e.target.value,
                                             item.siteGroupId,
-                                            key
+                                            key,
+                                            "GROUP"
                                           )
                                         }
                                       />
@@ -601,7 +621,8 @@ const Groups = () => {
                                         onChange={(e) =>
                                           updateScreenshot(
                                             e.target.value,
-                                            item.testCaseId
+                                            item.testCaseId,
+                                            "TEST"
                                           )
                                         }
                                       >
@@ -622,7 +643,8 @@ const Groups = () => {
                                         onChange={(e) =>
                                           updateExec(
                                             e.target.value,
-                                            item.testCaseId
+                                            item.testCaseId,
+                                            "TEST"
                                           )
                                         }
                                       >
@@ -645,7 +667,8 @@ const Groups = () => {
                                           updateFrequency(
                                             e.target.value,
                                             item.siteGroupId,
-                                            key
+                                            key,
+                                            "TEST"
                                           )
                                         }
                                       />

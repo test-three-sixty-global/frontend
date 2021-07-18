@@ -209,7 +209,7 @@ export const updateTestExecFreq = createAsyncThunk(
     testfrequencyData.data = data.data;
     testfrequencyData.path = apiUrl.updateTestcaseExecutionFrequency(data.id);
     testfrequencyData.csrf = authHeader();
-    const response = await Api.put(groupExecData);
+    const response = await Api.put(testfrequencyData);
     return response.data.payload;
   }
 );
