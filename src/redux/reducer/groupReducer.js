@@ -18,6 +18,12 @@ const groupSlice = createSlice({
     cloneTest: null,
     projectGroupImediatelyPlayStatus: null,
     testcaseImediatelyPlayStatus: null,
+    testCasefreqResponse: null,
+    testCasefreqError: null,
+    testCaseExecResponse: null,
+    testCaseExecError: null,
+    testCaseScreenshotResponse: null,
+    testCaseScreenshotError: null,
   },
   reducers: {},
   extraReducers: {
@@ -97,7 +103,7 @@ const groupSlice = createSlice({
 
     // updateGroupExec
     [groupActionCreator.updateGroupExec.pending]: (state) => {
-      state.loading = true;
+      state.loading = false;
       state.updateResponse = null;
     },
     [groupActionCreator.updateGroupExec.fulfilled]: (state, action) => {
@@ -112,7 +118,7 @@ const groupSlice = createSlice({
 
     // updateGroupFrequency
     [groupActionCreator.updateGroupFrequency.pending]: (state) => {
-      state.loading = true;
+      state.loading = false;
       state.updateResponse = null;
     },
     [groupActionCreator.updateGroupFrequency.fulfilled]: (state, action) => {
@@ -241,6 +247,60 @@ const groupSlice = createSlice({
     },
     [groupActionCreator.testcaseImediatelyPlay.rejected]: (state, action) => {
       state.testcaseImediatelyPlayStatus = null;
+    },
+
+    // update test case execution frequency
+
+    [groupActionCreator.updateTestExecFreq.pending]: (state) => {
+      state.loading = false;
+      state.testCasefreqResponse = null;
+      state.testCasefreqError = null;
+    },
+    [groupActionCreator.updateTestExecFreq.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.testCasefreqResponse = action.payload;
+      state.testCasefreqError = null;
+    },
+    [groupActionCreator.updateTestExecFreq.rejected]: (state, action) => {
+      state.loading = false;
+      state.testCasefreqResponse = null;
+      state.testCasefreqError = action.payload;
+    },
+
+    // update test case screenshot
+
+    [groupActionCreator.updateTestcaseScreenshot.pending]: (state) => {
+      state.loading = false;
+      state.testCaseScreenshotResponse = null;
+      state.testCaseScreenshotError = null;
+    },
+    [groupActionCreator.updateTestcaseScreenshot.fulfilled]: (
+      state,
+      action
+    ) => {
+      state.loading = false;
+      state.testCaseScreenshotResponse = action.payload;
+      state.testCaseScreenshotError = null;
+    },
+    [groupActionCreator.updateTestcaseScreenshot.rejected]: (state, action) => {
+      state.loading = false;
+      state.testCaseScreenshotResponse = null;
+      state.testCaseScreenshotError = action.payload;
+    },
+
+    // update test case screenshot
+
+    [groupActionCreator.updateTestExec.pending]: (state) => {
+      state.testCaseExecResponse = null;
+      state.testCaseExecError = null;
+    },
+    [groupActionCreator.updateTestExec.fulfilled]: (state, action) => {
+      state.testCaseExecResponse = action.payload;
+      state.testCaseExecError = null;
+    },
+    [groupActionCreator.updateTestExec.rejected]: (state, action) => {
+      state.testCaseExecResponse = null;
+      state.testCaseExecError = action.payload;
     },
   },
 });

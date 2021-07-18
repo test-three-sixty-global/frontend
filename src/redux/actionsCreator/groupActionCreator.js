@@ -185,3 +185,45 @@ export const testcaseImediatelyPlay = createAsyncThunk(
     return response.data;
   }
 );
+
+//test case update execution Type
+
+export const updateTestExec = createAsyncThunk(
+  "testExec/put",
+  async (data = {}) => {
+    let testExecData = {};
+    testExecData.data = data.data;
+    testExecData.path = apiUrl.updateTestcaseExecutionType(data.id);
+    testExecData.csrf = authHeader();
+    const response = await Api.put(testExecData);
+    return response.data.payload;
+  }
+);
+
+//test case update execution frequqncy
+
+export const updateTestExecFreq = createAsyncThunk(
+  "testfrequency/put",
+  async (data = {}) => {
+    let testfrequencyData = {};
+    testfrequencyData.data = data.data;
+    testfrequencyData.path = apiUrl.updateTestcaseExecutionFrequency(data.id);
+    testfrequencyData.csrf = authHeader();
+    const response = await Api.put(groupExecData);
+    return response.data.payload;
+  }
+);
+
+//test case update screenshot
+
+export const updateTestcaseScreenshot = createAsyncThunk(
+  "testScreenshot/put",
+  async (data = {}) => {
+    let testScreenshotData = {};
+    testScreenshotData.data = data.data;
+    testScreenshotData.path = apiUrl.updateTestScreenshot(data.id);
+    testScreenshotData.csrf = authHeader();
+    const response = await Api.put(testScreenshotData);
+    return response.data.payload;
+  }
+);
