@@ -47,14 +47,13 @@ const Groups = () => {
   const [frequency, setFrequency] = useState(1);
   const [crone, setCrone] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [testName, setTestName] = useState('');
-  const [cloneGroup, setCloneGroup] = useState('');
-  const [testId, setTestId] = useState('');
+  const [testName, setTestName] = useState("");
+  const [cloneGroup, setCloneGroup] = useState("");
+  const [testId, setTestId] = useState("");
   const [openTest, setOpenTest] = useState(false);
   const [openTestSteps, setOpenTestSteps] = useState(false);
   const [currentGroupName, setCurrentGroupName] = useState("");
   const [currentTestName, setCurrentTestName] = useState("");
-
 
   const [formValues, setFormValues] = useState({
     siteGroupName: "",
@@ -83,14 +82,18 @@ const Groups = () => {
     activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
   }, [activeTab]);
 
-  let response = useSelector(state => state.groupReducer.response);
-  let responsePost = useSelector(state => state.groupReducer.responsePost);
-  const loading = useSelector(state => state.groupReducer.loading);
-  let testResponse = useSelector(state => state.testReducer.responsePost);
-  const getAllGroups = useSelector(state => state.groupReducer.getAllGroups);
-  const groupTestCases = useSelector(state => state.groupReducer.GroupTestCases);
-  const cloneTest = useSelector(state => state.groupReducer.cloneTest);
-  const groupTestSteps = useSelector(state => state.groupReducer.groupTestSteps);
+  let response = useSelector((state) => state.groupReducer.response);
+  let responsePost = useSelector((state) => state.groupReducer.responsePost);
+  const loading = useSelector((state) => state.groupReducer.loading);
+  let testResponse = useSelector((state) => state.testReducer.responsePost);
+  const getAllGroups = useSelector((state) => state.groupReducer.getAllGroups);
+  const groupTestCases = useSelector(
+    (state) => state.groupReducer.GroupTestCases
+  );
+  const cloneTest = useSelector((state) => state.groupReducer.cloneTest);
+  const groupTestSteps = useSelector(
+    (state) => state.groupReducer.groupTestSteps
+  );
 
   const postGroupStatus = useSelector(
     (state) => state.groupReducer.postGroupStatus
@@ -233,8 +236,7 @@ const Groups = () => {
                 </CNavItem>
                 <CNavItem
                   className={openTest ? "" : "d-none"}
-                  onClick={e => setActiveTab(1)}
-
+                  onClick={(e) => setActiveTab(1)}
                 >
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
@@ -243,8 +245,10 @@ const Groups = () => {
                     Test
                   </CNavLink>
                 </CNavItem>
-                <CNavItem onClick={e => setActiveTab(2)} className={openTestSteps ? "" : "d-none"}>
-
+                <CNavItem
+                  onClick={(e) => setActiveTab(2)}
+                  className={openTestSteps ? "" : "d-none"}
+                >
                   <CNavLink
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 2}
@@ -317,8 +321,8 @@ const Groups = () => {
                                       )
                                     );
                                     setActiveTab(1);
-                                    setOpenTest(true)
-                                    setCurrentGroupName(item.siteGroupName)
+                                    setOpenTest(true);
+                                    setCurrentGroupName(item.siteGroupName);
                                   }}
                                 >
                                   View
@@ -507,8 +511,13 @@ const Groups = () => {
                     {/* Dialog END */}
                     <div>
                       <h3
-                        className="ml-3" 
-                        style={{ marginTop: "10px", marginBottom: "10px", color: "#0083b8" }}>
+                        className="ml-3"
+                        style={{
+                          marginTop: "10px",
+                          marginBottom: "10px",
+                          color: "#0083b8",
+                        }}
+                      >
                         {currentGroupName}:
                       </h3>
                     </div>
@@ -521,9 +530,9 @@ const Groups = () => {
                         variant="contained"
                         color="secondary"
                         onClick={() => {
-                          setActiveTab(0)
-                          setOpenTest(false)
-                          setCurrentGroupName("")
+                          setActiveTab(0);
+                          setOpenTest(false);
+                          setCurrentGroupName("");
                         }}
                       >
                         Close
@@ -556,11 +565,11 @@ const Groups = () => {
                         ? groupTestCases.map((item, key) => {
                             return (
                               <tr key={key}>
-                                <td 
+                                <td
                                   style={{
                                     color: "#1088BB",
                                     cursor: "pointer",
-                                    textDecoration: "underline"
+                                    textDecoration: "underline",
                                   }}
                                   onClick={() => {
                                     dispatch(
@@ -569,9 +578,10 @@ const Groups = () => {
                                       )
                                     );
                                     setActiveTab(2);
-                                    setOpenTestSteps(true)
-                                    setCurrentTestName(item.testName)
-                                  }}>
+                                    setOpenTestSteps(true);
+                                    setCurrentTestName(item.testName);
+                                  }}
+                                >
                                   {item.testName}
                                 </td>
                                 <td>{item.emailListName}</td>
@@ -690,12 +700,20 @@ const Groups = () => {
                     </tbody>
                   </table>
                 </CTabPane>
-                <CTabPane visible={activeTab === 2} className={activeTab === 2 ? " active fade show" : "d-none"}>
-                <div className="row">
-                <div>
+                <CTabPane
+                  visible={activeTab === 2}
+                  className={activeTab === 2 ? " active fade show" : "d-none"}
+                >
+                  <div className="row">
+                    <div>
                       <h3
-                        className="ml-3" 
-                        style={{ marginTop: "10px", marginBottom: "10px", color: "#0083b8" }}>
+                        className="ml-3"
+                        style={{
+                          marginTop: "10px",
+                          marginBottom: "10px",
+                          color: "#0083b8",
+                        }}
+                      >
                         {currentTestName}:
                       </h3>
                     </div>
@@ -708,15 +726,15 @@ const Groups = () => {
                         variant="contained"
                         color="secondary"
                         onClick={() => {
-                          setActiveTab(1)
-                          setOpenTestSteps(false)
-                          setCurrentTestName("")
+                          setActiveTab(1);
+                          setOpenTestSteps(false);
+                          setCurrentTestName("");
                         }}
                       >
                         Close
                       </Button>
                     </div>
-                </div>
+                  </div>
                   <table className="table">
                     <thead>
                       <tr>
@@ -816,8 +834,7 @@ const Groups = () => {
                                 onChange={set("siteId")}
                               >
                                 <option value="0">Please select project</option>
-                                {response.siteList.map(item => {
-
+                                {response.siteList.map((item) => {
                                   return (
                                     <option value={item.siteId}>
                                       {item.siteName}
@@ -851,8 +868,6 @@ const Groups = () => {
                   className={activeTab !== 4 ? "fade" : "active show"}
                 >
                   <Container component="main" maxWidth="xs">
-                    <h1>HY</h1>
-
                     <div>
                       {!loading ? (
                         response && (

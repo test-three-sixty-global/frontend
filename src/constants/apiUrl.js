@@ -41,4 +41,8 @@ export const apiUrl = {
   testcaseImediatelyPlay: (id) => `/play/immediate/testcases/${1}`,
   getAllGroups: () => `/groups`,
   cloneTest: () => `/groups/testcase/clone`,
+  updateTestcaseScreenshots: (id) => `/testcases/${id}/screenshot`,
+  updateTestcaseExecutionType: (id) => `/testcases/${id}/execution/type`,
+  updateTestcaseExecutionFrequency: (id) =>
+    `/testcases/${id}/execution/frequency`,
 };
