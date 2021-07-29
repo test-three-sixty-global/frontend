@@ -5,23 +5,23 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-  CImg
+  CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import * as LoginAction from "../redux/actionsCreator/authActionsCreator";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const TheHeaderDropdown = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const authed = useSelector(state => state.authReducer.authed);
+  const authed = useSelector((state) => state.authReducer.authed);
 
   useEffect(() => {
-    if(!localStorage.getItem("token")){
-      !authed && history.push('/login')
+    if (!localStorage.getItem("token")) {
+      !authed && history.push("/login");
     }
-  }, [authed])
+  }, [authed]);
   return (
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
@@ -86,7 +86,14 @@ const TheHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownItem divider />
-        <CDropdownItem onClick={() => dispatch(LoginAction.logout())}>
+        <CDropdownItem
+          tag={Link}
+          to="/"
+          onClick={() => {
+            dispatch(LoginAction.logout());
+            localStorage.clear();
+          }}
+        >
           <CIcon name="cil-lock-locked" className="mfe-2" />
           Lock Account
         </CDropdownItem>
