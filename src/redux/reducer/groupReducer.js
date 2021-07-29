@@ -25,7 +25,7 @@ const groupSlice = createSlice({
     testCaseScreenshotResponse: null,
     testCaseScreenshotError: null,
     downloadTest: null,
-    downloadTestError: null
+    downloadTestError: null,
   },
   reducers: {},
   extraReducers: {
@@ -145,7 +145,7 @@ const groupSlice = createSlice({
     // get group test cases
     [groupActionCreator.getGroupTestCases.pending]: (state) => {
       state.loading = true;
-      state.GroupTestCases = null;
+      // state.GroupTestCases = null;
     },
     [groupActionCreator.getGroupTestCases.fulfilled]: (state, action) => {
       console.log(action);
@@ -304,7 +304,6 @@ const groupSlice = createSlice({
       state.testCaseExecResponse = null;
       state.testCaseExecError = action.payload;
     },
-
 
     // downlaod test
 

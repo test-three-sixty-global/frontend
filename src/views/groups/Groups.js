@@ -36,6 +36,7 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import DownloadIcon from "@material-ui/icons/GetApp";
 import UploadIcon from "@material-ui/icons/Publish";
 var inter;
+var groupTestCaseTimer;
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,8 @@ const Groups = () => {
   const [modalImage, setModalImage] = useState(false);
   const [imageToShow, setImageToShow] = useState("");
   const [checkForTimer, setCheckForTimer] = useState(null);
+  const [selectedGroupId, setSelectedGroupId] = useState("");
+  const [groupTestCasess, setGroupTestCases] = useState(null);
 
   const [formValues, setFormValues] = useState({
     siteGroupName: "",
@@ -91,6 +94,14 @@ const Groups = () => {
     } else {
       clearInterval(inter);
     }
+    if (activeTab === 1) {
+      groupTestCaseTimer = setInterval(() => {
+        dispatch(GroupActionCreator.getGroupTestCases(selectedGroupId));
+      }, 5000);
+    } else {
+      clearInterval(groupTestCaseTimer);
+      setSelectedGroupId("");
+    }
     // activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data))
 
     // activeTab !== 0 &&
@@ -112,6 +123,13 @@ const Groups = () => {
   const postGroupStatus = useSelector(
     (state) => state.groupReducer.postGroupStatus
   );
+
+  useEffect(() => {
+    if (groupTestCases?.length) {
+      setGroupTestCases(groupTestCases);
+    }
+  }, [groupTestCases]);
+
   useEffect(() => {
     setCheckForTimer(responsePost);
   }, [responsePost]);
@@ -200,54 +218,6 @@ const Groups = () => {
     dispatch(GroupActionCreator.cloneTest(data));
   };
 
-  const [testSteps, setTestSteps] = useState([
-    {
-      steps: "open | https://www.tonerprice.com/ | ",
-      override: "-",
-    },
-    {
-      steps: "click | link=Log in | ",
-      override: "-",
-    },
-    {
-      steps: "type | id=email | jayantar@test.net",
-      override: "type | id=email | abcdde@test.net",
-    },
-    {
-      steps: "click | id=pass | ",
-      override: "-",
-    },
-    {
-      steps: "type | id=pass | 123456",
-      override: "type | id=pass | abcdefg",
-    },
-    {
-      steps: "click | //button[@id='send2']/span/span | ",
-      override: "-",
-    },
-    {
-      steps: "click | //p/strong | ",
-      override: "-",
-    },
-    {
-      steps: "click | //p/strong | ",
-      override: "-",
-    },
-    {
-      steps: "verifyText | //p/strong | Hello, Jayantar Roy!",
-      override: "-",
-    },
-  ]);
-
-  const getGroupTestSteps = (id) => {
-    dispatch(GroupActionCreator.getGroupTestSteps(id));
-    setActiveTab(2);
-  };
-
-  const getGroupTestCases = (id) => {
-    dispatch(GroupActionCreator.getGroupTestCases(id));
-    setActiveTab(1);
-  };
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
@@ -355,6 +325,7 @@ const Groups = () => {
                                         item.siteGroupId
                                       )
                                     );
+                                    setSelectedGroupId(item.siteGroupId);
                                     setActiveTab(1);
                                     setOpenTest(true);
                                     setCurrentGroupName(item.siteGroupName);
@@ -622,8 +593,8 @@ const Groups = () => {
                     </thead>
                     <tbody>
                       {console.log("groupTestCases", groupTestCases)}
-                      {activeTab === 1 && groupTestCases?.length
-                        ? groupTestCases.map((item, key) => {
+                      {activeTab === 1 && groupTestCasess?.length
+                        ? groupTestCasess.map((item, key) => {
                             return (
                               <tr key={key}>
                                 <td>{item.testName}</td>
@@ -785,7 +756,7 @@ const Groups = () => {
                               </td>
                             </tr>
                           )}
-                      {loading && (
+                      {loading && !groupTestCasess && !groupTestCases && (
                         <tr>
                           <td colSpan="5">
                             {" "}
