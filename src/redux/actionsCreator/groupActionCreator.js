@@ -227,3 +227,16 @@ export const updateTestcaseScreenshot = createAsyncThunk(
     return response.data.payload;
   }
 );
+//download test excel
+
+export const downloadTest = createAsyncThunk(
+  "downloadTest/get",
+  async (data = {}) => {
+    let downloadTest = {};
+    // downloadTest.data = data.data;
+    downloadTest.path = apiUrl.downloadTest(data);
+    downloadTest.csrf = authHeader();
+    const response = await Api.fetch(downloadTest);
+    return response.data.payload;
+  }
+);

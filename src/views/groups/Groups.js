@@ -35,6 +35,7 @@ import { ModalBody } from "reactstrap";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import DownloadIcon from "@material-ui/icons/GetApp";
 import UploadIcon from "@material-ui/icons/Publish";
+var inter
 
 const Groups = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,11 @@ const Groups = () => {
   const [openTestSteps, setOpenTestSteps] = useState(false);
   const [currentGroupName, setCurrentGroupName] = useState("");
   const [currentTestName, setCurrentTestName] = useState("");
+  const [modalImage, setModalImage] = useState(false);
+  const [imageToShow, setImageToShow] = useState("");
+  const [checkForTimer, setCheckForTimer] = useState(null);
+
+
 
   const [formValues, setFormValues] = useState({
     siteGroupName: "",
@@ -79,7 +85,16 @@ const Groups = () => {
     activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData());
     // activeTab === 3 ||
     //   (activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData()));
-    activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data));
+    // var inter
+    if(activeTab === 0){
+      inter = setInterval(() => {dispatch(GroupActionCreator.postGroupList(data))},5000)
+    } else {
+      console.log("FUCK", inter)
+      clearInterval(inter)
+    }
+    // activeTab === 0 && dispatch(GroupActionCreator.postGroupList(data))
+
+    // activeTab !== 0 && 
   }, [activeTab]);
 
   let response = useSelector((state) => state.groupReducer.response);
@@ -98,6 +113,10 @@ const Groups = () => {
   const postGroupStatus = useSelector(
     (state) => state.groupReducer.postGroupStatus
   );
+  useEffect(()=> {
+      setCheckForTimer(responsePost)
+
+  },[responsePost])
 
   const createGroup = (e) => {
     e.preventDefault();
@@ -308,14 +327,15 @@ const Groups = () => {
                           <th>Tests</th>
                           <th>Last execution date</th>
                           <th>Status</th>
+                          <th>Last Run Status</th>
 
                           <th>Schedule</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {responsePost &&
-                          responsePost.map((item, key) => {
+                        {checkForTimer &&
+                          checkForTimer.map((item, key) => {
                             return (
                               <tr key={key}>
                                 <td
@@ -346,14 +366,16 @@ const Groups = () => {
                                 </td>
                                 <td>{item.dateModified}</td>
                                 <td>
-                                  <span style={{ color: "green" }}>
+                                  {/* <span style={{ color: "green" }}>
                                     Pass = 2
                                   </span>
                                   ,
-                                  <span style={{ color: "red" }}>fail = 2</span>
+                                  <span style={{ color: "red" }}>fail = 2</span> */}
+                                  <span>{item.lastRunResults}</span>
                                 </td>
+                                <td><span>{item.lastRunStatus}</span></td>
                                 <td onClick={() => setCrone(true)}>
-                                  <AccessTimeIcon />
+                                  <AccessTimeIcon style={{cursor: "pointer"}} />
                                 </td>
                                 <td style={{ width: "55%" }}>
                                   <div className="row">
@@ -419,7 +441,7 @@ const Groups = () => {
                                       />
                                     </div>
                                     <div className="col-md-2">
-                                      <PlayArrowIcon
+                                      { (item.lastRunStatus === "Completed" || !item.lastRunStatus) ? <PlayArrowIcon
                                         onClick={() =>
                                           dispatch(
                                             GroupActionCreator.projectGroupImediatelyPlay(
@@ -427,10 +449,15 @@ const Groups = () => {
                                             )
                                           )
                                         }
-                                        style={{ color: "green" }}
-                                      />
+                                        style={{ color: "green", cursor: "pointer" }}
+                                      /> : 
+                                      <div className="d-inline">
+                                        <Spinner height={10} width={10} />
+                                      </div>
+                                      }
                                       &nbsp;&nbsp;
                                       <EditIcon
+                                        style={{cursor: "pointer"}}
                                         onClick={() => {
                                           setStyle("block");
                                           setActiveTab(4);
@@ -441,7 +468,7 @@ const Groups = () => {
                                       />{" "}
                                       &nbsp;
                                       <DeleteOutlineIcon
-                                        style={{ color: "red" }}
+                                        style={{ color: "red", cursor: "pointer" }}
                                       />{" "}
                                     </div>
                                   </div>
@@ -573,6 +600,7 @@ const Groups = () => {
                     <thead>
                       <tr>
                         <th>Test Name</th>
+                        <th>View</th>
                         <th>Executed by</th>
                         <th>Date executed</th>
                         <th>Schedule</th>
@@ -585,8 +613,10 @@ const Groups = () => {
                         ? groupTestCases.map((item, key) => {
                             return (
                               <tr key={key}>
-                                <td
-                                  style={{
+                                <td>
+                                  {item.testName}
+                                </td>
+                                <td style={{
                                     color: "#1088BB",
                                     cursor: "pointer",
                                     textDecoration: "underline",
@@ -600,10 +630,7 @@ const Groups = () => {
                                     setActiveTab(2);
                                     setOpenTestSteps(true);
                                     setCurrentTestName(item.testName);
-                                  }}
-                                >
-                                  {item.testName}
-                                </td>
+                                  }}>View</td>
                                 <td>{item.emailListName}</td>
                                 <td>{item.dateModified}</td>
                                 <td onClick={() => setCrone(true)}>
@@ -675,7 +702,7 @@ const Groups = () => {
                                     </div>
                                     <div className="col-md-4">
                                       <PlayArrowIcon
-                                        style={{ color: "green" }}
+                                        style={{ color: "green", cursor: "pointer" }}
                                         onClick={() =>
                                           dispatch(
                                             GroupActionCreator.testcaseImediatelyPlay(
@@ -695,7 +722,10 @@ const Groups = () => {
                                       <DeleteOutlineIcon
                                         style={{ color: "red" }}
                                       />
-                                      <DownloadIcon />
+                                      <DownloadIcon style={{cursor: "pointer"}} onClick={() => {
+                                        console.log("okay here")
+                                        dispatch(GroupActionCreator.downloadTest(item.siteGroupTestId))
+                                        }} />
                                       <UploadIcon />
                                     </div>
                                   </div>
@@ -762,19 +792,33 @@ const Groups = () => {
                     <thead>
                       <tr>
                         <th>Steps</th>
-                        <th></th>
-                        <th>Overridden</th>
+                        <th>Case images</th>
+                        <th>Value</th>
+                        <th>Target</th>
+                        <th>Executed At</th>
+                        <th>Status</th>
+                        <th>Error</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {testSteps.map((item, key) => {
+                      {groupTestSteps?.map((item, key) => {
                         return (
                           <tr key={key}>
                             <td>
-                              <a href="/groups">{item.steps}</a>
+                              <a href="/groups">{item.command}</a>
                             </td>
-                            <td>Override</td>
+                            <td className={"col-md-2"} onClick={() => {
+                              setImageToShow(item.image)
+                              setModalImage(true)
+                              }}>
+                              <img src={`data:image/jpeg;base64,${item.image}`} className="test-img" />
+                            </td>
                             <td>{item.override}</td>
+                            <td>{item.value}</td>
+                            <td>{item.target}</td>
+                            <td></td>
+                            <td>Pass</td>
+                            <td>-</td>
                           </tr>
                         );
                       })}
@@ -1022,6 +1066,24 @@ const Groups = () => {
             </CTabs>
           </CCardBody>
         </CCard>
+        <Dialog
+                      open={modalImage}
+                      onClose={() => setModalImage(false)}
+                      aria-labelledby="form-dialog-title"
+                    >
+                      <DialogContent>
+                        <img src={`data:image/jpeg;base64,${imageToShow}`} className="img-fluid" />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => setModalImage(false)}
+                        >
+                          Cancel
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
       </CCol>
     </>
   );
