@@ -836,8 +836,8 @@ const Groups = () => {
                             <td>{item.override}</td>
                             <td>{item.value}</td>
                             <td>{item.target}</td>
-                            <td></td>
                             <td>Pass</td>
+                            <td></td>
                             <td>-</td>
                           </tr>
                         );
