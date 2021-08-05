@@ -54,6 +54,7 @@ const Groups = () => {
   const [testId, setTestId] = useState("");
   const [openTest, setOpenTest] = useState(false);
   const [openTestSteps, setOpenTestSteps] = useState(false);
+  const [openViewResult, setOpenViewResult] = useState(false);
   const [currentGroupName, setCurrentGroupName] = useState("");
   const [currentTestName, setCurrentTestName] = useState("");
   const [modalImage, setModalImage] = useState(false);
@@ -257,7 +258,7 @@ const Groups = () => {
                     style={{ fontWeight: "bolder" }}
                     active={activeTab === 2}
                   >
-                    Tests Steps
+                    Test Steps
                   </CNavLink>
                 </CNavItem>
                 <CNavItem onClick={(e) => setActiveTab(3)}>
@@ -268,6 +269,7 @@ const Groups = () => {
                     Create Group
                   </CNavLink>
                 </CNavItem>
+ 
                 <CNavItem
                   onClick={(e) => setActiveTab(4)}
                   style={{ display: style }}
@@ -277,6 +279,17 @@ const Groups = () => {
                     active={activeTab === 4}
                   >
                     Edit Group
+                  </CNavLink>
+                </CNavItem>
+                <CNavItem
+                  onClick={(e) => setActiveTab(5)}
+                  className={openViewResult ? "" : "d-none"}
+                >
+                  <CNavLink
+                    style={{ fontWeight: "bolder" }}
+                    active={activeTab === 5}
+                  >
+                    Results
                   </CNavLink>
                 </CNavItem>
               </CNav>
@@ -583,11 +596,12 @@ const Groups = () => {
                     <thead>
                       <tr>
                         <th>Test Name</th>
-                        <th>View</th>
+                        <th></th>
+                        <th></th>
                         <th>Executed by</th>
-                        <th>Date executed</th>
-                        <th>Status</th>
-                        <th>Last Run Status</th>
+                        <th>Last Ran</th>
+                        <th>State</th>
+                        <th>Result</th>
                         <th>Schedule</th>
                         <th>Actions</th>
                       </tr>
@@ -616,7 +630,27 @@ const Groups = () => {
                                     setCurrentTestName(item.testName);
                                   }}
                                 >
-                                  View
+                                  View Steps
+                                </td>
+                                <td
+                                  style={{
+                                    color: "#1088BB",
+                                    cursor: "pointer",
+                                    textDecoration: "underline",
+                                  }}
+                                  onClick={() => {
+                                    dispatch(
+                                      GroupActionCreator.getGroupTestSteps(
+                                        item.testCaseId
+                                      )
+                                    );
+                                    setActiveTab(5);
+                                    // setOpenTestSteps(true);
+                                    setOpenViewResult(true)
+                                    setCurrentTestName(item.testName);
+                                  }}
+                                >
+                                  View Result
                                 </td>
                                 <td>{item.emailListName}</td>
                                 <td>{item.dateModified}</td>
@@ -792,7 +826,64 @@ const Groups = () => {
                       <Button
                         size="small"
                         variant="contained"
-                        color="secondary"
+                        color="black"
+                        style={{ background: "black", color: "white" }}
+                        onClick={() => {
+                          setActiveTab(1);
+                          setOpenViewResult(false);
+                          setCurrentTestName("");
+                        }}
+                      >
+                        Close
+                      </Button>
+                    </div>
+                  </div>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Command</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {groupTestSteps?.map((item, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{item.command}</td>
+                            <td><EditIcon/> <DeleteOutlineIcon style={{color: "red"}} /></td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </CTabPane>
+                {/* Start */}
+                <CTabPane
+                  visible={activeTab === 5}
+                  className={activeTab === 5 ? " active fade show" : "d-none"}
+                >
+                  <div className="row">
+                    <div>
+                      <h3
+                        className="ml-3"
+                        style={{
+                          marginTop: "10px",
+                          marginBottom: "10px",
+                          color: "#0083b8",
+                        }}
+                      >
+                        {currentTestName}:
+                      </h3>
+                    </div>
+                    <div
+                      className="ml-auto mr-3"
+                      style={{ marginTop: "10px", marginBottom: "10px" }}
+                    >
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="black"
+                        style={{ background: "black", color: "white" }}
                         onClick={() => {
                           setActiveTab(1);
                           setOpenTestSteps(false);
@@ -846,6 +937,7 @@ const Groups = () => {
                     </tbody>
                   </table>
                 </CTabPane>
+                {/* End */}
                 <CTabPane>
                   <Container component="main" maxWidth="xs">
                     <div>
