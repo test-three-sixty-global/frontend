@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
-import Logo from "../../assets/icons/Logo.png";
+import Logo from "../../assets/icons/Auton8.png";
 // import { LoginAction } from "./LoginAction";
 import { useDispatch, useSelector } from "react-redux";
 import * as LoginAction from "../../redux/actionsCreator/authActionsCreator";

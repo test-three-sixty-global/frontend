@@ -19,6 +19,7 @@ const WidgetsDropdown = () => {
       <CCol sm="6" lg="3">
         <CWidgetDropdown
           color="gradient-primary"
+          style={{background: "#00DB79"}}
           header="9"
           text="Bill payments"
           footerSlot={

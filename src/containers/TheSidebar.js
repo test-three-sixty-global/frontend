@@ -13,8 +13,8 @@ import {
 } from "@coreui/react";
 
 import CIcon from "@coreui/icons-react";
-import LogoHeader from "../assets/icons/test1.png";
-import SmallLogo from "../assets/icons/logoSmall.png";
+import LogoHeader from "../assets/icons/AUtnon8.png";
+import SmallLogo from "../assets/icons/Auton8Small.png";
 
 // sidebar nav config
 import navigation from "./_nav";

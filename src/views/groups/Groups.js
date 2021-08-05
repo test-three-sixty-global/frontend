@@ -340,7 +340,8 @@ const Groups = () => {
                                   </span>
                                   ,
                                   <span style={{ color: "red" }}>fail = 2</span> */}
-                                  <span>{item.lastRunResults}</span>
+                                  <span style={{ color: "green" }}>{item.lastRunResults?.split(",")[0]}</span>
+                                  <span style={{ color: "red" }}>{item.lastRunResults?.split(",")[1]}</span>
                                 </td>
                                 <td>
                                   <span>{item.lastRunStatus}</span>
@@ -389,7 +390,6 @@ const Groups = () => {
                                         }
                                       >
                                         <option value="0">Exec mode</option>
-                                        <option value="none">None</option>
                                         <option value="sequential">
                                           Sequential
                                         </option>
@@ -557,7 +557,8 @@ const Groups = () => {
                       <Button
                         size="small"
                         variant="contained"
-                        color="secondary"
+                        color="black"
+                        style={{ background: "black", color: "white" }}
                         onClick={() => {
                           setActiveTab(0);
                           setOpenTest(false);
@@ -631,7 +632,7 @@ const Groups = () => {
                                   <span>{item.lastRunStatus}</span>
                                 </td>
                                 <td onClick={() => setCrone(true)}>
-                                  <AccessTimeIcon />
+                                  <AccessTimeIcon style={{ color: "black" }}/>
                                 </td>
 
                                 <td style={{ width: "55%" }}>
@@ -805,10 +806,10 @@ const Groups = () => {
                   <table className="table">
                     <thead>
                       <tr>
-                        <th>Steps</th>
-                        <th>Case images</th>
+                        <th>Command</th>
                         <th>Value</th>
                         <th>Target</th>
+                        <th>Case images</th>
                         <th>Executed At</th>
                         <th>Status</th>
                         <th>Error</th>
@@ -819,8 +820,10 @@ const Groups = () => {
                         return (
                           <tr key={key}>
                             <td>
-                              <a href="/groups">{item.command}</a>
+                              <a href="/groups">{item.command?.split("|")[0]}</a>
                             </td>
+                            <td>{item.command?.split("|")[1]}</td>
+                            <td>{item.target}</td>
                             <td
                               className={"col-md-2"}
                               onClick={() => {
@@ -834,8 +837,6 @@ const Groups = () => {
                               />
                             </td>
                             <td>{item.override}</td>
-                            <td>{item.value}</td>
-                            <td>{item.target}</td>
                             <td>Pass</td>
                             <td></td>
                             <td>-</td>

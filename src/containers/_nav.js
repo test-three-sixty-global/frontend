@@ -14,7 +14,7 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "Dashboard",
     to: "/dashboard",
-    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
+    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" style={{color: "#FFFFFF"}} />,
     badge: {
       color: "info",
       // text: 'NEW',
@@ -24,7 +24,7 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "Organization",
     to: "/organization",
-    icon: <BusinessIcon className="c-sidebar-nav-icon" />,
+    icon: <BusinessIcon className="c-sidebar-nav-icon" style={{color: "#FFFFFF"}} />,
     badge: {
       color: "info",
       // text: 'NEW',
@@ -44,7 +44,7 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "Groups",
     to: "/groups",
-    icon: <GroupIcon className="c-sidebar-nav-icon" />,
+    icon: <GroupIcon className="c-sidebar-nav-icon" style={{color: "#FFFFFF"}} />,
     badge: {
       color: "info",
       // text: 'NEW',
@@ -63,7 +63,7 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "Email Lists",
     to: "/emailLists",
-    icon: <DraftsIcon className="c-sidebar-nav-icon" />,
+    icon: <DraftsIcon className="c-sidebar-nav-icon" style={{color: "#FFFFFF"}} />,
     badge: {
       color: "info",
       // text: 'NEW',
@@ -73,7 +73,7 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "SMS Lists",
     to: "/smsLists",
-    icon: <TextsmsIcon className="c-sidebar-nav-icon" />,
+    icon: <TextsmsIcon className="c-sidebar-nav-icon" style={{color: "#FFFFFF"}} />,
     badge: {
       color: "info",
       // text: 'NEW',
@@ -93,7 +93,7 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "User",
     to: "/user",
-    icon: <PersonIcon className="c-sidebar-nav-icon" />,
+    icon: <PersonIcon className="c-sidebar-nav-icon" style={{color: "#FFFFFF"}} />,
     badge: {
       color: "info",
       // text: 'NEW',
@@ -103,7 +103,7 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "Roles",
     to: "/roles",
-    icon: <HttpsIcon className="c-sidebar-nav-icon" />,
+    icon: <HttpsIcon className="c-sidebar-nav-icon" style={{color: "#FFFFFF"}} />,
     badge: {
       color: "info",
       // text: 'NEW',

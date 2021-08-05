@@ -187,11 +187,12 @@ const Organization = () => {
             style={{
               boxShadow:
                 " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                backgroundColor: "black"
             }}
           >
             <CCardHeader>Organization</CCardHeader>
             <div className="d-inline ml-auto">
-              <EditIcon className="d-inline ml-auto m-3 text-info" />
+              <EditIcon style={{color: "#00DB79"}} className="d-inline ml-auto m-3" />
             </div>
             <CCardBody className="p-3 pb-0 mb-3">
               <img
@@ -203,7 +204,7 @@ const Organization = () => {
                 }
               />
               <Label className="pt-2 text-center ">
-                <span style={{ fontWeight: "bold", fontSize: "35px" }}>
+                <span style={{ fontWeight: "bold", fontSize: "35px", color: "white" }}>
                   {response?.organizationName.toUpperCase()}
                 </span>
               </Label>

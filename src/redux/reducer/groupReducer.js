@@ -77,7 +77,7 @@ const groupSlice = createSlice({
     // updateGroupList
     [groupActionCreator.updateGroup.pending]: (state) => {
       state.loading = true;
-      state.responsePost = null;
+      // state.responsePost = null;
     },
     [groupActionCreator.updateGroup.fulfilled]: (state, action) => {
       state.loading = false;

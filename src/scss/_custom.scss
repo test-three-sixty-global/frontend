@@ -36,7 +36,7 @@ a:hover {
 .c-sidebar.c-sidebar-minimized
   .c-sidebar-nav-item:hover
   > .c-sidebar-nav-dropdown-toggle {
-  background: #004e76;
+  background: #101010 !important;
 }
 // .nav-tabs .nav-link.active,
 // .nav-tabs .nav-item.show .nav-link {
@@ -56,4 +56,41 @@ a:hover {
 }
 .test-img{
   width: 40%;
+}
+
+.c-sidebar .c-sidebar-nav-link.c-active .c-sidebar-nav-icon, .c-sidebar .c-active.c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon {
+  color: #00DB79 !important
+}
+
+.c-sidebar {
+  background: #010101 !important
+}
+
+.c-sidebar .c-sidebar-brand {
+  background: black !important;
+
+}
+th {
+  color: black;
+  font-weight: 800;
+}
+
+td {
+  color: #101010;
+}
+.c-sidebar .c-sidebar-nav-link, .c-sidebar .c-sidebar-nav-dropdown-toggle {
+  font-weight: 800;
+}
+.c-sidebar .c-sidebar-nav-link:hover, .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
+  background: #212121;
+  color: white;
+}
+.card {
+  // background-color: black !important;
+}
+.card-header {
+  background-color: black !important;
+  color: white;
+  font-size: 25px;
+  font-weight: 800
 }

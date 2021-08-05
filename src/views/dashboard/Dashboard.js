@@ -32,8 +32,8 @@ const Dashboard = () => {
               <div className="small text-muted">May 2021</div>
             </CCol>
             <CCol sm="7" className="d-none d-md-block">
-              <CButton color="primary" className="float-right">
-                <CIcon name="cil-cloud-download"/>
+              <CButton color="primary" className="float-right" style={{background: "#00DB79", borderColor: "#00DB79"}}>
+                <CIcon name="cil-cloud-download" />
               </CButton>
               <CButtonGroup className="float-right mr-3">
                 {
