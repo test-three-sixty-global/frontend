@@ -307,9 +307,8 @@ const Groups = () => {
                           <th>Group Name</th>
                           <th>Tests</th>
                           <th>Last execution date</th>
+                          <th>State</th>
                           <th>Status</th>
-                          <th>Last Run Status</th>
-
                           <th>Schedule</th>
                           <th>Actions</th>
                         </tr>
@@ -438,7 +437,7 @@ const Groups = () => {
                                             )
                                           }
                                           style={{
-                                            color: "green",
+                                            color: "#00DB79",
                                             cursor: "pointer",
                                           }}
                                         />
@@ -744,7 +743,7 @@ const Groups = () => {
                                             )
                                           }
                                           style={{
-                                            color: "green",
+                                            color: "#00DB79",
                                             cursor: "pointer",
                                           }}
                                         />
@@ -938,7 +937,7 @@ const Groups = () => {
                   </table>
                 </CTabPane>
                 {/* End */}
-                <CTabPane>
+                <CTabPane visible={true}>
                   <Container component="main" maxWidth="xs">
                     <div>
                       {postGroupStatus === "OK" && (

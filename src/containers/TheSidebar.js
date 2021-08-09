@@ -26,7 +26,7 @@ const TheSidebar = () => {
 
   return (
     <CSidebar
-      minimize="true"
+      // minimize="true"
       show={show}
       onShowChange={
         val => dispatch({ type: "set", sidebarShow: val })
@@ -58,7 +58,7 @@ const TheSidebar = () => {
           }}
         />
       </CSidebarNav>
-      <CSidebarMinimizer className="c-d-md-down-none" true />
+      <CSidebarMinimizer className="c-d-md-down-none" />
     </CSidebar>
   );
 };
