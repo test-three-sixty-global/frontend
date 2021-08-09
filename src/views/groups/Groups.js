@@ -83,8 +83,10 @@ const Groups = () => {
         smsListName: "",
       },
     };
-    activeTab === 3 && dispatch(GroupActionCreator.getGroupInitialData());
-    activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData());
+     if(activeTab === 3) dispatch(GroupActionCreator.getGroupInitialData());
+     if(activeTab === 4) {
+       dispatch(GroupActionCreator.getGroupInitialData());
+     } 
     // activeTab === 3 ||
     //   (activeTab === 4 && dispatch(GroupActionCreator.getGroupInitialData()));
     // var inter
@@ -439,6 +441,7 @@ const Groups = () => {
                                           style={{
                                             color: "#00DB79",
                                             cursor: "pointer",
+                                            fontSize: "large"
                                           }}
                                         />
                                       ) : (
@@ -448,7 +451,7 @@ const Groups = () => {
                                       )}
                                       &nbsp;&nbsp;
                                       <EditIcon
-                                        style={{ cursor: "pointer" }}
+                                        style={{ cursor: "pointer", fontSize: "large"}}
                                         onClick={() => {
                                           setStyle("block");
                                           setActiveTab(4);
@@ -462,6 +465,7 @@ const Groups = () => {
                                         style={{
                                           color: "red",
                                           cursor: "pointer",
+                                          fontSize: "large"
                                         }}
                                       />{" "}
                                     </div>
@@ -617,6 +621,7 @@ const Groups = () => {
                                     color: "#1088BB",
                                     cursor: "pointer",
                                     textDecoration: "underline",
+                                    fontSize: "10px"
                                   }}
                                   onClick={() => {
                                     dispatch(
@@ -636,6 +641,7 @@ const Groups = () => {
                                     color: "#1088BB",
                                     cursor: "pointer",
                                     textDecoration: "underline",
+                                    fontSize: "10px"
                                   }}
                                   onClick={() => {
                                     dispatch(
@@ -652,7 +658,7 @@ const Groups = () => {
                                   View Result
                                 </td>
                                 <td>{item.emailListName}</td>
-                                <td>{item.dateModified}</td>
+                                <td style={{fontSize: "11px"}}>{item.dateModified}</td>
                                 <td>
                                   {/* <span style={{ color: "green" }}>
                                     Pass = 2
@@ -745,6 +751,7 @@ const Groups = () => {
                                           style={{
                                             color: "#00DB79",
                                             cursor: "pointer",
+                                            fontSize: "large"
                                           }}
                                         />
                                       ) : (
@@ -753,18 +760,19 @@ const Groups = () => {
                                         </div>
                                       )}
                                       &nbsp;&nbsp;
-                                      <EditIcon /> &nbsp;
+                                      <EditIcon style={{fontSize: "large"}} /> &nbsp;
                                       <FileCopyIcon
+                                      style={{fontSize: "large"}}
                                         onClick={() => {
                                           setOpenDialog(true);
                                           setTestId(item.siteGroupTestId);
                                         }}
                                       />
                                       <DeleteOutlineIcon
-                                        style={{ color: "red" }}
+                                        style={{ color: "red", fontSize: "large" }}
                                       />
                                       <DownloadIcon
-                                        style={{ cursor: "pointer" }}
+                                        style={{ cursor: "pointer", fontSize: "large" }}
                                         onClick={() => {
                                           console.log("okay here");
                                           dispatch(
@@ -774,7 +782,7 @@ const Groups = () => {
                                           );
                                         }}
                                       />
-                                      <UploadIcon />
+                                      <UploadIcon style={{fontSize: "large"}} />
                                     </div>
                                   </div>
                                 </td>
@@ -849,7 +857,9 @@ const Groups = () => {
                         return (
                           <tr key={key}>
                             <td>{item.command}</td>
-                            <td><EditIcon/> <DeleteOutlineIcon style={{color: "red"}} /></td>
+                            <td>
+                              <EditIcon style={{fontSize: "large"}}/> 
+                              <DeleteOutlineIcon style={{color: "red", fontSize: "large"}} /></td>
                           </tr>
                         );
                       })}
