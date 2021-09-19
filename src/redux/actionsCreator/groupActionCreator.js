@@ -177,11 +177,9 @@ export const testcaseImediatelyPlay = createAsyncThunk(
   "group/testcaseImediatelyPlay",
   async (data = {}) => {
     let groupInitialData = {};
-    debugger;
     groupInitialData.path = apiUrl.testcaseImediatelyPlay(data);
     groupInitialData.csrf = authHeader();
-    debugger;
-    const response = await testApi.put(groupInitialData);
+    const response = await testApi.post(groupInitialData);
     return response.data;
   }
 );
