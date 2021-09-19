@@ -47,7 +47,6 @@ const UserSlice = createSlice({
     [userActionsCreator.updateUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.response = action.payload.userList;
-      debugger;
     },
     [userActionsCreator.updateUser.rejected]: (state) => {
       state.loading = false;
