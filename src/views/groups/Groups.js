@@ -113,8 +113,6 @@ const Groups = () => {
   let response = useSelector((state) => state.groupReducer.response);
   let responsePost = useSelector((state) => state.groupReducer.responsePost);
   const loading = useSelector((state) => state.groupReducer.loading);
-  let testResponse = useSelector((state) => state.testReducer.responsePost);
-  const getAllGroups = useSelector((state) => state.groupReducer.getAllGroups);
   const groupTestCases = useSelector(
     (state) => state.groupReducer.GroupTestCases
   );
@@ -474,9 +472,23 @@ const Groups = () => {
                               </tr>
                             );
                           })}
+                               {loading && !responsePost && (
+                        <tr>
+                          <td colSpan="5">
+                            {" "}
+                            <Spinner height="100" width="100" />
+                          </td>
+                        </tr>
+                      )}
                       </tbody>
+                      {checkForTimer && <ul class="pagination">
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    </ul>}
                     </table>
                   )}
+                                   
                 </CTabPane>
                 {/* Group Listing End */}
                 {/* Test Tab */}
@@ -863,6 +875,14 @@ const Groups = () => {
                           </tr>
                         );
                       })}
+                           {loading && !groupTestSteps && (
+                        <tr>
+                          <td colSpan="5">
+                            {" "}
+                            <Spinner height="100" width="100" />
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </CTabPane>
@@ -943,7 +963,20 @@ const Groups = () => {
                           </tr>
                         );
                       })}
+                           {loading && !groupTestSteps && (
+                        <tr>
+                          <td colSpan="5">
+                            {" "}
+                            <Spinner height="100" width="100" />
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
+                    <ul class="pagination">
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    </ul>
                   </table>
                 </CTabPane>
                 {/* End */}
