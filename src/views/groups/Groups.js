@@ -754,11 +754,16 @@ const Groups = () => {
                                       !item.lastRunStatus ? (
                                         <PlayArrowIcon
                                           onClick={() =>
-                                            dispatch(
+
+                                            { let data = {
+                                              siteGroupId : item.siteGroupId,
+                                              testCaseId: item.testCaseId
+                                            }
+                                              dispatch(
                                               GroupActionCreator.testcaseImediatelyPlay(
-                                                item.siteGroupTestId
+                                                data
                                               )
-                                            )
+                                            )}
                                           }
                                           style={{
                                             color: "#00DB79",

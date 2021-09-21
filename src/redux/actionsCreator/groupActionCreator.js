@@ -175,7 +175,7 @@ export const projectGroupImediatelyPlay = createAsyncThunk(
 
 export const testcaseImediatelyPlay = createAsyncThunk(
   "group/testcaseImediatelyPlay",
-  async (data = {}) => {
+  async (data = {}, id) => {
     let groupInitialData = {};
     groupInitialData.path = apiUrl.testcaseImediatelyPlay(data);
     groupInitialData.csrf = authHeader();
