@@ -26,6 +26,8 @@ const groupSlice = createSlice({
     testCaseScreenshotError: null,
     downloadTest: null,
     downloadTestError: null,
+    uploadTest: null,
+    uploadTestError: null
   },
   reducers: {},
   extraReducers: {
@@ -148,7 +150,6 @@ const groupSlice = createSlice({
       // state.GroupTestCases = null;
     },
     [groupActionCreator.getGroupTestCases.fulfilled]: (state, action) => {
-      console.log(action);
       state.loading = false;
       state.GroupTestCases = action.payload;
       // state.status = action.payload.status
@@ -319,6 +320,23 @@ const groupSlice = createSlice({
       state.downloadTest = null;
       state.downloadTestError = action.payload;
     },
+
+    // upload test
+
+    [groupActionCreator.uploadTest.pending]: (state) => {
+      state.uploadTest = null;
+      state.uploadTestError = null;
+    },
+    [groupActionCreator.uploadTest.fulfilled]: (state, action) => {
+      state.uploadTest = action.payload;
+      state.uploadTestError = null;
+    },
+    [groupActionCreator.uploadTest.rejected]: (state, action) => {
+      state.uploadTest = null;
+      state.uploadTestError = action.payload;
+    },
+
+
   },
 });
 

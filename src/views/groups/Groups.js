@@ -62,6 +62,8 @@ const Groups = () => {
   const [checkForTimer, setCheckForTimer] = useState(null);
   const [selectedGroupId, setSelectedGroupId] = useState("");
   const [groupTestCasess, setGroupTestCases] = useState(null);
+  const [file, setFile] = useState(null)
+  const [currentTestId, setCurrentTestId] = useState("")
 
   const [formValues, setFormValues] = useState({
     siteGroupName: "",
@@ -219,6 +221,24 @@ const Groups = () => {
     dispatch(GroupActionCreator.cloneTest(data));
   };
 
+  const onFileChange = (e) => {
+    console.log("File==>",e.target.files)
+    setFile(e.target.files)
+
+    const formData = new FormData(); 
+    var blob = new Blob([JSON.stringify(e.target.files)], {type : 'application/json'});
+    formData.append( 
+      "file", 
+      blob, 
+      "auton8_Test.xlsx" 
+      );
+      let data = {
+        id: currentTestId,
+        file: formData
+      }
+    dispatch(GroupActionCreator.uploadTest(data));
+  }
+
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
@@ -294,6 +314,7 @@ const Groups = () => {
                 </CNavItem>
               </CNav>
               <CTabContent>
+                {/* Group */}
                 <CTabPane
                   visible={activeTab === 0}
                   aria-selected={activeTab === 0}
@@ -622,7 +643,6 @@ const Groups = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {console.log("groupTestCases", groupTestCases)}
                       {activeTab === 1 && groupTestCasess?.length
                         ? groupTestCasess.map((item, key) => {
                             return (
@@ -799,7 +819,10 @@ const Groups = () => {
                                           );
                                         }}
                                       />
-                                      <UploadIcon style={{fontSize: "large"}} />
+                                      <input type='file' id="file-input" onChange={ onFileChange} style={{display: "none"}}/> 
+                                      <label for="file-input" >
+                                        <UploadIcon style={{fontSize: "large"}} onClick={() =>setCurrentTestId(item.siteGroupTestId)} />
+                                      </label> 
                                     </div>
                                   </div>
                                 </td>

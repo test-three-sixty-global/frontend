@@ -48,4 +48,5 @@ export const apiUrl = {
   updateTestcaseExecutionFrequency: (id) =>
     `/testcases/${id}/execution/frequency`,
   downloadTest: (id) => `/testcases/${id}/download`,
+  uploadTest: (id) => `/testcases/${id}/upload`,
 };
