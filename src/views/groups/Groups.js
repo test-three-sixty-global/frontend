@@ -431,9 +431,9 @@ const Groups = () => {
                                         </option>
                                       </CSelect>
                                     </div>
-                                    <div className="col-md-1">
+                                    <div className="col-md-2">
                                       <input
-                                        style={{ width: "100%" }}
+                                        style={{ width: "50%" }}
                                         type="number"
                                         value={frequency}
                                         onChange={(e) =>
@@ -754,9 +754,9 @@ const Groups = () => {
                                         </option>
                                       </CSelect>
                                     </div>
-                                    <div className="col-md-1">
+                                    <div className="col-md-2">
                                       <input
-                                        style={{ width: "100%" }}
+                                        style={{ width: "50%" }}
                                         type="number"
                                         value={frequency}
                                         onChange={(e) =>
@@ -799,19 +799,18 @@ const Groups = () => {
                                       &nbsp;&nbsp;
                                       <EditIcon style={{fontSize: "large"}} /> &nbsp;
                                       <FileCopyIcon
-                                      style={{fontSize: "large"}}
+                                      style={{fontSize: "large", cursor: "pointer",}}
                                         onClick={() => {
                                           setOpenDialog(true);
                                           setTestId(item.siteGroupTestId);
                                         }}
                                       />
                                       <DeleteOutlineIcon
-                                        style={{ color: "red", fontSize: "large" }}
+                                        style={{ color: "red", fontSize: "large", cursor: "pointer", }}
                                       />
                                       <DownloadIcon
-                                        style={{ cursor: "pointer", fontSize: "large" }}
+                                        style={{ cursor: "pointer", fontSize: "large", cursor: "pointer", }}
                                         onClick={() => {
-                                          console.log("okay here");
                                           dispatch(
                                             GroupActionCreator.downloadTest(
                                               item.siteGroupTestId
@@ -821,7 +820,7 @@ const Groups = () => {
                                       />
                                       <input type='file' id="file-input" onChange={ onFileChange} style={{display: "none"}}/> 
                                       <label for="file-input" >
-                                        <UploadIcon style={{fontSize: "large"}} onClick={() =>setCurrentTestId(item.siteGroupTestId)} />
+                                        <UploadIcon style={{fontSize: "large", cursor: "pointer",}} onClick={() =>setCurrentTestId(item.siteGroupTestId)} />
                                       </label> 
                                     </div>
                                   </div>
