@@ -27,7 +27,9 @@ const groupSlice = createSlice({
     downloadTest: null,
     downloadTestError: null,
     uploadTest: null,
-    uploadTestError: null
+    uploadTestError: null,
+    deleteTest: null,
+    deleteTestCase: null
   },
   reducers: {},
   extraReducers: {
@@ -334,6 +336,34 @@ const groupSlice = createSlice({
     [groupActionCreator.uploadTest.rejected]: (state, action) => {
       state.uploadTest = null;
       state.uploadTestError = action.payload;
+    },
+
+    // delete test case
+    [groupActionCreator.deleteTest.pending]: (state) => {
+      state.loading = true;
+      state.deleteTest = null;
+    },
+    [groupActionCreator.deleteTest.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.deleteTest = action.payload?.deleteTest;
+    },
+    [groupActionCreator.deleteTest.rejected]: (state) => {
+      state.loading = false;
+      state.deleteTest = null;
+    },
+
+    // delete test case steps
+    [groupActionCreator.deleteTestCase.pending]: (state) => {
+      state.loading = true;
+      state.deleteTestCase = null;
+    },
+    [groupActionCreator.deleteTestCase.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.deleteTestCase = action.payload?.deleteTestCase;
+    },
+    [groupActionCreator.deleteTestCase.rejected]: (state) => {
+      state.loading = false;
+      state.deleteTestCase = null;
     },
 
 

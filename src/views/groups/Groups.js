@@ -807,13 +807,20 @@ const Groups = () => {
                                       />
                                       <DeleteOutlineIcon
                                         style={{ color: "red", fontSize: "large", cursor: "pointer", }}
+                                        onClick={() => {
+                                          dispatch(
+                                            GroupActionCreator.deleteTest(
+                                              item.testCaseId
+                                            )
+                                          );
+                                        }}
                                       />
                                       <DownloadIcon
                                         style={{ cursor: "pointer", fontSize: "large", cursor: "pointer", }}
                                         onClick={() => {
                                           dispatch(
                                             GroupActionCreator.downloadTest(
-                                              item.siteGroupTestId
+                                              item.testCaseId
                                             )
                                           );
                                         }}
@@ -898,7 +905,16 @@ const Groups = () => {
                             <td>{item.command}</td>
                             <td>
                               <EditIcon style={{fontSize: "large"}}/> 
-                              <DeleteOutlineIcon style={{color: "red", fontSize: "large"}} /></td>
+                              <DeleteOutlineIcon 
+                                style={{color: "red", fontSize: "large", cursor: "pointer", }} 
+                                onClick={() => {
+                                  dispatch(
+                                    GroupActionCreator.deleteTestCase(
+                                      item.testCaseStepId
+                                    )
+                                  );
+                                }} />
+                            </td>
                           </tr>
                         );
                       })}

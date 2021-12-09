@@ -257,3 +257,30 @@ export const uploadTest = createAsyncThunk(
     return response.data.payload;
   }
 );
+
+//delete test case
+
+export const deleteTest = createAsyncThunk(
+  "testcase/delete",
+  async (data = {}) => {
+    let deleteTest = {};
+    deleteTest.path = apiUrl.deleteTest(data);
+    // deleteTest.data = data;
+    deleteTest.csrf = authHeader();
+    const response = await Api.dell(deleteTest);
+    return response.data.payload;
+  }
+);
+//delete test case steps
+
+export const deleteTestCase = createAsyncThunk(
+  "testcasesteps/delete",
+  async (data = {}) => {
+    let deleteTestCase = {};
+    deleteTestCase.path = apiUrl.deleteTestCase(data);
+    // deleteTestCase.data = data;
+    deleteTestCase.csrf = authHeader();
+    const response = await Api.dell(deleteTestCase);
+    return response.data.payload;
+  }
+);
