@@ -906,7 +906,7 @@ const Groups = () => {
                             <td>
                               <EditIcon style={{fontSize: "large"}}/> 
                               <DeleteOutlineIcon 
-                                style={{color: "red", fontSize: "large", cursor: "pointer", }} 
+                                style={{color: "red", fontSize: "large", cursor: "pointer" }} 
                                 onClick={() => {
                                   dispatch(
                                     GroupActionCreator.deleteTestCase(
