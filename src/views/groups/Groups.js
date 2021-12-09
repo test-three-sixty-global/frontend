@@ -932,7 +932,7 @@ const Groups = () => {
                 {/* Start */}
                 <CTabPane
                   visible={activeTab === 5}
-                  className={activeTab === 5 ? " active fade show" : "d-none"}
+                  className={activeTab === 5 ? "active fade show" : "d-none"}
                 >
                   <div className="row">
                     <div>
