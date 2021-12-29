@@ -179,7 +179,7 @@ export const testcaseImediatelyPlay = createAsyncThunk(
     let groupInitialData = {};
     groupInitialData.path = apiUrl.testcaseImediatelyPlay(data);
     groupInitialData.csrf = authHeader();
-    const response = await testApi.post(groupInitialData);
+    const response = await Api.post(groupInitialData);
     return response.data;
   }
 );

@@ -38,7 +38,7 @@ export const apiUrl = {
   getGroupTestStep: (id) => `/testcases/${id}/testcasesteps`,
   getallTestCases: () => `/testcases`,
   projectImediatelyPlay: (id) => `/play/immediate/groups/${id}`,
-  // testcaseImediatelyPlay: (id) => `/play/immediate/testcases/${1}`,
+ //  testcaseImediatelyPlay: (id) => `/play/immediate/testcases/${1}`,
   // testcaseImediatelyPlay: (data) => `/play/test/producer/${id}`,
   testcaseImediatelyPlay: (data) => `/play/test/producer/group/${data.siteGroupId}/testcase/${data.testCaseId}`,
   getAllGroups: () => `/groups`,
@@ -47,5 +47,5 @@ export const apiUrl = {
   updateTestcaseExecutionType: (id) => `/testcases/${id}/execution/type`,
   updateTestcaseExecutionFrequency: (id) =>
     `/testcases/${id}/execution/frequency`,
-  downloadTest: (id) => `/testcases/${id}/download`,
+  downloadTest: (id) => `/testcases/145/download`,
 };
