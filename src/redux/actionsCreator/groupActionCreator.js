@@ -229,12 +229,58 @@ export const updateTestcaseScreenshot = createAsyncThunk(
 
 export const downloadTest = createAsyncThunk(
   "downloadTest/get",
-  async (data = {}) => {
+  async (data = {}, {rejectWithValue}) => {
     let downloadTest = {};
     // downloadTest.data = data.data;
     downloadTest.path = apiUrl.downloadTest(data);
     downloadTest.csrf = authHeader();
-    const response = await Api.fetch(downloadTest);
+    try{
+      const response = await Api.fetch(downloadTest);
+      return response.data.payload;
+    } catch(e) {
+      let res = rejectWithValue(e.response)
+      return console.log(res.payload.data.errors.message)
+    }
+  }
+);
+//upload test excel
+
+export const uploadTest = createAsyncThunk(
+  "uploadTest/put",
+  async (data = {}) => {
+    let uploadTest = {};
+    console.log(data)
+      uploadTest.data = data.file;
+      uploadTest.path = apiUrl.uploadTest(data.id);
+      uploadTest.csrf = authHeader();
+      const response = await Api.put(uploadTest);
+    return response.data.payload;
+  }
+);
+
+//delete test case
+
+export const deleteTest = createAsyncThunk(
+  "testcase/delete",
+  async (data = {}) => {
+    let deleteTest = {};
+    deleteTest.path = apiUrl.deleteTest(data);
+    // deleteTest.data = data;
+    deleteTest.csrf = authHeader();
+    const response = await Api.dell(deleteTest);
+    return response.data.payload;
+  }
+);
+//delete test case steps
+
+export const deleteTestCase = createAsyncThunk(
+  "testcasesteps/delete",
+  async (data = {}) => {
+    let deleteTestCase = {};
+    deleteTestCase.path = apiUrl.deleteTestCase(data);
+    // deleteTestCase.data = data;
+    deleteTestCase.csrf = authHeader();
+    const response = await Api.dell(deleteTestCase);
     return response.data.payload;
   }
 );

@@ -62,6 +62,8 @@ const Groups = () => {
   const [checkForTimer, setCheckForTimer] = useState(null);
   const [selectedGroupId, setSelectedGroupId] = useState("");
   const [groupTestCasess, setGroupTestCases] = useState(null);
+  const [file, setFile] = useState(null)
+  const [currentTestId, setCurrentTestId] = useState("")
 
   const [formValues, setFormValues] = useState({
     siteGroupName: "",
@@ -219,6 +221,24 @@ const Groups = () => {
     dispatch(GroupActionCreator.cloneTest(data));
   };
 
+  const onFileChange = (e) => {
+    console.log("File==>",e.target.files)
+    setFile(e.target.files)
+
+    const formData = new FormData(); 
+    var blob = new Blob([JSON.stringify(e.target.files)], {type : 'application/json'});
+    formData.append( 
+      "file", 
+      blob, 
+      "auton8_Test.xlsx" 
+      );
+      let data = {
+        id: currentTestId,
+        file: formData
+      }
+    dispatch(GroupActionCreator.uploadTest(data));
+  }
+
   return (
     <>
       <CCol xs="12" md="12" className="mb-4">
@@ -294,6 +314,7 @@ const Groups = () => {
                 </CNavItem>
               </CNav>
               <CTabContent>
+                {/* Group */}
                 <CTabPane
                   visible={activeTab === 0}
                   aria-selected={activeTab === 0}
@@ -410,9 +431,9 @@ const Groups = () => {
                                         </option>
                                       </CSelect>
                                     </div>
-                                    <div className="col-md-1">
+                                    <div className="col-md-2">
                                       <input
-                                        style={{ width: "100%" }}
+                                        style={{ width: "50%" }}
                                         type="number"
                                         value={frequency}
                                         onChange={(e) =>
@@ -482,9 +503,9 @@ const Groups = () => {
                       )}
                       </tbody>
                       {checkForTimer && <ul class="pagination">
-                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link">1</a></li>
+                      <li class="page-item"><a class="page-link">2</a></li>
+                      <li class="page-item"><a class="page-link">3</a></li>
                     </ul>}
                     </table>
                   )}
@@ -622,7 +643,6 @@ const Groups = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {console.log("groupTestCases", groupTestCases)}
                       {activeTab === 1 && groupTestCasess?.length
                         ? groupTestCasess.map((item, key) => {
                             return (
@@ -734,9 +754,9 @@ const Groups = () => {
                                         </option>
                                       </CSelect>
                                     </div>
-                                    <div className="col-md-1">
+                                    <div className="col-md-2">
                                       <input
-                                        style={{ width: "100%" }}
+                                        style={{ width: "50%" }}
                                         type="number"
                                         value={frequency}
                                         onChange={(e) =>
@@ -779,27 +799,36 @@ const Groups = () => {
                                       &nbsp;&nbsp;
                                       <EditIcon style={{fontSize: "large"}} /> &nbsp;
                                       <FileCopyIcon
-                                      style={{fontSize: "large"}}
+                                      style={{fontSize: "large", cursor: "pointer",}}
                                         onClick={() => {
                                           setOpenDialog(true);
                                           setTestId(item.siteGroupTestId);
                                         }}
                                       />
                                       <DeleteOutlineIcon
-                                        style={{ color: "red", fontSize: "large" }}
-                                      />
-                                      <DownloadIcon
-                                        style={{ cursor: "pointer", fontSize: "large" }}
+                                        style={{ color: "red", fontSize: "large", cursor: "pointer", }}
                                         onClick={() => {
-                                          console.log("okay here");
                                           dispatch(
-                                            GroupActionCreator.downloadTest(
-                                              item.siteGroupTestId
+                                            GroupActionCreator.deleteTest(
+                                              item.testCaseId
                                             )
                                           );
                                         }}
                                       />
-                                      <UploadIcon style={{fontSize: "large"}} />
+                                      <DownloadIcon
+                                        style={{ cursor: "pointer", fontSize: "large", cursor: "pointer", }}
+                                        onClick={() => {
+                                          dispatch(
+                                            GroupActionCreator.downloadTest(
+                                              item.testCaseId
+                                            )
+                                          );
+                                        }}
+                                      />
+                                      <input type='file' id="file-input" onChange={ onFileChange} style={{display: "none"}}/> 
+                                      <label for="file-input" >
+                                        <UploadIcon style={{fontSize: "large", cursor: "pointer",}} onClick={() =>setCurrentTestId(item.siteGroupTestId)} />
+                                      </label> 
                                     </div>
                                   </div>
                                 </td>
@@ -876,7 +905,16 @@ const Groups = () => {
                             <td>{item.command}</td>
                             <td>
                               <EditIcon style={{fontSize: "large"}}/> 
-                              <DeleteOutlineIcon style={{color: "red", fontSize: "large"}} /></td>
+                              <DeleteOutlineIcon 
+                                style={{color: "red", fontSize: "large", cursor: "pointer" }} 
+                                onClick={() => {
+                                  dispatch(
+                                    GroupActionCreator.deleteTestCase(
+                                      item.testCaseStepId
+                                    )
+                                  );
+                                }} />
+                            </td>
                           </tr>
                         );
                       })}
@@ -894,7 +932,7 @@ const Groups = () => {
                 {/* Start */}
                 <CTabPane
                   visible={activeTab === 5}
-                  className={activeTab === 5 ? " active fade show" : "d-none"}
+                  className={activeTab === 5 ? "active fade show" : "d-none"}
                 >
                   <div className="row">
                     <div>
@@ -978,9 +1016,9 @@ const Groups = () => {
                       )}
                     </tbody>
                     <ul class="pagination">
-                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link">1</a></li>
+                      <li class="page-item"><a class="page-link">2</a></li>
+                      <li class="page-item"><a class="page-link">3</a></li>
                     </ul>
                   </table>
                 </CTabPane>

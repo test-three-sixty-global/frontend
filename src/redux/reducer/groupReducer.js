@@ -26,6 +26,10 @@ const groupSlice = createSlice({
     testCaseScreenshotError: null,
     downloadTest: null,
     downloadTestError: null,
+    uploadTest: null,
+    uploadTestError: null,
+    deleteTest: null,
+    deleteTestCase: null
   },
   reducers: {},
   extraReducers: {
@@ -148,7 +152,6 @@ const groupSlice = createSlice({
       // state.GroupTestCases = null;
     },
     [groupActionCreator.getGroupTestCases.fulfilled]: (state, action) => {
-      console.log(action);
       state.loading = false;
       state.GroupTestCases = action.payload;
       // state.status = action.payload.status
@@ -319,6 +322,51 @@ const groupSlice = createSlice({
       state.downloadTest = null;
       state.downloadTestError = action.payload;
     },
+
+    // upload test
+
+    [groupActionCreator.uploadTest.pending]: (state) => {
+      state.uploadTest = null;
+      state.uploadTestError = null;
+    },
+    [groupActionCreator.uploadTest.fulfilled]: (state, action) => {
+      state.uploadTest = action.payload;
+      state.uploadTestError = null;
+    },
+    [groupActionCreator.uploadTest.rejected]: (state, action) => {
+      state.uploadTest = null;
+      state.uploadTestError = action.payload;
+    },
+
+    // delete test case
+    [groupActionCreator.deleteTest.pending]: (state) => {
+      state.loading = true;
+      state.deleteTest = null;
+    },
+    [groupActionCreator.deleteTest.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.deleteTest = action.payload?.deleteTest;
+    },
+    [groupActionCreator.deleteTest.rejected]: (state) => {
+      state.loading = false;
+      state.deleteTest = null;
+    },
+
+    // delete test case steps
+    [groupActionCreator.deleteTestCase.pending]: (state) => {
+      state.loading = true;
+      state.deleteTestCase = null;
+    },
+    [groupActionCreator.deleteTestCase.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.deleteTestCase = action.payload?.deleteTestCase;
+    },
+    [groupActionCreator.deleteTestCase.rejected]: (state) => {
+      state.loading = false;
+      state.deleteTestCase = null;
+    },
+
+
   },
 });
 
