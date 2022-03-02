@@ -340,10 +340,10 @@ const Groups = () => {
                             return (
                               <tr key={key}>
                                 <td
-                                  style={{
-                                    color: "#1088BB",
-                                    cursor: "pointer",
-                                  }}
+                                  // style={{
+                                  //   color: "#1088BB",
+                                  //   cursor: "pointer",
+                                  // }}
                                 >
                                   {item.siteGroupName}
                                 </td>
@@ -1023,7 +1023,8 @@ const Groups = () => {
                   </table>
                 </CTabPane>
                 {/* End */}
-                <CTabPane visible={true}>
+                <CTabPane visible={activeTab === 3}
+                  className={activeTab === 3 ? "active fade show" : "d-none"}>
                   <Container component="main" maxWidth="xs">
                     <div>
                       {postGroupStatus === "OK" && (
@@ -1129,8 +1130,8 @@ const Groups = () => {
                   </Container>
                 </CTabPane>
                 <CTabPane
-                  visible={true}
-                  className={activeTab !== 4 ? "fade" : "active show"}
+                  visible={activeTab === 4}
+                  className={activeTab === 4 ? "active fade show" : "d-none"}
                 >
                   <Container component="main" maxWidth="xs">
                     <div>
